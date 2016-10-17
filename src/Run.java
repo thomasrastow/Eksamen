@@ -9,12 +9,6 @@ import java.net.Socket;
  */
 public class Run {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> UserBranch
     public static void main(String args[]){
 
 
@@ -50,20 +44,11 @@ public class Run {
          }
 
 
-<<<<<<< HEAD
 
 
 
     }
-<<<<<<< HEAD
-=======
          }
->>>>>>> Adcontroller
-=======
->>>>>>> UserBranch
-=======
->>>>>>> origin/AdBranch
->>>>>>> bookBranch1
 
 }
 

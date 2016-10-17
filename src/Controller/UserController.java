@@ -1,18 +1,14 @@
 package Controller;
 
-<<<<<<< HEAD
-=======
 import DTOobjects.User;
 import ServiveImplementation.ServiceImplementation;
 
->>>>>>> UserBranch
 /**
  * Created by Emma og Thomas on 17-10-2016.
  */
 public class UserController {
 
     public String createUser(String username, String password, int phonenumber, String address, String email,
-<<<<<<< HEAD
                                  int mobilePay, int cash, int transfer, int type) {
 
             // Opretter validering
@@ -45,7 +41,6 @@ public class UserController {
         }
 
     }
-=======
                              int mobilepay, int cash, int transfer, int type) {
 
         // Opretter validering
@@ -95,7 +90,6 @@ public class UserController {
         // user.save();
 
         // return response;
->>>>>>> UserBranch
 
         return "OK";
     }

@@ -67,7 +67,6 @@ public class User {
         this.password = password;
     }
 
-<<<<<<< HEAD
     public int getPhonenumber() {
         return phoneNumber;
     }
@@ -75,11 +74,9 @@ public class User {
     public void setPhonenumber(int phonenumber) {
         this.phoneNumber = phonenumber;
     }
-=======
     public int getPhonenumber() { return phonenumber; }
 
     public void setPhonenumber(int phonenumber) { this.phonenumber = phonenumber; }
->>>>>>> UserBranch
 
     public String getAddress() {
         return address;

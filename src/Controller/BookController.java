@@ -1,12 +1,9 @@
 package Controller;
-<<<<<<< HEAD
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-=======
->>>>>>> bookBranch1
 
 import DTOobjects.Book;
 import ServiveImplementation.ServiceImplementation;
