@@ -28,39 +28,23 @@ public class BookController {
        return "ISBN has to be 10 digits";
    }
 
-   if (title==""){
+   if (title.contains("")){
        return "Title cannot be blank";
    }
 
-   if (edition==""){
+   if (edition.contains("")){
        return "Edition cannot be blank";
    }
 
-   if (author==""){
+   if (author.contains("")){
        return "Author cannot be blank";
    }
 
+   Book book = new Book (0, ISBN, title, edition, author);
+
+        //gem i database??
+
    return "OK";
-
-}
-
-    serviceImpl.createBook(Book book);
-
-    public void onFailure(Throwable caught) {
-        System.out.println("Something went wrong!!");
-        Window.alert("Could not create book");
-    }
-
-    public void onSuccess(Boolean result) {
-
-        if (!result) {
-            Window.alert("The book has been created");
-
-        } else {
-            Window.alert("Could not create book");
-        }
-
-        books.add(Book);
 
     }
 
