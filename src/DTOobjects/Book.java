@@ -1,20 +1,16 @@
 package DTOobjects;
 
-/**
- * Created by krist on 17-10-2016.
- */
+
 public class Book {
 
     // Attributer for Book oprettes
     private int id;
-    private int ISBN;
+    private long ISBN;
     private String title;
     private String edition;
     private String author;
 
-
-    //Constructor oprettes
-    public Book (int id, int ISBN, String title, String edition, String author) {
+public Book (int id, long ISBN, String title, String edition, String author) {
 
         this.id = id;
         this.ISBN = ISBN;
@@ -25,17 +21,19 @@ public class Book {
     }
 
     //Opretter getters og setters
-    public int getId() {return id; }
+    public int getId() {
+        return id;
+    }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getISBN() {
+    public long getISBN() {
         return ISBN;
     }
 
-    public void setISBN(int ISBN) {
+    public void setISBN(long ISBN) {
         this.ISBN = ISBN;
     }
 
