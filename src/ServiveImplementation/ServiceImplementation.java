@@ -35,7 +35,7 @@ public class ServiceImplementation {
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
                 authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
-
+//USERS
                 createUserSQL = connection.prepareStatement(
                         "INSERT INTO user" + " (type, username, password, phonenumber, address, email, mobilepay, cash, transfer)"
                                 + " VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -43,8 +43,22 @@ public class ServiceImplementation {
                 getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
                 deleteUserSQL = connection.prepareStatement("DELETE * FROM user WHERE id = ?");
+//BOOKS
+                createBookSQL = connection.prepareStatement(
+                        "INSERT INTO book" + " (ISBN, title, edition, author)"
+                                + " VALUES (?, ?, ?, ?)");
 
+                getBooksSQL = connection.prepareStatement("SELECT * FROM book");
 
+                deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
+//ADS
+                createBookSQL = connection.prepareStatement(
+                        "INSERT INTO book" + " (ISBN, title, edition, author)"
+                                + " VALUES (?, ?, ?, ?)");
+
+                getBooksSQL = connection.prepareStatement("SELECT * FROM book");
+
+                deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
 
 
 
