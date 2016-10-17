@@ -4,6 +4,7 @@ import DTOobjects.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceImplementation {
 
@@ -201,7 +202,7 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again.");
+            throw new DALException("There was an error. Please try again.");
         }
     }
 
@@ -388,58 +389,36 @@ public class ServiceImplementation {
 
 <<<<<<< Updated upstream
     //hent brugere
-    public ArrayList<User> getUsers(String username) throws IllegalArgumentException {
-        ResultSet resultSet = null;
-        ArrayList<User> users = new ArrayList<>();
+    @Override
+    public List<User> getUsers() throws Exception {
+
+        List<User> userlist = null;
+        ResultSet userlistSet = null;
+        PreparedStatement getUsersSQL = connection
+                .prepareStatement("SELECT * FROM brugere WHERE type == 1");
 
         try {
-            PreparedStatement getUsers = connection
-                    .prepareStatement("SELECT * FROM users WHERE type = 1");
-            getUsers.setString(1, username);
-            resultSet = getUsers.executeQuery();
+            userlistSet = getUsersSQL.executeQuery();
+            userlist = new ArrayList<User>();
 
-            while (resultSet.next()) {
-                User user = new User();
-                user.setUsername(resultSet.getString("username"));
-                user.setType(resultSet.getInt("type"));
-
-                users.add(user);
+            while (userresultSet.next()) {
+                userlist.add(new User(userlistSet.getInt("id"), userlistSet.getString("username"),
+                        userlistSet.getString("password"), userlistSet.getInt("phonenumber"), userlistSet.getString("address"), userlistSet.getString("email")
+                        , userlistSet.getInt("mobilepay"), userlistSet.getInt("cash"), userlistSet.getInt("transfer")));
 
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
         } finally {
             try {
-                resultSet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+                userresultSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
                 close();
             }
         }
-        return users;
+        return userlist;
     }
-
-    //slet bruger
-    public boolean deleteUser(User user) throws IllegalArgumentException {
-        try {
-            PreparedStatement deleteUser = connection
-                    .prepareStatement("delete from users where username = ? and password = ?");
-
-            deleteUser.setString(1, user.getUsername());
-            deleteUser.setString(2, user.getPassword());
-
-            int rowsAffected = deleteUser.executeUpdate();
-            if (rowsAffected == 1) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-}
 
 =======
             int rowsAffected = deleteUser.executeUpdate();
