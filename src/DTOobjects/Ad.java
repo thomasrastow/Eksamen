@@ -3,7 +3,7 @@ package DTOobjects;
 import java.sql.Time;
 import java.util.ArrayList;
 
-public class ad {
+public class Ad {
 
     // Variabler for ad oprettes
     private int id;
@@ -15,9 +15,10 @@ public class ad {
     private String comment;
     private boolean locked;
     private java.sql.Timestamp time;
+    private ArrayList<Ad> ad;
 
-    public ad (int id, int price, int rating, int userID, int bookID, byte deleted, String comment, boolean locked,
-                java.sql.Timestamp time, ArrayList<ad> ad) {
+    public Ad (int id, int price, int rating, int userID, int bookID, byte deleted, String comment, boolean locked,
+                java.sql.Timestamp time, ArrayList<Ad> ad) {
         this.id = id;
         this.price = price;
         this.rating = rating;
@@ -72,11 +73,11 @@ public class ad {
         this.bookID = bookID;
     }
 
-    public int getDeleted() {
+    public byte getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(int deleted) {
+    public void setDeleted(byte deleted) {
         this.deleted = deleted;
     }
 
