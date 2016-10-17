@@ -8,11 +8,8 @@ import com.sun.deploy.uitoolkit.Window;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-package Controller;
-
-
 public class BookController {
-ServiceImplementation MySQL = new ServiceImplementation();
+    ServiceImplementation MySQL = new ServiceImplementation();
 
     Scanner input = new Scanner(System.in);
     Book book = new Book();
@@ -35,6 +32,8 @@ ServiceImplementation MySQL = new ServiceImplementation();
             if(ISBN <0) {
                 return "ISBN cannot be blank";
             }
+
+
     }
 
     public void createBook(){

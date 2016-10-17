@@ -49,15 +49,10 @@ public class ServiceImplementation {
         return userLogin;
     }
 
-        try(
-    Connection connection = DriverManager.getConnection(url, username, password, database))
-
-    {
+    try{
+        Connection connection = DriverManager.getConnection(url, username, password, database));
         System.out.println("Database connected successfully!");
-    } catch(
-    SQLException e)
-
-    {
+    } catch(SQLException e) {
         throw new IllegalStateException("Database not connected. Pleasy try again.", e);
     }
 
