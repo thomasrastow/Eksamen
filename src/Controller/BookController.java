@@ -9,25 +9,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BookController {
-    ServiceImplementation MySQL = new ServiceImplementation();
+
 
     Scanner input = new Scanner(System.in);
     Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public class getBooks() {
-    ArrayList<Book> books = ServiceImplementation.getBooks();
 
-        }
     public void getBooks() {
         ArrayList<Book> books = serviceImpl.getBooks();
-
-
-
-       // for(int i=0;i<books.size();i++) {
-       //     System.out.println(books.get(i).getTitle()); }
-
-        public String createBook (int id, int ISBN, String title, String edition, String author) {
+        return books;
+    }
+    public String createBook (int id, int ISBN, String title, String edition, String author) {
 
             if(ISBN <0) {
                 return "ISBN cannot be blank";
@@ -85,8 +78,8 @@ public String createBook(int id, int ISBN, String title, String edition, String 
 
         }
 
-    public void showBook() {
-
+    public void showBook(int i) {
+        return books.get(i);
 
         }
 
