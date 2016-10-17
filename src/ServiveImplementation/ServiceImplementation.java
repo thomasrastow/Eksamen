@@ -41,7 +41,7 @@ public class ServiceImplementation {
 //USERS
                 createUserSQL = connection.prepareStatement(
                         "INSERT INTO user" + " (type, username, password, phonenumber, address, email, mobilepay, cash, transfer)"
-                                + " VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                + " VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                 getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
@@ -139,9 +139,17 @@ public class ServiceImplementation {
 
 
                 createUserSQL.executeUpdate();
-            } catch (SQLException e) {
 
+                int rowsAffected = createUserSQL.executeUpdate();
+
+                if (rowsAffected == 1) {
+                    return true;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+
             return false;
         }
 
@@ -167,6 +175,7 @@ public class ServiceImplementation {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
@@ -220,11 +229,12 @@ public class ServiceImplementation {
             if (rowsAffected == 1) {
                 return true;
             }
-            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public boolean createBook(Book book) throws Exception {
@@ -236,6 +246,13 @@ public class ServiceImplementation {
 
 
             createBookSQL.executeUpdate();
+
+            int rowsAffected = createBookSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -247,6 +264,8 @@ public class ServiceImplementation {
 
         List<Book> booklist = null;
         ResultSet resultSet = null;
+        Book book = null;
+
         PreparedStatement getBooksSQL = connection
                 .prepareStatement("SELECT * FROM book");
 
@@ -255,9 +274,15 @@ public class ServiceImplementation {
             booklist = new ArrayList<Book>();
 
             while (resultSet.next()) {
-                booklist.add(new Book(resultSet.getInt("id"), resultSet.getInt("ISBN"),
-                        resultSet.getString("title"), resultSet.getString("edition"), resultSet.getString("author")));
+                book = new Book();
 
+                book.setId(resultSet.getInt("id"));
+                book.setISBN(resultSet.getInt("isbn"));
+                book.setTitle(resultSet.getString("title"));
+                book.setEdition(resultSet.getString("edition"));
+                book.setAuthor(resultSet.getString("author"));
+
+                booklist.add(book);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -290,21 +315,28 @@ public class ServiceImplementation {
     }
 
 
-    public int createAd(Ad ad) throws Exception {
+    public boolean createAd(Ad ad) throws Exception {
         try {
             createAdSQL.setInt(1, ad.getPrice());
             createAdSQL.setInt(2, ad.getRating());
             createAdSQL.setInt(3, ad.getUserID());
             createAdSQL.setInt(4, ad.getBookID());
             createAdSQL.setString(5, ad.getComment());
-            createAdSQL.setInt(6, ad.getLocked());
-            createAdSQL.setInt(7, ad.getDeleted());
 
 
             createUserSQL.executeUpdate();
+
+            int rowsAffected = createAdSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
 
     }
 
@@ -312,6 +344,8 @@ public class ServiceImplementation {
 
         List<Ad> adlist = null;
         ResultSet resultSet = null;
+        Ad ad = null;
+
         PreparedStatement getAdsSQL = connection
                 .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL");
 
@@ -320,9 +354,19 @@ public class ServiceImplementation {
             adlist = new ArrayList<Ad>();
 
             while (resultSet.next()) {
-                adlist.add(new Ad(resultSet.getInt("id"), resultSet.getInt("price"), resultSet.getInt("rating"), resultSet.getInt("userID"), resultSet.getInt("bookID"),
-                        resultSet.getString("comment"), resultSet.getInt("locked")));
+                ad = new Ad();
 
+                ad.setId(resultSet.getInt("id"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setRating(resultSet.getInt("rating"));
+                ad.setUserID(resultSet.getInt("userID"));
+                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setLocked(resultSet.getInt("locked"));
+                ad.setTime(resultSet.getTimestamp("time"));
+                ad.setDeleted(resultSet.getInt("deleted"));
+
+                adlist.add(ad);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -370,11 +414,12 @@ public class ServiceImplementation {
             if (rowsAffected == 1) {
                 return true;
             }
-            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
 }

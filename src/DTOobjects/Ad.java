@@ -1,5 +1,7 @@
 package DTOobjects;
 
+import java.sql.Timestamp;
+
 
 public class Ad {
 
@@ -19,7 +21,7 @@ public class Ad {
 
     //Constructor oprettes
     public Ad (int id, int price, int rating, int userID, int bookID, int deleted, String comment, int locked,
-               java.sql.Timestamp time) {
+               Timestamp time) {
 
         this.id = id;
         this.price = price;
@@ -30,6 +32,10 @@ public class Ad {
         this.comment = comment;
         this.locked = locked;
         this.time = time;
+
+    }
+
+    public Ad () {
 
     }
 
@@ -94,12 +100,20 @@ public class Ad {
         this.comment = comment;
     }
 
-    public int Locked() {
+    public int getLocked() {
         return locked;
     }
 
     public void setLocked(int locked) {
         this.locked = locked;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
 
