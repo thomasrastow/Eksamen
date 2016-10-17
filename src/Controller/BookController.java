@@ -1,3 +1,8 @@
+import DTOobjects.Book;
+import ServiveImplementation.ServiceImplementation;
+import com.sun.org.apache.xpath.internal.SourceTreeManager;
+
+import java.security.Provider;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,7 +13,7 @@ public class BookController {
 
     Scanner input = new Scanner(System.in);
     Book book = new Book(int, int, String, String, String);
-
+    ServiceImplementation serviceImpl = new ServiceImplementation(int, int, String, String, String);
 
 
     public void getBooks() {
@@ -18,10 +23,25 @@ public class BookController {
 
     public void createBook(){
 
-        Service
+        serviceImpl.createBook(Book book);
 
+    public void onFailure(Throwable caught) {
+        System.out.println("Something went wrong!!");
+        Window.alert("Could not create book");
+    }
+
+    public void onSuccess(Boolean result) {
+
+        if(!result){
+            Window.alert("Could not create book");
+        } else {
+            Window.alert("The book has been created");
 
         }
+
+    }
+}
+
 
     public void deleteBook() {
 
