@@ -227,8 +227,8 @@ public class ServiceImplementation {
                 .prepareStatement("SELECT * FROM book");
 
         try {
-            userlistSet = getUsersSQL.executeQuery();
-            userlist = new ArrayList<User>();
+            booklistSet = getBooksSQL.executeQuery();
+            booklist = new ArrayList<Book>();
 
             while (booklistSet.next()) {
                 booklist.add(new User(booklistSet.getInt("id"), booklistSet.getInt("ISBN"),
