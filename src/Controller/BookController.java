@@ -56,15 +56,14 @@ public class BookController {
             Window.alert("Could not create book");
         }
 
-        books.add(Book);
+        getBooks().add(Book);
     }
 
 
 
-    public void deleteBook() {
-
-
-        }
+    public void deleteBook(int id) {
+        serviceImpl.getBook(id).remove();
+    }
 
     public void showBook(int id) {
         return serviceImpl.getBooks(id);
