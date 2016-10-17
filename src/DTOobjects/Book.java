@@ -7,7 +7,7 @@ public class Book {
 
     public int id;
     public int ISBN;
-    public String title;
+    public String titel;
     public String edition;
     public String author;
 
@@ -15,7 +15,7 @@ public Book (int id, int ISBN, String title, String edition, String author) {
 
     this.id = id;
     this.ISBN = ISBN;
-    this.title = title;
+    this.titel = titel;
     this.edition = edition;
     this.author = author;
 
@@ -38,12 +38,12 @@ public Book (int id, int ISBN, String title, String edition, String author) {
         this.ISBN = ISBN;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitel() {
+        return titel;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 
     public String getEdition() {
