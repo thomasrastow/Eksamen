@@ -231,7 +231,7 @@ public class ServiceImplementation {
             booklist = new ArrayList<Book>();
 
             while (booklistSet.next()) {
-                booklist.add(new User(booklistSet.getInt("id"), booklistSet.getInt("ISBN"),
+                booklist.add(new Book(booklistSet.getInt("id"), booklistSet.getInt("ISBN"),
                         booklistSet.getString("title"), booklistSet.getString("edition"), booklistSet.getString("author")));
 
             }
@@ -265,6 +265,52 @@ public class ServiceImplementation {
         }
     }
 
+    @Override
+    public int createAd(Ad ad) throws Exception {
+        try {
+            createAdSQL.setInt(1, user.getPrice());
+            createAdSQL.setInt(2, user.getRating());
+            createAdSQL.setInt(3, user.getUserID());
+            createAdSQL.setInt(4, user.getBookID());
+            createAdSQL.setString(5, user.getComment());
+            createAdSQL.setInt(6, user.getLocked());
+            createAdSQL.setInt(7, user.getDeleted());
+
+
+            createUserSQL.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
+    @Override
+    public List<Ad> getAds() throws Exception {
+
+        List<Ad> adlist = null;
+        ResultSet adlistSet = null;
+        PreparedStatement getAdsSQL = connection
+                .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL");
+
+        try {
+            adlistSet = getAdsSQL.executeQuery();
+            adlist = new ArrayList<Ad>();
+
+            while (adlistSet.next()) {
+                adlist.add(new Ad(adlistSet.getInt("id"), adlistSet.getInt("price"), adlistSet.getInt("rating"), adlistSet.getInt("userID"), adlistSet.getInt("bookID"),
+                        adlistSet.getString("comment"), adlistSet.getInt("locked")));
+
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } finally {
+            try {
+                adlistSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                close();
+            }
+        }
+        return adlist;
+    }
 
 }
 
