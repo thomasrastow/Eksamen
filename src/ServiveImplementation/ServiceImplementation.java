@@ -1,8 +1,15 @@
 package ServiveImplementation;
 
+import DTOobjects.Book;
+import DTOobjects.User;
+import com.mysql.jdbc.PreparedStatement;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static sun.plugin.javascript.navig.JSType.URL;
 
 /**
  * Created by krist on 17-10-2016.
@@ -50,7 +57,7 @@ public class ServiceImplementation {
     }
 
     try{
-        Connection connection = DriverManager.getConnection(url, username, password, database));
+        Connection connection = DriverManager.getConnection(url, username, password));
         System.out.println("Database connected successfully!");
     } catch(SQLException e) {
         throw new IllegalStateException("Database not connected. Pleasy try again.", e);
