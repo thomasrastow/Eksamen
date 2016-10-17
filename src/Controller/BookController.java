@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BookController {
-    ServiceImplementation MySQL = new ServiceImplementation();
+
 
     Scanner input = new Scanner(System.in);
     Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public class getBooks() {
-    ArrayList<Book> books = ServiceImplementation.getBooks();
 
-        }
 
     public void getBooks() {
         ArrayList<Book> books = serviceImpl.getBooks();
+        return books;
+    }
+    public String createBook (int id, int ISBN, String title, String edition, String author) {
 
     }
 
@@ -74,8 +74,8 @@ public class BookController {
 
         }
 
-    public void showBook() {
-
+    public void showBook(int i) {
+        return books.get(i);
 
         }
 
