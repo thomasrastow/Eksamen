@@ -30,14 +30,14 @@ ServiceImplementation MySQL = new ServiceImplementation();
        // for(int i=0;i<books.size();i++) {
        //     System.out.println(books.get(i).getTitle()); }
 
-        public String createBook(int id, int ISBN, String title, String edition, String author) {
+        public String createBook (int id, int ISBN, String title, String edition, String author) {
 
             if(ISBN <0) {
                 return "ISBN cannot be blank";
             }
-    }
 
-            if(title=="") {
+
+            if(title == "") {
                 return "title cannot be blank";
 
             }
@@ -57,6 +57,8 @@ ServiceImplementation MySQL = new ServiceImplementation();
             // TODO: save in the database.
 
     return "OK";
+
+    }
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
