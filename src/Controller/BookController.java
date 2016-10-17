@@ -3,18 +3,44 @@ import DTOobjects.Book;
 import ServiveImplementation.ServiceImplementation;
 import java.util.ArrayList;
 
+import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.title;
+
 public class BookController {
 ServiceImplementation MySQL = new ServiceImplementation();
 
 
-    public void getBooks() {
+    public class getBooks() {
     ArrayList<Book> books = ServiceImplementation.getBooks();
 
         }
 
-    public void createBook(){
 
-        Service
+        public String createBook(int id, int ISBN, String title, String edition, String author) {
+
+            if(ISBN <0) {
+                return "ISBN cannot be blank";
+            }
+
+            if(title=="") {
+                return "title cannot be blank";
+
+            }
+
+            if(edition=="") {
+                return "edition cannot be blank";
+
+            }
+
+            if(author=="") {
+                return "author cannot be blank";
+
+            }
+
+            // ny bog();
+
+            // TODO: save in the database.
+
+    return "OK";
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
