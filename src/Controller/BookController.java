@@ -8,13 +8,12 @@ import com.sun.deploy.uitoolkit.Window;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class BookController {
 
+public class BookController {
 
     Scanner input = new Scanner(System.in);
     Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
-
 
 
     public void getBooks() {
@@ -24,27 +23,24 @@ public class BookController {
 
     public String createBook(int ISBN, String title, String edition, String author) {
 
-   if (ISBN==10) {
-       return "ISBN has to be 10 digits";
-   }
+        if (ISBN==10) {
+            return "ISBN has to be 10 digits";
+        }
 
-   if (title==""){
-       return "Title cannot be blank";
-   }
+        if (title==""){
+            return "Title cannot be blank";
+        }
 
-   if (edition==""){
-       return "Edition cannot be blank";
-   }
+        if (edition==""){
+            return "Edition cannot be blank";
+        }
 
-   if (author==""){
-       return "Author cannot be blank";
-   }
+        if (author==""){
+            return "Author cannot be blank";
+        }
 
-   return "OK";
-
-}
-
-    serviceImpl.createBook(Book book);
+        return "OK";
+    }
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
@@ -61,7 +57,6 @@ public class BookController {
         }
 
         books.add(Book);
-
     }
 
 
@@ -73,7 +68,6 @@ public class BookController {
 
     public void showBook(int i) {
         return books.get(i);
-
         }
 
     public void test() {
