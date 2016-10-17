@@ -24,16 +24,6 @@ public class BookController {
 
 
 
-       // for(int i=0;i<books.size();i++) {
-       //     System.out.println(books.get(i).getTitle()); }
-
-        public String createBook (int id, int ISBN, String title, String edition, String author) {
-
-            if(ISBN <0) {
-                return "ISBN cannot be blank";
-            }
-
-
     }
 
     // public void createBook(){
