@@ -1,4 +1,5 @@
 package Controller;
+
 import DTOobjects.Book;
 import ServiveImplementation.ServiceImplementation;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ public class BookController {
 
     Scanner input = new Scanner(System.in);
 
-    Book book = new Book();
+
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
 
