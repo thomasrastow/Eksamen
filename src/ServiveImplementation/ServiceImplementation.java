@@ -167,7 +167,7 @@ public class ServiceImplementation {
             userlistSet = getUsersSQL.executeQuery();
             userlist = new ArrayList<User>();
 
-            while (userresultSet.next()) {
+            while (userlistSet.next()) {
                 userlist.add(new User(userlistSet.getInt("id"), userlistSet.getString("username"),
                         userlistSet.getString("password"), userlistSet.getInt("phonenumber"), userlistSet.getString("address"), userlistSet.getString("email")
                         , userlistSet.getInt("mobilepay"), userlistSet.getInt("cash"), userlistSet.getInt("transfer")));
@@ -177,7 +177,7 @@ public class ServiceImplementation {
             System.out.println(sqlException);
         } finally {
             try {
-                userresultSet.close();
+                userlistSet.close();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
                 close();
@@ -217,6 +217,35 @@ public class ServiceImplementation {
         } catch (SQLException e) {
         }
 
+    }
+    @Override
+    public List<Book> getBooks() throws Exception {
+
+        List<Book> booklist = null;
+        ResultSet booklistSet = null;
+        PreparedStatement getBooksSQL = connection
+                .prepareStatement("SELECT * FROM book");
+
+        try {
+            userlistSet = getUsersSQL.executeQuery();
+            userlist = new ArrayList<User>();
+
+            while (booklistSet.next()) {
+                booklist.add(new User(booklistSet.getInt("id"), booklistSet.getInt("ISBN"),
+                        booklistSet.getString("title"), booklistSet.getString("edition"), booklistSet.getString("author")));
+
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } finally {
+            try {
+                booklistSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                close();
+            }
+        }
+        return booklist;
     }
 
 
