@@ -42,7 +42,9 @@ public class ServiceImplementation {
 
                 getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
-                deleteUserSQL = connection.prepareStatement("DELETE * FROM user WHERE id = ?");
+                updateUserSQL = connection.prepareStatement("UPDATE user SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
+
+                        deleteUserSQL = connection.prepareStatement("DELETE * FROM user WHERE id = ?");
 //BOOKS
                 createBookSQL = connection.prepareStatement(
                         "INSERT INTO book" + " (ISBN, title, edition, author)"
@@ -50,15 +52,19 @@ public class ServiceImplementation {
 
                 getBooksSQL = connection.prepareStatement("SELECT * FROM book");
 
+
                 deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
 //ADS
-                createBookSQL = connection.prepareStatement(
-                        "INSERT INTO book" + " (ISBN, title, edition, author)"
-                                + " VALUES (?, ?, ?, ?)");
+                createAdSQL = connection.prepareStatement(
+                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked)"
+                                + " VALUES (?, ?, ?, ?, ?, 0)");
 
-                getBooksSQL = connection.prepareStatement("SELECT * FROM book");
+                getAdsSQL = connection.prepareStatement("SELECT * FROM ad");
 
-                deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
+                updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
+
+
+                        deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
 
 
 
