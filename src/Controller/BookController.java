@@ -18,9 +18,29 @@ public class BookController {
         ArrayList<Book> books = serviceImpl.getBooks();
     }
 
-    public void createBook(){
+    // public void createBook(){
+public String createBook(int id, int ISBN, String title, String edition, String author) {
 
-        serviceImpl.createBook(Book book);
+   if (ISBN==10) {
+       return "ISBN has to be 10 digits";
+   }
+
+   if (title==""){
+       return "Title cannot be blank";
+   }
+
+   if (edition==""){
+       return "Edition cannot be blank";
+   }
+
+   if (author==""){
+       return "Author cannot be blank";
+   }
+
+   return "OK";
+}
+
+    serviceImpl.createBook(Book book);
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
@@ -29,12 +49,14 @@ public class BookController {
 
     public void onSuccess(Boolean result) {
 
-        if(!result){
-            Window.alert("Could not create book");
-        } else {
+        if (!result) {
             Window.alert("The book has been created");
 
+        } else {
+            Window.alert("Could not create book");
         }
+
+        books.add(Book);
 
     }
 
