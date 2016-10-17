@@ -1,14 +1,15 @@
 package Controller;
 
 import DTOobjects.User;
+import ServiveImplementation.ServiceImplementation;
 
 /**
  * Created by Emma og Thomas on 17-10-2016.
  */
 public class UserController {
 
-    public String createUser(String username, String password, int phoneNumber, String address, String email,
-                             int mobilePay, int cash, int transfer, int type) {
+    public String createUser(String username, String password, int phonenumber, String address, String email,
+                             int mobilepay, int cash, int transfer, int type) {
 
         // Opretter validering
 
@@ -20,13 +21,13 @@ public class UserController {
           return "Password cannot be blank.";
       }
 
-      for (int i = 0; i < String.valueOf(phoneNumber).length(); i++){
-        if (!(Character.isDigit(String.valueOf(phoneNumber).charAt(i)))) {
+      for (int i = 0; i < String.valueOf(phonenumber).length(); i++){
+        if (!(Character.isDigit(String.valueOf(phonenumber).charAt(i)))) {
             return "Phone number can only contain digits";
         }
       }
 
-      if (phoneNumber < 0) {
+      if (phonenumber < 0) {
           return "Phone number must consist of 8 digits";
       }
 
@@ -38,9 +39,21 @@ public class UserController {
             return "Email cannot be blank";
       }
 
-      User user = new User(0, username, password, phoneNumber, address, email, mobilePay, cash, transfer, 0);
+      User user = new User(0, username, password, phonenumber, address, email, mobilepay, cash, transfer, 0);
 
-      // TODO: save in the database.
+        ServiceImplementation serviceImpl = new ServiceImplementation();
+
+        try {
+            serviceImpl.createUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return "Error";
+        }
+
+
+
+        // TODO: save in the database.
 
         // response String = DatabaseController.saveUser(user);
 
