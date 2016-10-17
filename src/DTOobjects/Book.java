@@ -5,32 +5,27 @@ package DTOobjects;
  */
 public class Book {
 
-    //Opretter variable til BookController
-
+    // Attributer for Book oprettes
     private int id;
     private int ISBN;
     private String title;
     private String edition;
     private String author;
 
-public Book (int id, int ISBN, String title, String edition, String author) {
 
-    this.id = id;
-    this.ISBN = ISBN;
-    this.title = title;
-    this.edition = edition;
-    this.author = author;
+    //Constructor oprettes
+    public Book (int id, int ISBN, String title, String edition, String author) {
 
-    }
-
-    public Book() {
+        this.id = id;
+        this.ISBN = ISBN;
+        this.title = title;
+        this.edition = edition;
+        this.author = author;
 
     }
-//Opretter getters og setters
 
-    public int getId() {
-        return id;
-    }
+    //Opretter getters og setters
+    public int getId() {return id; }
 
     public void setId(int id) {
         this.id = id;

@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class BookController {
 
     Scanner input = new Scanner(System.in);
+
     Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
