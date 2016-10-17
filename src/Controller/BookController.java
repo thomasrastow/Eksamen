@@ -68,7 +68,7 @@ public class BookController {
     }
 
         public void deleteBook(int id) {
-            serviceImpl.getBook(id).remove();
+            serviceImpl.getBooks(id).remove();
         }
 
         public void showBook(int id) {

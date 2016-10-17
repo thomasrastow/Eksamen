@@ -1,7 +1,7 @@
 package Controller;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 
 import java.util.ArrayList;
 
@@ -14,8 +14,14 @@ public class UserController {
 
         ServiceImplementation db = new ServiceImplementation();
 
-        ArrayList<User> users = new ArrayList<>();
-        users = db.getUsers();
+        ArrayList<User> users = new ArrayList();
+
+        try {
+            users =  db.getUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return users;
     }

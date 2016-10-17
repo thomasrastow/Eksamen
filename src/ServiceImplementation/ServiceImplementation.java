@@ -31,6 +31,7 @@ public class ServiceImplementation {
         PreparedStatement getAdsSQL = null;
         PreparedStatement updateAdSQL = null;
         PreparedStatement deleteAdSQL = null;
+        PreparedStatement getMyAdsSQL = null;
 
 
     	public void ServiceImpl() throws Exception {
@@ -63,7 +64,7 @@ public class ServiceImplementation {
                                 + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
                 getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
-				
+
                 getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
 				
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
@@ -134,7 +135,7 @@ public class ServiceImplementation {
                 createUserSQL.setInt(4, user.getPhonenumber());
                 createUserSQL.setString(5, user.getAddress());
                 createUserSQL.setString(6, user.getEmail());
-                createUserSQL.setInt(7, user.getMobilePay());
+                createUserSQL.setInt(7, user.getMobilepay());
                 createUserSQL.setInt(8, user.getCash());
                 createUserSQL.setInt(9, user.getTransfer());
 
@@ -163,7 +164,7 @@ public class ServiceImplementation {
             updateUserSQL.setInt(4, user.getPhonenumber());
             updateUserSQL.setString(5, user.getAddress());
             updateUserSQL.setString(6, user.getEmail());
-            updateUserSQL.setInt(7, user.getMobilePay());
+            updateUserSQL.setInt(7, user.getMobilepay());
             updateUserSQL.setInt(8, user.getCash());
             updateUserSQL.setInt(9, user.getTransfer());
 
@@ -180,7 +181,7 @@ public class ServiceImplementation {
         return false;
     }
 
-    public List<User> getUsers() throws Exception {
+    public ArrayList<User> getUsers() throws Exception {
 
         List<User> userlist = null;
         ResultSet resultSet = null;
@@ -202,10 +203,12 @@ public class ServiceImplementation {
                 user.setPhonenumber(resultSet.getInt("phonenumber"));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
-                user.setMobilePay(resultSet.getInt("mobilepay"));
+                user.setMobilepay(resultSet.getInt("mobilepay"));
                 user.setCash(resultSet.getInt("cash"));
                 user.setTransfer(resultSet.getInt("transfer"));
                 user.setType(resultSet.getInt("type"));
+
+                userlist.add(user);
 
             }
         } catch (SQLException sqlException) {
@@ -218,7 +221,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return userlist;
+        return (ArrayList<User>) userlist;
     }
 
     public boolean deleteUser(int id) throws Exception {

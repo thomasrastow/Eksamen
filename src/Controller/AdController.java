@@ -72,18 +72,17 @@ public class AdController {
             int deleted = 0;
 
         }
-    }
 
 
-    public getAds();
-
-    //get ads were bookID = ? and locked = 0, and deleted = 0
-
-    public getMyAds();
-
-    //get ads were userID = correntID, and deleted = 0
+}
 
 
+  //public getAds();
+   // get ads were bookID = ? and locked = 0, and deleted = 0
+
+  // public getMyAds();
+
+     //   get ads were userID = correntID, and deleted = 0
 
 
  }
