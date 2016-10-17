@@ -69,11 +69,4 @@ public class BookController {
     public void showBook(int i) {
         return books.get(i);
         }
-
-    public void test() {
-
-
-    }
-
-
 }
