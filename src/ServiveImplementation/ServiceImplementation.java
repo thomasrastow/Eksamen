@@ -15,7 +15,43 @@ public class ServiceImplementation {
 
         private Connection connection = null;
 
-    public User authorize(String username, String password) throws IllegalArgumentException {
+        private PreparedStatement authorizeUserSQL = null;
+        private PreparedStatement createUserSQL = null;
+        private PreparedStatement updateUserSQL = null;
+        private PreparedStatement getUsersSQL = null;
+        private PreparedStatement deleteUserSQL = null;
+
+        private PreparedStatement createBookSQL = null;
+        private PreparedStatement getBooksSQL = null;
+        private PreparedStatement deleteBookSQL = null;
+
+        private PreparedStatement createAdSQL = null;
+        private PreparedStatement getAdsSQL = null;
+        private PreparedStatement updateAdSQL = null;
+        private PreparedStatement deleteAdSQL = null;
+
+    	public ServiceImpl() throws Exception {
+            try {
+                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+
+                authorizeUserSQL = connection.prepareStatement("SELECT * FROM users where username = ? AND password = ?");
+
+                userExistsStmt = connection.prepareStatement("SELECT * FROM users where username = ?");
+
+                createUserStmt = connection.prepareStatement(
+                        "INSERT INTO users" + " (type, first_name, last_name, username, password, email, phone_number)"
+                                + " VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+
+
+
+
+
+
+
+
+
+            public User authorize(String username, String password) throws IllegalArgumentException {
         ResultSet resultSet = null;
         User userData = null;
         try {
