@@ -4,9 +4,6 @@ import java.util.Scanner;
 package Controller;
 
 
-/**
- * Created by krist on 17-10-2016. test rebecca
- */
 public class BookController {
 
     Scanner input = new Scanner(System.in);
@@ -37,7 +34,7 @@ public class BookController {
 
     public void test() {
 
-        
+
     }
 
 
