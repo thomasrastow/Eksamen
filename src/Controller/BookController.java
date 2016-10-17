@@ -37,11 +37,6 @@ public class BookController {
         }
 
     }
-    public int id;
-    public int ISBN;
-    public String title;
-    public String edition;
-    public String author;
 
     public void deleteBook() {
 
