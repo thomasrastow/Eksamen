@@ -1,18 +1,14 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 package Controller;
-
+import DTOobjects.Book;
+import ServiveImplementation.ServiceImplementation;
+import java.util.ArrayList;
 
 public class BookController {
-
-    Scanner input = new Scanner(System.in);
-    Book book = new Book(int, int, String, String, String);
-
+ServiceImplementation MySQL = new ServiceImplementation();
 
 
     public void getBooks() {
-
+    ArrayList<Book> books = ServiceImplementation.getBooks();
 
         }
 

@@ -11,7 +11,7 @@ public class Book {
     public String edition;
     public String author;
 
-public Book (int id, int ISBN, String titel, String edition, String author) {
+    public Book (int id, int ISBN, String titel, String edition, String author) {
 
     this.id = id;
     this.ISBN = ISBN;
@@ -20,6 +20,11 @@ public Book (int id, int ISBN, String titel, String edition, String author) {
     this.author = author;
 
     }
+
+    public Book() {
+
+    }
+
 
     public int getId() {
         return id;
