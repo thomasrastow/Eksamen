@@ -10,18 +10,12 @@ package Controller;
 public class BookController {
 
     Scanner input = new Scanner(System.in);
-    Book book = new Book(int, int, String, String, String);
+    Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
 
     public void getBooks() {
         ArrayList<Book> books = serviceImpl.getBooks();
-
-
-
-       // for(int i=0;i<books.size();i++) {
-       //     System.out.println(books.get(i).getTitle()); }
-
     }
 
     public void createBook(){
@@ -44,8 +38,6 @@ public class BookController {
 
     }
 
-
-
     public void deleteBook() {
 
 
@@ -53,8 +45,9 @@ public class BookController {
 
     public void showBook() {
 
+    }
 
-        }
+
 
     public void test() {
 
