@@ -25,7 +25,6 @@ public Book (int id, int ISBN, String title, String edition, String author) {
 
     }
 
-
     public int getId() {
         return id;
     }
