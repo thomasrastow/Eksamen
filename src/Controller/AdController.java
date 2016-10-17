@@ -2,34 +2,22 @@ package Controller;
 
 public class AdController {
 
-        public String createAd(int price, int rating, int userID, int bookID, int deleted, string commment, boolean locked, timestamp time)
+        public String createAd(int price, int rating, int bookID, String commment)
 
         {
             if (price == "") {
-                return "Username cannot be blank.";
+                return "price cannot be blank.";
             }
 
-            if (password == "") {
-                return "Password cannot be blank.";
+            if (rating == "") {
+                return "rating cannot be blank.";
             }
 
-            if (phonenumber == "") {
+            if (bookID == "") {
                 return "Phonenumber cannot be blank";
             }
 
-            if (address == "") {
-                return "Address cannot be blank";
-            }
-
-            if (email == "") {
-                return "Email cannot be blank";
-            }
-
-            if (mobilePay == "") {
-                return "Address cannot be blank";
-            }
-
-            // new User();
+             //new ad();
 
             // TODO: save in the database.
 
