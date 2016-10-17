@@ -94,7 +94,7 @@ public class Ad {
         this.comment = comment;
     }
 
-    public int Locked() {
+    public int getLocked() {
         return locked;
     }
 

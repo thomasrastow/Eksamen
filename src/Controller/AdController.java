@@ -39,10 +39,9 @@ public class AdController {
             return "OK";
         }
 
-        public String editAd (int price, int rating, String comment, int deleted)
+        public String editAd (int price, int rating, String comment, int deleted, int locked)
 
         {
-            int locked = 0;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
@@ -73,22 +72,16 @@ public class AdController {
             int deleted = 0;
 
         }
-//test
-
-    }
-
-    public void deleteAd() {
-
-        NewAd = new ad(id, price, ratin, userID, bookID, deleted, comment,
-                locked, time);
-
-
     }
 
 
     public getAds();
 
-    //were bookid =,
+    //get ads were bookID = ? and locked = 0, and deleted = 0
+
+    public getMyAds();
+
+    //get ads were userID = correntID, and deleted = 0
 
 
 
