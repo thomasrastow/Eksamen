@@ -15,7 +15,7 @@ public class BookController {
 ServiceImplementation MySQL = new ServiceImplementation();
 
     Scanner input = new Scanner(System.in);
-    Book book = new Book(int, int, String, String, String);
+    Book book = new Book();
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
     public class getBooks() {
@@ -35,30 +35,11 @@ ServiceImplementation MySQL = new ServiceImplementation();
             if(ISBN <0) {
                 return "ISBN cannot be blank";
             }
-
-
-            if(title == "") {
-                return "title cannot be blank";
-
-            }
-
-            if(edition=="") {
-                return "edition cannot be blank";
-
-            }
-
-            if(author=="") {
-                return "author cannot be blank";
-
-            }
-
-            // ny bog();
-
-            // TODO: save in the database.
-
-    return "OK";
-
     }
+
+    public void createBook(){
+
+        serviceImpl.createBook(Book book);
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
@@ -75,7 +56,7 @@ ServiceImplementation MySQL = new ServiceImplementation();
         }
 
     }
-}
+
 
 
     public void deleteBook() {
