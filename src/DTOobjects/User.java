@@ -9,35 +9,39 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private int phonenumber;
+    private int phoneNumber;
     private String address;
     private String email;
-    private int mobilePay;
+    private int mobilepay;
     private int cash;
     private int transfer;
     private int type;
 
 
     //Construtor oprettes
+    public User() {
+    }
+
+    // Getters og setters for attributterne laves
     public User( int id, String username, String password, int phonenumber, String address,
-                 String email, int mobilePay, int cash, int transfer, int type) {
+                 String email, int mobilepay, int cash, int transfer, int type) {
 
 
     this.id = id;
     this.username = username;
     this.password = password;
-    this.phonenumber = phonenumber;
+    this.phoneNumber = phonenumber;
     this.address = address;
     this.email = email;
-    this.mobilePay = mobilePay;
+    this.mobilepay = mobilepay;
     this.cash = cash;
     this.transfer = transfer;
     this.type = type;
     }
 
 
-
     // Getters og setters oprettes
+
 
     public int getId() {
         return id;
@@ -64,12 +68,15 @@ public class User {
     }
 
     public int getPhonenumber() {
-        return phonenumber;
+        return phoneNumber;
     }
 
     public void setPhonenumber(int phonenumber) {
-        this.phonenumber = phonenumber;
+        this.phoneNumber = phonenumber;
     }
+    public int getPhonenumber() { return phonenumber; }
+
+    public void setPhonenumber(int phonenumber) { this.phonenumber = phonenumber; }
 
     public String getAddress() {
         return address;
@@ -87,13 +94,9 @@ public class User {
         this.email = email;
     }
 
-    public int getMobilePay() {
-        return mobilePay;
-    }
+    public int getMobilepay() { return mobilepay; }
 
-    public void setMobilePay(int mobilePay) {
-        this.mobilePay = mobilePay;
-    }
+    public void setMobilepay(int mobilepay) { this.mobilepay = mobilepay; }
 
     public int getCash() {
         return cash;
@@ -111,11 +114,12 @@ public class User {
         this.transfer = transfer;
     }
 
-    public int getType() {
-        return type;
-    }
+    public int getType() { return type; }
 
     public void setType(int type) {
         this.type = type;
     }
+
 }
+
+
