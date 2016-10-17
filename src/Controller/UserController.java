@@ -1,7 +1,7 @@
 package Controller;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 
 /**
  * Created by Emma og Thomas on 17-10-2016.
