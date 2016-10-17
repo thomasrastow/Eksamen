@@ -12,9 +12,9 @@ public class User {
     private int phonenumber;
     private String address;
     private String email;
-    private boolean mobilePay;
-    private boolean cash;
-    private boolean transfer;
+    private int mobilePay;
+    private int cash;
+    private int transfer;
     private int type;
 
 
@@ -23,6 +23,7 @@ public class User {
     }
 
     // Getters og setters for attributterne laves
+
     public int getId() {
         return id;
     }
@@ -71,27 +72,27 @@ public class User {
         this.email = email;
     }
 
-    public boolean isMobilePay() {
+    public int getMobilePay() {
         return mobilePay;
     }
 
-    public void setMobilePay(boolean mobilePay) {
+    public void setMobilePay(int mobilePay) {
         this.mobilePay = mobilePay;
     }
 
-    public boolean isCash() {
+    public int getCash() {
         return cash;
     }
 
-    public void setCash(boolean cash) {
+    public void setCash(int cash) {
         this.cash = cash;
     }
 
-    public boolean isTransfer() {
+    public int getTransfer() {
         return transfer;
     }
 
-    public void setTransfer(boolean transfer) {
+    public void setTransfer(int transfer) {
         this.transfer = transfer;
     }
 
