@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 /**
  * Created by krist on 17-10-2016.
  */
@@ -12,6 +11,8 @@ public class Run {
 
 
     public static void main(String args[]){
+
+
 
         try {
 
@@ -42,6 +43,9 @@ public class Run {
             e.printStackTrace();
 
         }
+
+
+
 
 
     }

@@ -1,4 +1,4 @@
-package ServiveImplementation;
+package ServiceImplementation;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

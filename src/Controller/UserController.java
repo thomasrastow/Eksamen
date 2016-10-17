@@ -1,7 +1,5 @@
 package Controller;
 
-import DTOobjects.User;
-
 /**
  * Created by krist on 17-10-2016.
  */
