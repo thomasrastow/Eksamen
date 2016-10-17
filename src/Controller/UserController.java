@@ -16,6 +16,12 @@ public class UserController {
 
         ArrayList<User> users = db.getUsers();
 
+        try {
+            users =  db.getUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return users;
     }
 }

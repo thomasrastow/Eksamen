@@ -31,9 +31,7 @@ public class UserEndpoint {
 
             Gson gson = new Gson();
 
-            ArrayList<User> users = new ArrayList<>();
-
-            users = userController.getUsers();
+            ArrayList<User> users = userController.getUsers();
 
             if(users.isEmpty()) {
                 response.append("No users found!");

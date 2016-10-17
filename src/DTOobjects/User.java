@@ -68,9 +68,11 @@ public class User {
         this.password = password;
     }
 
-    public int getPhonenumber() { return phonenumber; }
+    public void setPhonenumber(int phonenumber) {
+        this.phonenumber = phonenumber;
+    }
 
-    public void setPhonenumber(int phonenumber) { this.phonenumber = phonenumber; }
+    public int getPhonenumber() { return phonenumber; }
 
     public String getAddress() {
         return address;
@@ -114,6 +116,9 @@ public class User {
         this.type = type;
     }
 
+    public void setMobilePay(int mobilePay) {
+        this.mobilepay = mobilePay;
+    }
 }
 
 

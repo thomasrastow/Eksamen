@@ -28,9 +28,9 @@ public class ServiceImplementation {
 
         PreparedStatement createAdSQL = null;
         PreparedStatement getAdsSQL = null;
-        PreparedStatement getMyAdsSQL = null;
         PreparedStatement updateAdSQL = null;
         PreparedStatement deleteAdSQL = null;
+        PreparedStatement getMyAdsSQL = null;
 
 
     	public ServiceImplementation() {
@@ -63,7 +63,7 @@ public class ServiceImplementation {
                                 + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
                 getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
-				
+
                 getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
 				
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
@@ -180,7 +180,6 @@ public class ServiceImplementation {
     }
 
     public ArrayList<User> getUsers() {
-
         ArrayList<User> userlist = new ArrayList<>();
         ResultSet resultSet = null;
 
@@ -214,7 +213,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return userlist;
+        return (ArrayList<User>) userlist;
     }
 
     public boolean deleteUser(int id) throws Exception {

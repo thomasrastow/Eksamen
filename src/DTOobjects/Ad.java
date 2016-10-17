@@ -39,7 +39,6 @@ public class Ad {
 
     }
 
-
     // Getters og setters oprettes
 
     public int getId() {
@@ -114,5 +113,6 @@ public class Ad {
     public Timestamp getTime () {
         return time;
     }
+
 }
 
