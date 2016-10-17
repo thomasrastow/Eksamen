@@ -3,7 +3,7 @@ package Endpoints;
 import Main.Run;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -32,6 +32,7 @@ public class UserEndpoint {
             Gson gson = new Gson();
 
             ArrayList<User> users = new ArrayList<>();
+
             users = userController.getUsers();
 
             if(users.isEmpty()) {

@@ -29,7 +29,11 @@ public class LoginEndpoint {
             String password = parms.get("password");
 
             User user = new User();
-            user = loginController.login(username, password);
+            try {
+                user = loginController.login(username, password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             Gson gson = new Gson();
 

@@ -3,6 +3,8 @@ import DTOobjects.Ad;
 import java.sql.Timestamp;
 import java.util.Date;
 
+
+/*
 public class AdController {
 
 
@@ -88,3 +90,4 @@ public class AdController {
 
  }
 }
+*/

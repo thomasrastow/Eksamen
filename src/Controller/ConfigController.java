@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 /**
  * Created by krist on 17-10-2016.
  */
-public class ConfigController {
+/*public class ConfigController {
 
 
         private String DB_TYPE;
@@ -57,8 +57,9 @@ public class ConfigController {
 
     public void configParser() {
 
-            JsonReader jreader = new JsonReader()
+            JsonReader jreader = new JsonReader();
 
     }
     }
 
+*/

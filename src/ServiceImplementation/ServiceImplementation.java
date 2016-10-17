@@ -10,10 +10,9 @@ import static sun.plugin.javascript.navig.JSType.URL;
 
 public class ServiceImplementation {
 
-        String url = "http://shop.c50bqctooery.us-east-1.rds.amazonaws.com/";
+        String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
         String username = "brugtbog";
         String password = "brugtpass";
-        String database = "shop";
 
         Connection connection = null;
 
@@ -29,11 +28,12 @@ public class ServiceImplementation {
 
         PreparedStatement createAdSQL = null;
         PreparedStatement getAdsSQL = null;
+        PreparedStatement getMyAdsSQL = null;
         PreparedStatement updateAdSQL = null;
         PreparedStatement deleteAdSQL = null;
 
 
-    	public void ServiceImpl() throws Exception {
+    	public ServiceImplementation() {
             try {
                 connection = DriverManager.getConnection(url, username, password);
 
@@ -103,7 +103,7 @@ public class ServiceImplementation {
                     user.setPhonenumber(resultSet.getInt("phonenumber"));
                     user.setAddress(resultSet.getString("address"));
                     user.setEmail(resultSet.getString("email"));
-                    user.setMobilePay(resultSet.getInt("mobilepay"));
+                    user.setMobilepay(resultSet.getInt("mobilepay"));
                     user.setCash(resultSet.getInt("cash"));
                     user.setTransfer(resultSet.getInt("transfer"));
                     user.setType(resultSet.getInt("type"));
@@ -117,9 +117,8 @@ public class ServiceImplementation {
             } finally {
                 try {
                     resultSet.close();
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                     close();
                 }
             }
@@ -134,7 +133,7 @@ public class ServiceImplementation {
                 createUserSQL.setInt(4, user.getPhonenumber());
                 createUserSQL.setString(5, user.getAddress());
                 createUserSQL.setString(6, user.getEmail());
-                createUserSQL.setInt(7, user.getMobilePay());
+                createUserSQL.setInt(7, user.getMobilepay());
                 createUserSQL.setInt(8, user.getCash());
                 createUserSQL.setInt(9, user.getTransfer());
 
@@ -163,7 +162,7 @@ public class ServiceImplementation {
             updateUserSQL.setInt(4, user.getPhonenumber());
             updateUserSQL.setString(5, user.getAddress());
             updateUserSQL.setString(6, user.getEmail());
-            updateUserSQL.setInt(7, user.getMobilePay());
+            updateUserSQL.setInt(7, user.getMobilepay());
             updateUserSQL.setInt(8, user.getCash());
             updateUserSQL.setInt(9, user.getTransfer());
 
@@ -180,21 +179,16 @@ public class ServiceImplementation {
         return false;
     }
 
-    public List<User> getUsers() throws Exception {
+    public ArrayList<User> getUsers() {
 
-        List<User> userlist = null;
+        ArrayList<User> userlist = new ArrayList<>();
         ResultSet resultSet = null;
-        User user = null;
-
-        PreparedStatement getUsersSQL = connection
-                .prepareStatement("SELECT * FROM brugere WHERE type = 1");
 
         try {
             resultSet = getUsersSQL.executeQuery();
-            userlist = new ArrayList<User>();
 
             while (resultSet.next()) {
-                user = new User();
+                User user = new User();
 
                 user.setId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
@@ -202,19 +196,21 @@ public class ServiceImplementation {
                 user.setPhonenumber(resultSet.getInt("phonenumber"));
                 user.setAddress(resultSet.getString("address"));
                 user.setEmail(resultSet.getString("email"));
-                user.setMobilePay(resultSet.getInt("mobilepay"));
+                user.setMobilepay(resultSet.getInt("mobilepay"));
                 user.setCash(resultSet.getInt("cash"));
                 user.setTransfer(resultSet.getInt("transfer"));
                 user.setType(resultSet.getInt("type"));
 
+                userlist.add(user);
+
             }
-        } catch (SQLException sqlException) {
-            System.out.println(sqlException);
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 resultSet.close();
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
                 close();
             }
         }

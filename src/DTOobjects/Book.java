@@ -20,6 +20,10 @@ public Book (int id, long ISBN, String title, String edition, String author) {
 
     }
 
+    public Book() {
+
+    }
+
     //Opretter getters og setters
     public int getId() {
         return id;

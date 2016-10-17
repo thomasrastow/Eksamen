@@ -1,4 +1,4 @@
-package Endpoints;
+/*  package Endpoints;
 
 import Controller.EndpointController;
 import Controller.AdController;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by krist on 17-10-2016.
  */
-public class AdEndpoint {
+/*public class AdEndpoint {
 
 
     Run run = new Run();
@@ -62,5 +62,5 @@ public class AdEndpoint {
 
 }
 }
-
+*/
 
