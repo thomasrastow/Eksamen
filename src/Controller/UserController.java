@@ -14,7 +14,7 @@ public class UserController {
 
         ServiceImplementation db = new ServiceImplementation();
 
-        ArrayList<User> users;
+        ArrayList<User> users = new ArrayList<>();
         users = db.getUsers();
 
         return users;
