@@ -56,8 +56,8 @@ public class ServiceImplementation {
                 deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
 //ADS
                 createAdSQL = connection.prepareStatement(
-                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked)"
-                                + " VALUES (?, ?, ?, ?, ?, 0)");
+                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
+                                + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
                 getAdsSQL = connection.prepareStatement("SELECT * FROM ad");
 
@@ -186,6 +186,23 @@ public class ServiceImplementation {
         return userlist;
     }
 
+    @Override
+    public boolean deleteUser(int id) throws Exception {
+        try {
+            deleteUserSQL.setInt(1, id);
+
+            int rowsAffected = deleteUserSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DALException("There is was an error. Please try again.");
+        }
+    }
 
 
 
