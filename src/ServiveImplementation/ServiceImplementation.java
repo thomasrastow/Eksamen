@@ -247,6 +247,23 @@ public class ServiceImplementation {
         }
         return booklist;
     }
+    @Override
+    public boolean deleteBook(int id) throws Exception {
+        try {
+            deleteBookSQL.setInt(1, id);
+
+            int rowsAffected = deleteBookSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DALException("There is was an error. Please try again.");
+        }
+    }
 
 
 }
