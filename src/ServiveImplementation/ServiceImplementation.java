@@ -74,18 +74,18 @@ public class ServiceImplementation {
 
 
         @Override
-        public UserDTO authorizeUser (String username, String password) throws Exception {
+        public User authorizeUser (String username, String password) throws Exception {
             ResultSet resultSet = null;
-            UserDTO user = null;
+            User user = null;
 
             try {
-                authorizeUserStmt.setString(1, username);
-                authorizeUserStmt.setString(2, password);
+                authorizeUserSQL.setString(1, username);
+                authorizeUserSQL.setString(2, password);
 
-                resultSet = authorizeUserStmt.executeQuery();
+                resultSet = authorizeUserSQL.executeQuery();
 
                 while (resultSet.next()) {
-                    user = new UserDTO(resultSet.getInt("id"), resultSet.getInt("type"), resultSet.getString("username"),
+                    user = new User(resultSet.getInt("id"), resultSet.getInt("type"), resultSet.getString("username"),
                             resultSet.getString("address"), resultSet.getString("email"),
                             resultSet.getInt("mobilepay"), resultSet.getInt("cash"), resultSet.getInt("transfer"),
                             resultSet.getInt("phonenumber"));
@@ -108,3 +108,26 @@ public class ServiceImplementation {
         }
 
     }
+
+
+    @Override
+    public int createUser(User user) throws Exception {
+            try {
+                createUserSQL.setInt(1, user.getType());
+                createUserSQL.setString(2, user.getUsername());
+                createUserSQL.setString(3, user.getPassword());
+                createUserSQL.setInt(4, user.getPhonenumber());
+                createUserSQL.setString(5, user.getAddress());
+                createUserSQL.setString(6, user.getEmail());
+                createUserSQL.setInt(7, user.getMobilepay());
+                createUserSQL.setInt(8, user.getCash());
+                createUserSQL.setInt(9, user.getTransfer());
+
+
+                createUserSQL.executeUpdate();
+            } catch (SQLException e) {
+            }
+
+        }
+    }
+
