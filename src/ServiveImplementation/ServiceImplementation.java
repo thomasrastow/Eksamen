@@ -155,6 +155,41 @@ public class ServiceImplementation {
         }
         return false;
     }
+    @Override
+    public List<User> getUsers() throws Exception {
+
+        List<User> userlist = null;
+        ResultSet userlistSet = null;
+        PreparedStatement getUsersSQL = connection
+                .prepareStatement("SELECT * FROM brugere WHERE type == 1");
+
+        try {
+            userlistSet = getUsersSQL.executeQuery();
+            userlist = new ArrayList<User>();
+
+            while (userresultSet.next()) {
+                userlist.add(new User(userlistSet.getInt("id"), userlistSet.getString("username"),
+                        userlistSet.getString("password"), userlistSet.getInt("phonenumber"), userlistSet.getString("address"), userlistSet.getString("email")
+                        , userlistSet.getInt("mobilepay"), userlistSet.getInt("cash"), userlistSet.getInt("transfer")));
+
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } finally {
+            try {
+                userresultSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                close();
+            }
+        }
+        return userlist;
+    }
+
+
+
 
 }
+
+
 
