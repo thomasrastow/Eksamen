@@ -1,9 +1,7 @@
 import DTOobjects.Book;
 import ServiveImplementation.ServiceImplementation;
-import com.sun.org.apache.xpath.internal.SourceTreeManager;
-
-import java.security.Provider;
-import java.util.InputMismatchException;
+import com.sun.deploy.uitoolkit.Window;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 package Controller;
@@ -13,13 +11,18 @@ public class BookController {
 
     Scanner input = new Scanner(System.in);
     Book book = new Book(int, int, String, String, String);
-    ServiceImplementation serviceImpl = new ServiceImplementation(int, int, String, String, String);
+    ServiceImplementation serviceImpl = new ServiceImplementation();
 
 
     public void getBooks() {
+        ArrayList<Book> books = serviceImpl.getBooks();
 
 
-        }
+
+       // for(int i=0;i<books.size();i++) {
+       //     System.out.println(books.get(i).getTitle()); }
+
+    }
 
     public void createBook(){
 
@@ -40,7 +43,7 @@ public class BookController {
         }
 
     }
-}
+
 
 
     public void deleteBook() {
