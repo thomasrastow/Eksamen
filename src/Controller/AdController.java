@@ -39,19 +39,16 @@ public class AdController {
             return "OK";
         }
 
-    }
-    public void editAd() {
-
-        public String createAd(int price, int rating, String comment)
+        public String editAd (int price, int rating, String comment, byte deleted)
 
         {
-            byte deleted = 0;
             boolean locked = false;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
             java.sql.Timestamp time = new Timestamp(date.getTime()) ;
             int bookID = 0;
+
             if (price == "") {
                 return "price cannot be blank.";
             }
@@ -59,16 +56,29 @@ public class AdController {
             if (rating == "") {
                 return "rating cannot be blank.";
             }
+        }
 
-            if (bookID == "") {
-                return "bookID cannot be blank";
-            }
+        public String reserveAd (boolean locked)
+
+        {
+            locked = true;
+            int userID = 10; //Current user metode
+            int id = 0; //Autoincrement?
+            java.util.Date date= new java.util.Date();
+            java.sql.Timestamp time = new Timestamp(date.getTime()) ;
+            int bookID = 0;
+            int price = 0;
+            int rating = 0;
+            String comment = "test";
+            byte deleted = 0;
+
 
 
 
         }
 
-    public void reserveAd() {
+
+
 
 
 
@@ -81,4 +91,14 @@ public class AdController {
 
 
     }
+
+
+    public getAds();
+
+    //were bookid =,
+
+
+
+
+ }
 }
