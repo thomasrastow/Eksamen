@@ -1,6 +1,7 @@
 package Controller;
 
 
+import com.google.gson.stream.JsonReader;
 
 /**
  * Created by krist on 17-10-2016.
@@ -55,6 +56,8 @@ public class ConfigController {
         public void setDEBUG(String DEBUG) { this.DEBUG = DEBUG; }
 
     public void configParser() {
+
+            JsonReader jreader = new JsonReader()
 
     }
     }
