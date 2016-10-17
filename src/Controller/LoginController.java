@@ -1,7 +1,7 @@
 package Controller;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 
 public class LoginController {
     ServiceImplementation serviceImpl = new ServiceImplementation();
