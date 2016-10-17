@@ -204,6 +204,20 @@ public class ServiceImplementation {
         }
     }
 
+    @Override
+    public int createBook(Book book) throws Exception {
+        try {
+            createBookSQL.setInt(1, book.getISBN());
+            createBookSQL.setString(2, user.getTitle());
+            createBookSQL.setString(3, user.getEdition());
+            createBookSQL.setString(4, user.getAuthor());
+
+
+            createBookSQL.executeUpdate();
+        } catch (SQLException e) {
+        }
+
+    }
 
 
 }
