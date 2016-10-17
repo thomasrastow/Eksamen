@@ -17,6 +17,7 @@ import com.sun.net.httpserver.HttpServer;
             server.createContext("/login", new LoginEndpoint.LoginHandler());
             server.createContext("/getusers", new UserEndpoint.GetUsersHandler());
             server.createContext("/createuser", new UserEndpoint.CreateUserHandler());
+            server.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
             server.setExecutor(null); // creates a default executor
             server.start();
             System.out.println("The server is running");

@@ -72,7 +72,26 @@ public class UserEndpoint {
             endpointController.writeResponse(httpExchange, response.toString());
 
         }
+    }
 
+    public static class DeleteUserHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            int id = Integer.parseInt(parms.get("id"));
+
+            Gson gson = new Gson();
+
+            if (id != 0 && userController.deleteUser(id)) {
+                response.append(gson.toJson(id));
+            } else {
+                response.append("Cannot delete user!");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+
+        }
     }
 }
 

@@ -40,5 +40,21 @@ public class UserController {
         }
 
     }
+
+    public boolean deleteUser(int id) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.deleteUser(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }
 
