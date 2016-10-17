@@ -16,6 +16,17 @@ ServiceImplementation MySQL = new ServiceImplementation();
 
         Service
 
+    public void onFailure(Throwable caught) {
+        System.out.println("Something went wrong!!");
+        Window.alert("Could not create book");
+    }
+
+    public void onSuccess(Boolean result) {
+
+        if(!result){
+            Window.alert("Could not create book");
+        } else {
+            Window.alert("The book has been created");
 
         }
 
