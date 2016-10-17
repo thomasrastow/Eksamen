@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Created by krist on 17-10-2016.
- */
 public class ServiceImplementation {
 
 
