@@ -34,13 +34,17 @@ public class ServiceImplementation {
             try {
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
-                authorizeUserSQL = connection.prepareStatement("SELECT * FROM users where username = ? AND password = ?");
+                authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
 
-                userExistsStmt = connection.prepareStatement("SELECT * FROM users where username = ?");
+                createUserSQL = connection.prepareStatement(
+                        "INSERT INTO user" + " (type, username, password, phonenumber, address, email, mobilepay, cash, transfer)"
+                                + " VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                createUserStmt = connection.prepareStatement(
-                        "INSERT INTO users" + " (type, first_name, last_name, username, password, email, phone_number)"
-                                + " VALUES (?, ?, ?, ?, ?, ?, ?)");
+                getUsersSQL = connection.prepareStatement("SELECT * FROM user");
+
+                deleteUserSQL = connection.prepareStatement("DELETE * FROM user WHERE id = ?");
+
+
 
 
 
