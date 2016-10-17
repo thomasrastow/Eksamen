@@ -9,7 +9,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private int phonenumber;
+    private int phoneNumber;
     private String address;
     private String email;
     private int mobilePay;
@@ -26,7 +26,7 @@ public class User {
     this.id = id;
     this.username = username;
     this.password = password;
-    this.phonenumber = phonenumber;
+    this.phoneNumber = phonenumber;
     this.address = address;
     this.email = email;
     this.mobilePay = mobilePay;
@@ -64,11 +64,11 @@ public class User {
     }
 
     public int getPhonenumber() {
-        return phonenumber;
+        return phoneNumber;
     }
 
     public void setPhonenumber(int phonenumber) {
-        this.phonenumber = phonenumber;
+        this.phoneNumber = phonenumber;
     }
 
     public String getAddress() {
