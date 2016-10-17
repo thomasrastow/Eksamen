@@ -1,7 +1,5 @@
 package DTOobjects;
 
-import java.sql.Time;
-import java.util.ArrayList;
 
 public class Ad {
 
@@ -11,17 +9,17 @@ public class Ad {
     private int rating;
     private int userID;
     private int bookID;
-    private byte deleted;
+    private int deleted;
     private String comment;
-    private boolean locked;
+    private int locked;
     private java.sql.Timestamp time;
-    private ArrayList<Ad> ad;
+
 
 
 
     //Constructor oprettes
-    public Ad (int id, int price, int rating, int userID, int bookID, byte deleted, String comment, boolean locked,
-                java.sql.Timestamp time, ArrayList<Ad> ad) {
+    public Ad (int id, int price, int rating, int userID, int bookID, int deleted, String comment, int locked,
+               java.sql.Timestamp time) {
 
         this.id = id;
         this.price = price;
@@ -80,11 +78,11 @@ public class Ad {
         this.bookID = bookID;
     }
 
-    public byte getDeleted() {
+    public int getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(byte deleted) {
+    public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
 
@@ -96,11 +94,11 @@ public class Ad {
         this.comment = comment;
     }
 
-    public boolean isLocked() {
+    public int Locked() {
         return locked;
     }
 
-    public void setLocked(boolean locked) {
+    public void setLocked(int locked) {
         this.locked = locked;
     }
 
