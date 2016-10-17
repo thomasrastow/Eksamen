@@ -11,6 +11,7 @@ import java.net.Socket;
 public class Run {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     public static void main(String args[]){
 
@@ -47,6 +48,8 @@ public class Run {
 
     }
 >>>>>>> UserBranch
+=======
+>>>>>>> origin/AdBranch
 
 }
 
