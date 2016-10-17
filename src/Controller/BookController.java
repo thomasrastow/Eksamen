@@ -44,8 +44,6 @@ public class BookController {
 
     }
 
-
-
     public void deleteBook(int id) {
         serviceImpl.getBook(id).remove();
     }
