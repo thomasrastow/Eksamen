@@ -33,7 +33,7 @@ public class BookController {
     public void onSuccess(Boolean result) {
 
         if(!result){
-            Window.alert("Could not create the book");
+            Window.alert("Could not create book");
         } else {
             Window.alert("The book has been created");
 
