@@ -5,6 +5,7 @@ package DTOobjects;
  */
 public class Book {
 
+<<<<<<< HEAD
     public int id;
     public int ISBN;
     public String title;
@@ -12,6 +13,19 @@ public class Book {
     public String author;
 
     public Book (int id, int ISBN, String titel, String edition, String author) {
+=======
+
+    //Attributer for book oprettes
+    private int id;
+    private int ISBN;
+    private String title;
+    private String edition;
+    private String author;
+
+
+    //Constructor oprettes
+    public Book (int id, int ISBN, String title, String edition, String author) {
+>>>>>>> master
 
     this.id = id;
     this.ISBN = ISBN;
@@ -21,11 +35,16 @@ public class Book {
 
     }
 
+<<<<<<< HEAD
     public Book() {
 
     }
 
 
+=======
+
+     // Getters og setters oprettes
+>>>>>>> master
     public int getId() {
         return id;
     }
@@ -42,12 +61,21 @@ public class Book {
         this.ISBN = ISBN;
     }
 
+<<<<<<< HEAD
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+=======
+    public String getTitel() {
+        return title;
+    }
+
+    public void setTitel(String titel) {
+        this.title = titel;
+>>>>>>> master
     }
 
     public String getEdition() {
