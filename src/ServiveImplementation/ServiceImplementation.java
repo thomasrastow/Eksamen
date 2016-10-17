@@ -311,6 +311,47 @@ public class ServiceImplementation {
         }
         return adlist;
     }
+    @Override
+    public boolean updateAd(Ad ad) throws Exception {
+
+        try {
+            updateAdSQL.setInt(1, user.getPrice());
+            updateAdSQL.setInt(2, user.getRating());
+            updateAdSQL.setInt(3, user.getUserID());
+            updateAdSQL.setInt(4, user.getBookID());
+            updateAdSQL.setString(5, user.getComment());
+            updateAdSQL.setInt(6, user.getLocked());
+            updateAdSQL.setInt(7, user.getDeleted());
+
+            int rowsAffected = updateAdSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DALException("There is was an error. Please try again");
+        }
+        return false;
+    }
+    @Override
+    public boolean deleteAd(int id) throws Exception {
+        try {
+            deleteAdSQL.setInt(1, id);
+
+            int rowsAffected = deleteAdSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DALException("There is was an error. Please try again.");
+        }
+    }
 
 }
 
