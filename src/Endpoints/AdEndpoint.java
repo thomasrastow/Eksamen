@@ -27,6 +27,7 @@ public class AdEndpoint {
 
     public static class GetAdHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
+
             if (httpExchange.getRequestMethod().equals("GET")) {
                 // HENT ADS
                 StringBuilder response = new StringBuilder();
@@ -42,10 +43,10 @@ public class AdEndpoint {
                 endpointController.writeResponse(httpExchange, response.toString());
             } else if (httpExchange.getRequestMethod().equals("POST")) {
                 // LAV EN NY AD
-
+                httpExchange.getRequestBody()
             } else if (httpExchange.getRequestMethod().equals("PUT")) {
                 // ÆNDRE AD
-
+                httpExchange.getRequestBody()
             } else if (httpExchange.getRequestMethod().equals("DELETE")) {
                 // DELETE AD
 
