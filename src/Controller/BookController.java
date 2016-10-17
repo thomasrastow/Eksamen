@@ -51,7 +51,7 @@ public class BookController {
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
-        Window.alert("Could not create book");
+        Window.alert("Could not create the book");
     }
 
     public void onSuccess(Boolean result) {
