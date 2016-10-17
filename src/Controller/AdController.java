@@ -1,5 +1,7 @@
 package Controller;
 import DTOobjects.Ad;
+import java.sql.Timestamp;
+import java.util.Date;
 public class AdController {
     public Ad adDTO;
 
@@ -10,7 +12,8 @@ public class AdController {
             boolean locked = false;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
-            java.sql.Timestamp = 0;
+            java.util.Date date= new java.util.Date();
+            java.sql.Timestamp time = new Timestamp(date.getTime()) ;
 
             if (price == "") {
                 return "price cannot be blank.";
