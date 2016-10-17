@@ -62,10 +62,11 @@ public class ServiceImplementation {
                         "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
                                 + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
-                getAdsSQL = connection.prepareStatement("SELECT * FROM ad");
-
+                getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
+				
+                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
+				
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
-
 
                 deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
 
@@ -186,7 +187,7 @@ public class ServiceImplementation {
         User user = null;
 
         PreparedStatement getUsersSQL = connection
-                .prepareStatement("SELECT * FROM brugere WHERE type == 1");
+                .prepareStatement("SELECT * FROM brugere WHERE type = 1");
 
         try {
             resultSet = getUsersSQL.executeQuery();
@@ -239,7 +240,7 @@ public class ServiceImplementation {
 
     public boolean createBook(Book book) throws Exception {
         try {
-            createBookSQL.setInt(1, book.getISBN());
+            createBookSQL.setLong(1, book.getISBN());
             createBookSQL.setString(2, book.getTitle());
             createBookSQL.setString(3, book.getEdition());
             createBookSQL.setString(4, book.getAuthor());
@@ -277,7 +278,7 @@ public class ServiceImplementation {
                 book = new Book();
 
                 book.setId(resultSet.getInt("id"));
-                book.setISBN(resultSet.getInt("isbn"));
+                book.setISBN(resultSet.getLong("isbn"));
                 book.setTitle(resultSet.getString("title"));
                 book.setEdition(resultSet.getString("edition"));
                 book.setAuthor(resultSet.getString("author"));
@@ -347,7 +348,7 @@ public class ServiceImplementation {
         Ad ad = null;
 
         PreparedStatement getAdsSQL = connection
-                .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL");
+                .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
 
         try {
             resultSet = getAdsSQL.executeQuery();
@@ -380,6 +381,48 @@ public class ServiceImplementation {
         }
         return adlist;
     }
+	
+    public List<Ad> getMyAds() throws Exception {
+
+        List<Ad> myadlist = null;
+        ResultSet resultSet = null;
+        Ad ad = null;
+
+        PreparedStatement getAdsSQL = connection
+                .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
+
+        try {
+            resultSet = getAdsSQL.executeQuery();
+            myadlist = new ArrayList<Ad>();
+
+            while (resultSet.next()) {
+                ad = new Ad();
+
+                ad.setId(resultSet.getInt("id"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setRating(resultSet.getInt("rating"));
+                ad.setUserID(resultSet.getInt("userID"));
+                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setLocked(resultSet.getInt("locked"));
+                ad.setTime(resultSet.getTimestamp("time"));
+                ad.setDeleted(resultSet.getInt("deleted"));
+
+                myadlist.add(ad);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException);
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                close();
+            }
+        }
+        return myadlist;
+    }
+	
 
 
     public boolean updateAd(Ad ad) throws Exception {
