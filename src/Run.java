@@ -11,7 +11,10 @@ public class Run {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> UserBranch
     public static void main(String args[]){
 
 
