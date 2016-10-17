@@ -5,22 +5,28 @@ package DTOobjects;
  */
 public class Book {
 
-    public int id;
-    public int ISBN;
-    public String titel;
-    public String edition;
-    public String author;
 
-public Book (int id, int ISBN, String titel, String edition, String author) {
+    //Attributer for book oprettes
+    private int id;
+    private int ISBN;
+    private String title;
+    private String edition;
+    private String author;
+
+
+    //Constructor oprettes
+    public Book (int id, int ISBN, String title, String edition, String author) {
 
     this.id = id;
     this.ISBN = ISBN;
-    this.titel = titel;
+    this.title = title;
     this.edition = edition;
     this.author = author;
 
     }
 
+
+     // Getters og setters oprettes
     public int getId() {
         return id;
     }
@@ -38,11 +44,11 @@ public Book (int id, int ISBN, String titel, String edition, String author) {
     }
 
     public String getTitel() {
-        return titel;
+        return title;
     }
 
     public void setTitel(String titel) {
-        this.titel = titel;
+        this.title = titel;
     }
 
     public String getEdition() {

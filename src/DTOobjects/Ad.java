@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Ad {
 
-    // Variabler for ad oprettes
+    // Attributer for Ad oprettes
     private int id;
     private int price;
     private int rating;
@@ -17,8 +17,12 @@ public class Ad {
     private java.sql.Timestamp time;
     private ArrayList<Ad> ad;
 
+
+
+    //Constructor oprettes
     public Ad (int id, int price, int rating, int userID, int bookID, byte deleted, String comment, boolean locked,
                 java.sql.Timestamp time, ArrayList<Ad> ad) {
+
         this.id = id;
         this.price = price;
         this.rating = rating;
@@ -31,7 +35,10 @@ public class Ad {
 
     }
 
-    // Getters og setters oprettes for de forskellige variabler
+
+
+
+    // Getters og setters oprettes
 
     public int getId() {
         return id;
