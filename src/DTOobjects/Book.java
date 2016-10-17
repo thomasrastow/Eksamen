@@ -5,6 +5,8 @@ package DTOobjects;
  */
 public class Book {
 
+    //Opretter variable til BookController
+
     private int id;
     private int ISBN;
     private String title;
@@ -24,6 +26,7 @@ public Book (int id, int ISBN, String title, String edition, String author) {
     public Book() {
 
     }
+//Opretter getters og setters
 
     public int getId() {
         return id;
