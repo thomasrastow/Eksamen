@@ -21,9 +21,6 @@ public class BookController {
         ArrayList<Book> books = serviceImpl.getBooks();
         return books;
     }
-    public String createBook (int id, int ISBN, String title, String edition, String author) {
-
-    }
 
     public String createBook(int ISBN, String title, String edition, String author) {
 
@@ -51,7 +48,7 @@ public class BookController {
 
     public void onFailure(Throwable caught) {
         System.out.println("Something went wrong!!");
-        Window.alert("Could not create the book");
+        Window.alert("Could not create book");
     }
 
     public void onSuccess(Boolean result) {
