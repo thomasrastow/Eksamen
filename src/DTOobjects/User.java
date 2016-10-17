@@ -9,7 +9,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private int phonenumber;
+    private int phoneNumber;
     private String address;
     private String email;
     private int mobilePay;
@@ -19,20 +19,18 @@ public class User {
 
 
     //Construtor oprettes
-<<<<<<< HEAD
     public User() {
     }
 
     // Getters og setters for attributterne laves
-=======
-    public User( int id, String username, String password, int phonenumber, String address,
+    public User( int id, String username, String password, int phoneNumber, String address,
                  String email, int mobilePay, int cash, int transfer, int type) {
 
 
     this.id = id;
     this.username = username;
     this.password = password;
-    this.phonenumber = phonenumber;
+    this.phoneNumber = phoneNumber;
     this.address = address;
     this.email = email;
     this.mobilePay = mobilePay;
@@ -44,7 +42,6 @@ public class User {
 
 
     // Getters og setters oprettes
->>>>>>> master
 
     public int getId() {
         return id;
@@ -70,12 +67,12 @@ public class User {
         this.password = password;
     }
 
-    public int getPhonenumber() {
-        return phonenumber;
+    public int getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhonenumber(int phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getAddress() {
