@@ -1,6 +1,5 @@
 package Controller;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -10,7 +9,6 @@ import ServiceImplementation.ServiceImplementation;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class BookController {
 
@@ -20,7 +18,7 @@ public class BookController {
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
 
-    public void getBooks() {
+    public ArrayList<Book> getBooks() {
         ArrayList<Book> books = serviceImpl.getBooks();
         return books;
     }
