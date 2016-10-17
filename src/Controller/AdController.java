@@ -73,7 +73,7 @@ public class AdController {
             int deleted = 0;
 
         }
-
+//test
 
     }
 
