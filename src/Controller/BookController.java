@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 package Controller;
 
-
 public class BookController {
 
     Scanner input = new Scanner(System.in);
@@ -34,7 +33,7 @@ public class BookController {
 
     public void test() {
 
-
+        
     }
 
 
