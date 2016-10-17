@@ -11,8 +11,8 @@ public class AdController {
         public String createAd(int price, int rating, String comment)
 
         {
-            byte deleted = 0;
-            boolean locked = false;
+            int deleted = 0;
+            int locked = 0;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
@@ -39,10 +39,10 @@ public class AdController {
             return "OK";
         }
 
-        public String editAd (int price, int rating, String comment, byte deleted)
+        public String editAd (int price, int rating, String comment, int deleted)
 
         {
-            boolean locked = false;
+            int locked = 0;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
@@ -58,28 +58,21 @@ public class AdController {
             }
         }
 
-        public String reserveAd (boolean locked)
+        public String reserveAd (int locked)
 
         {
-            locked = true;
+            locked = 1;
             int userID = 10; //Current user metode
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
             java.sql.Timestamp time = new Timestamp(date.getTime()) ;
-            int bookID = 0;
-            int price = 0;
+            int bookID = 0; //get bookid
+            int price = 0; //
             int rating = 0;
             String comment = "test";
-            byte deleted = 0;
-
-
-
+            int deleted = 0;
 
         }
-
-
-
-
 
 
     }
