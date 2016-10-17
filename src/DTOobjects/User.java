@@ -19,10 +19,25 @@ public class User {
 
 
     //Construtor oprettes
-    public User() {
+    public User( int id, String username, String password, int phonenumber, String address,
+                 String email, int mobilePay, int cash, int transfer, int type) {
+
+
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.phonenumber = phonenumber;
+    this.address = address;
+    this.email = email;
+    this.mobilePay = mobilePay;
+    this.cash = cash;
+    this.transfer = transfer;
+    this.type = type;
     }
 
-    // Getters og setters for attributterne laves
+
+
+    // Getters og setters oprettes
 
     public int getId() {
         return id;
