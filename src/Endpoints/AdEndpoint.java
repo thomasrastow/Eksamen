@@ -29,7 +29,17 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             if (httpExchange.getRequestMethod().equals("GET")) {
                 // HENT ADS
+                StringBuilder response = new StringBuilder();
 
+                Gson gson = new Gson();
+
+                try {
+                    response.append(gson.toJson(adController.getAds()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                endpointController.writeResponse(httpExchange, response.toString());
             } else if (httpExchange.getRequestMethod().equals("POST")) {
                 // LAV EN NY AD
 
