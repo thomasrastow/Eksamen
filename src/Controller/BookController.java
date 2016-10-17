@@ -24,9 +24,9 @@ public class BookController {
 
     public String createBook(int ISBN, String title, String edition, String author) {
 
-   if (ISBN==10) {
-       return "ISBN has to be 10 digits";
-   }
+        if (ISBN==10) {
+            return "ISBN has to be 10 digits";
+        }
 
    if (title.contains("")){
        return "Title cannot be blank";
@@ -55,9 +55,8 @@ public class BookController {
 
         }
 
-    public void showBook(int i) {
-        return books.get(i);
-
+    public void showBook(int id) {
+        return serviceImpl.getBooks(id);
         }
 
     public void test() {
