@@ -53,26 +53,20 @@ public class UserEndpoint {
             User user = new User();
             user.setUsername(parms.get("username"));
             user.setPassword(parms.get("password"));
-          //  user.setPhonenumber(parseInt(parms.get("phonenumber")));
-            user.setPhonenumber(0);
+            user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
             user.setAddress(parms.get("address"));
             user.setEmail(parms.get("username"));
-          //  user.setMobilepay(parseInt("mobilepay"));
-          //  user.setCash(parseInt("cash"));
-          //  user.setTransfer(parseInt("transfer"));
-            user.setMobilepay(0);
-            user.setCash(0);
-            user.setTransfer(0);
+            user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
+            user.setCash(Integer.parseInt(parms.get("cash")));
+            user.setTransfer(Integer.parseInt(parms.get("transfer")));
             user.setType(0);
-
-            userController.createUser(user);
 
             Gson gson = new Gson();
 
-            if (user == null) {
-                response.append("Cannot create user");
-            } else {
+            if(user != null && userController.createUser(user)) {
                 response.append(gson.toJson(user));
+            } else {
+                response.append("Cannot create user!");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());

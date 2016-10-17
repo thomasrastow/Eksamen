@@ -29,17 +29,16 @@ public class UserController {
 
         ServiceImplementation db = new ServiceImplementation();
 
-        boolean create;
+        boolean verifyRequest;
 
-        create = db.createUser(user);
+        verifyRequest = db.createUser(user);
 
-        if (create) {
-            System.out.println("1");
+        if (verifyRequest) {
+            return true;
         } else {
-            System.out.println("2");
+            return false;
         }
 
-        return false;
     }
 }
 
