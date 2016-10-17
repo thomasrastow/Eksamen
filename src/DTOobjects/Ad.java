@@ -1,7 +1,7 @@
 package DTOobjects;
 
 import java.sql.Time;
-import java.util.ArrayList;
+
 
 public class Ad {
 
@@ -15,13 +15,13 @@ public class Ad {
     private String comment;
     private boolean locked;
     private java.sql.Timestamp time;
-    private ArrayList<Ad> ad;
+
 
 
 
     //Constructor oprettes
     public Ad (int id, int price, int rating, int userID, int bookID, byte deleted, String comment, boolean locked,
-                java.sql.Timestamp time, ArrayList<Ad> ad) {
+               java.sql.Timestamp time) {
 
         this.id = id;
         this.price = price;
