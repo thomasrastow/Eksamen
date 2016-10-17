@@ -19,25 +19,13 @@ public class BookController {
     ArrayList<Book> books = ServiceImplementation.getBooks();
 
         }
+
     public void getBooks() {
         ArrayList<Book> books = serviceImpl.getBooks();
 
-
-
-       // for(int i=0;i<books.size();i++) {
-       //     System.out.println(books.get(i).getTitle()); }
-
-        public String createBook (int id, int ISBN, String title, String edition, String author) {
-
-            if(ISBN <0) {
-                return "ISBN cannot be blank";
-            }
-
-
     }
 
-    // public void createBook(){
-public String createBook(int id, int ISBN, String title, String edition, String author) {
+    public String createBook(int ISBN, String title, String edition, String author) {
 
    if (ISBN==10) {
        return "ISBN has to be 10 digits";
@@ -56,6 +44,7 @@ public String createBook(int id, int ISBN, String title, String edition, String 
    }
 
    return "OK";
+
 }
 
     serviceImpl.createBook(Book book);
