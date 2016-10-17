@@ -129,5 +129,32 @@ public class ServiceImplementation {
             }
 
         }
+    @Override
+    public boolean updateUser(User user) throws Exception {
+
+        try {
+            updateUserSQL.setInt(1, user.getType());
+            updateUserSQL.setString(2, user.getUsername());
+            updateUserSQL.setString(3, user.getPassword());
+            updateUserSQL.setInt(4, user.getPhonenumber());
+            updateUserSQL.setString(5, user.getAddress());
+            updateUserSQL.setString(6, user.getEmail());
+            updateUserSQL.setInt(7, user.getMobilepay());
+            updateUserSQL.setInt(8, user.getCash());
+            updateUserSQL.setInt(9, user.getTransfer());
+
+            int rowsAffected = updateUserSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DALException("There is was an error. Please try again");
+        }
+        return false;
     }
+
+}
 
