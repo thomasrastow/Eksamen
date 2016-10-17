@@ -5,3 +5,4 @@ package DTOobjects;
  */
 public class Ad {
 }
+ghjkk
