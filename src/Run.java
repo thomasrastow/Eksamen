@@ -10,6 +10,10 @@ import java.net.Socket;
  */
 public class Run {
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     public static void main(String args[]){
 
         try {
