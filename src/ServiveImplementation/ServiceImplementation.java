@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class ServiceImplementation {
 
-    public connection() {
+    public ServiceImplementation() {
     String url = "http://shop.c50bqctooery.us-east-1.rds.amazonaws.com/";
     String username = "brugtbog";
     String password = "brugtpass";
