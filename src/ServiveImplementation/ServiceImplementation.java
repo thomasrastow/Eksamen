@@ -1,38 +1,41 @@
 package ServiveImplementation;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import DTOobjects.*;
+
+import static sun.plugin.javascript.navig.JSType.URL;
 
 public class ServiceImplementation {
 
-
-    public ServiceImplementation() {
         String url = "http://shop.c50bqctooery.us-east-1.rds.amazonaws.com/";
         String username = "brugtbog";
         String password = "brugtpass";
         String database = "shop";
 
-        private Connection connection = null;
+        Connection connection = null;
 
-        private PreparedStatement authorizeUserSQL = null;
-        private PreparedStatement createUserSQL = null;
-        private PreparedStatement updateUserSQL = null;
-        private PreparedStatement getUsersSQL = null;
-        private PreparedStatement deleteUserSQL = null;
+        PreparedStatement authorizeUserSQL = null;
+        PreparedStatement createUserSQL = null;
+        PreparedStatement updateUserSQL = null;
+        PreparedStatement getUsersSQL = null;
+        PreparedStatement deleteUserSQL = null;
 
-        private PreparedStatement createBookSQL = null;
-        private PreparedStatement getBooksSQL = null;
-        private PreparedStatement deleteBookSQL = null;
+        PreparedStatement createBookSQL = null;
+        PreparedStatement getBooksSQL = null;
+        PreparedStatement deleteBookSQL = null;
 
-        private PreparedStatement createAdSQL = null;
-        private PreparedStatement getAdsSQL = null;
-        private PreparedStatement updateAdSQL = null;
-        private PreparedStatement deleteAdSQL = null;
+        PreparedStatement createAdSQL = null;
+        PreparedStatement getAdsSQL = null;
+        PreparedStatement updateAdSQL = null;
+        PreparedStatement deleteAdSQL = null;
 
-    	public ServiceImpl() throws Exception {
+
+    	public void ServiceImpl() throws Exception {
             try {
-                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+                connection = DriverManager.getConnection(url, username, password);
 
                 authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
 //USERS
@@ -68,12 +71,18 @@ public class ServiceImplementation {
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                throw new DALException("Database not connected. Pleasy try again.");
+
             }
         }
 
+        private void close() {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
-        @Override
         public User authorizeUser (String username, String password) throws Exception {
             ResultSet resultSet = null;
             User user = null;
@@ -85,15 +94,24 @@ public class ServiceImplementation {
                 resultSet = authorizeUserSQL.executeQuery();
 
                 while (resultSet.next()) {
-                    user = new User(resultSet.getInt("id"), resultSet.getInt("type"), resultSet.getString("username"),
-                            resultSet.getString("address"), resultSet.getString("email"),
-                            resultSet.getInt("mobilepay"), resultSet.getInt("cash"), resultSet.getInt("transfer"),
-                            resultSet.getInt("phonenumber"));
+                    user = new User();
+
+                    user.setId(resultSet.getInt("id"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setPhonenumber(resultSet.getInt("phonenumber"));
+                    user.setAddress(resultSet.getString("address"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setMobilePay(resultSet.getInt("mobilepay"));
+                    user.setCash(resultSet.getInt("cash"));
+                    user.setTransfer(resultSet.getInt("transfer"));
+                    user.setType(resultSet.getInt("type"));
+
                 }
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                throw new DALException("Not able to login. Please try again.");
+
 
             } finally {
                 try {
@@ -107,11 +125,7 @@ public class ServiceImplementation {
             return user;
         }
 
-    }
-
-
-    @Override
-    public int createUser(User user) throws Exception {
+    public boolean createUser(User user) throws Exception {
             try {
                 createUserSQL.setInt(1, user.getType());
                 createUserSQL.setString(2, user.getUsername());
@@ -119,17 +133,18 @@ public class ServiceImplementation {
                 createUserSQL.setInt(4, user.getPhonenumber());
                 createUserSQL.setString(5, user.getAddress());
                 createUserSQL.setString(6, user.getEmail());
-                createUserSQL.setInt(7, user.getMobilepay());
+                createUserSQL.setInt(7, user.getMobilePay());
                 createUserSQL.setInt(8, user.getCash());
                 createUserSQL.setInt(9, user.getTransfer());
 
 
                 createUserSQL.executeUpdate();
             } catch (SQLException e) {
-            }
 
+            }
+            return false;
         }
-    @Override
+
     public boolean updateUser(User user) throws Exception {
 
         try {
@@ -139,7 +154,7 @@ public class ServiceImplementation {
             updateUserSQL.setInt(4, user.getPhonenumber());
             updateUserSQL.setString(5, user.getAddress());
             updateUserSQL.setString(6, user.getEmail());
-            updateUserSQL.setInt(7, user.getMobilepay());
+            updateUserSQL.setInt(7, user.getMobilePay());
             updateUserSQL.setInt(8, user.getCash());
             updateUserSQL.setInt(9, user.getTransfer());
 
@@ -151,33 +166,43 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again");
         }
         return false;
     }
-    @Override
+
     public List<User> getUsers() throws Exception {
 
         List<User> userlist = null;
-        ResultSet userlistSet = null;
+        ResultSet resultSet = null;
+        User user = null;
+
         PreparedStatement getUsersSQL = connection
                 .prepareStatement("SELECT * FROM brugere WHERE type == 1");
 
         try {
-            userlistSet = getUsersSQL.executeQuery();
+            resultSet = getUsersSQL.executeQuery();
             userlist = new ArrayList<User>();
 
-            while (userlistSet.next()) {
-                userlist.add(new User(userlistSet.getInt("id"), userlistSet.getString("username"),
-                        userlistSet.getString("password"), userlistSet.getInt("phonenumber"), userlistSet.getString("address"), userlistSet.getString("email")
-                        , userlistSet.getInt("mobilepay"), userlistSet.getInt("cash"), userlistSet.getInt("transfer")));
+            while (resultSet.next()) {
+                user = new User();
+
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setPhonenumber(resultSet.getInt("phonenumber"));
+                user.setAddress(resultSet.getString("address"));
+                user.setEmail(resultSet.getString("email"));
+                user.setMobilePay(resultSet.getInt("mobilepay"));
+                user.setCash(resultSet.getInt("cash"));
+                user.setTransfer(resultSet.getInt("transfer"));
+                user.setType(resultSet.getInt("type"));
 
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
         } finally {
             try {
-                userlistSet.close();
+                resultSet.close();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
                 close();
@@ -186,7 +211,6 @@ public class ServiceImplementation {
         return userlist;
     }
 
-    @Override
     public boolean deleteUser(int id) throws Exception {
         try {
             deleteUserSQL.setInt(1, id);
@@ -200,46 +224,46 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again.");
         }
     }
 
-    @Override
-    public int createBook(Book book) throws Exception {
+    public boolean createBook(Book book) throws Exception {
         try {
             createBookSQL.setInt(1, book.getISBN());
-            createBookSQL.setString(2, user.getTitle());
-            createBookSQL.setString(3, user.getEdition());
-            createBookSQL.setString(4, user.getAuthor());
+            createBookSQL.setString(2, book.getTitle());
+            createBookSQL.setString(3, book.getEdition());
+            createBookSQL.setString(4, book.getAuthor());
 
 
             createBookSQL.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
 
+        return false;
     }
-    @Override
+
     public List<Book> getBooks() throws Exception {
 
         List<Book> booklist = null;
-        ResultSet booklistSet = null;
+        ResultSet resultSet = null;
         PreparedStatement getBooksSQL = connection
                 .prepareStatement("SELECT * FROM book");
 
         try {
-            booklistSet = getBooksSQL.executeQuery();
+            resultSet = getBooksSQL.executeQuery();
             booklist = new ArrayList<Book>();
 
-            while (booklistSet.next()) {
-                booklist.add(new Book(booklistSet.getInt("id"), booklistSet.getInt("ISBN"),
-                        booklistSet.getString("title"), booklistSet.getString("edition"), booklistSet.getString("author")));
+            while (resultSet.next()) {
+                booklist.add(new Book(resultSet.getInt("id"), resultSet.getInt("ISBN"),
+                        resultSet.getString("title"), resultSet.getString("edition"), resultSet.getString("author")));
 
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
         } finally {
             try {
-                booklistSet.close();
+                resultSet.close();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
                 close();
@@ -247,7 +271,7 @@ public class ServiceImplementation {
         }
         return booklist;
     }
-    @Override
+
     public boolean deleteBook(int id) throws Exception {
         try {
             deleteBookSQL.setInt(1, id);
@@ -257,53 +281,54 @@ public class ServiceImplementation {
             if (rowsAffected == 1) {
                 return true;
             }
-            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again.");
         }
+
+        return false;
     }
 
-    @Override
+
     public int createAd(Ad ad) throws Exception {
         try {
-            createAdSQL.setInt(1, user.getPrice());
-            createAdSQL.setInt(2, user.getRating());
-            createAdSQL.setInt(3, user.getUserID());
-            createAdSQL.setInt(4, user.getBookID());
-            createAdSQL.setString(5, user.getComment());
-            createAdSQL.setInt(6, user.getLocked());
-            createAdSQL.setInt(7, user.getDeleted());
+            createAdSQL.setInt(1, ad.getPrice());
+            createAdSQL.setInt(2, ad.getRating());
+            createAdSQL.setInt(3, ad.getUserID());
+            createAdSQL.setInt(4, ad.getBookID());
+            createAdSQL.setString(5, ad.getComment());
+            createAdSQL.setInt(6, ad.getLocked());
+            createAdSQL.setInt(7, ad.getDeleted());
 
 
             createUserSQL.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
-    @Override
+
     public List<Ad> getAds() throws Exception {
 
         List<Ad> adlist = null;
-        ResultSet adlistSet = null;
+        ResultSet resultSet = null;
         PreparedStatement getAdsSQL = connection
                 .prepareStatement("SELECT * FROM ad WHERE deleted IS NULL");
 
         try {
-            adlistSet = getAdsSQL.executeQuery();
+            resultSet = getAdsSQL.executeQuery();
             adlist = new ArrayList<Ad>();
 
-            while (adlistSet.next()) {
-                adlist.add(new Ad(adlistSet.getInt("id"), adlistSet.getInt("price"), adlistSet.getInt("rating"), adlistSet.getInt("userID"), adlistSet.getInt("bookID"),
-                        adlistSet.getString("comment"), adlistSet.getInt("locked")));
+            while (resultSet.next()) {
+                adlist.add(new Ad(resultSet.getInt("id"), resultSet.getInt("price"), resultSet.getInt("rating"), resultSet.getInt("userID"), resultSet.getInt("bookID"),
+                        resultSet.getString("comment"), resultSet.getInt("locked")));
 
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
         } finally {
             try {
-                adlistSet.close();
+                resultSet.close();
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
                 close();
@@ -311,17 +336,18 @@ public class ServiceImplementation {
         }
         return adlist;
     }
-    @Override
+
+
     public boolean updateAd(Ad ad) throws Exception {
 
         try {
-            updateAdSQL.setInt(1, user.getPrice());
-            updateAdSQL.setInt(2, user.getRating());
-            updateAdSQL.setInt(3, user.getUserID());
-            updateAdSQL.setInt(4, user.getBookID());
-            updateAdSQL.setString(5, user.getComment());
-            updateAdSQL.setInt(6, user.getLocked());
-            updateAdSQL.setInt(7, user.getDeleted());
+            updateAdSQL.setInt(1, ad.getPrice());
+            updateAdSQL.setInt(2, ad.getRating());
+            updateAdSQL.setInt(3, ad.getUserID());
+            updateAdSQL.setInt(4, ad.getBookID());
+            updateAdSQL.setString(5, ad.getComment());
+            updateAdSQL.setInt(6, ad.getLocked());
+            updateAdSQL.setInt(7, ad.getDeleted());
 
             int rowsAffected = updateAdSQL.executeUpdate();
 
@@ -331,11 +357,10 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again");
         }
         return false;
     }
-    @Override
+
     public boolean deleteAd(int id) throws Exception {
         try {
             deleteAdSQL.setInt(1, id);
@@ -349,7 +374,6 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DALException("There is was an error. Please try again.");
         }
     }
 
