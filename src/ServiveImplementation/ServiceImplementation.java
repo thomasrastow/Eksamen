@@ -1,8 +1,9 @@
 package ServiveImplementation;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import DTOobjects.User;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by krist on 17-10-2016.
@@ -64,8 +65,59 @@ public class ServiceImplementation {
             }
         }
 
+    //hent brugere
+    public ArrayList<User> getUsers(String username) throws IllegalArgumentException {
+        ResultSet resultSet = null;
+        ArrayList<User> users = new ArrayList<>();
 
+        try {
+            PreparedStatement getUsers = connection
+                    .prepareStatement("SELECT * FROM users WHERE type = 1");
+            getUsers.setString(1, username);
+            resultSet = getUsers.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUsername(resultSet.getString("username"));
+                user.setType(resultSet.getInt("type"));
+
+                users.add(user);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                close();
+            }
+        }
+        return users;
     }
+
+    //slet bruger
+    public boolean deleteUser(User user) throws IllegalArgumentException {
+        try {
+            PreparedStatement deleteUser = connection
+                    .prepareStatement("delete from users where username = ? and password = ?");
+
+            deleteUser.setString(1, user.getUsername());
+            deleteUser.setString(2, user.getPassword());
+
+            int rowsAffected = deleteUser.executeUpdate();
+            if (rowsAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+}
 
 
 
