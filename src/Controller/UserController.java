@@ -24,5 +24,22 @@ public class UserController {
 
         return users;
     }
+
+    public boolean createUser(User user) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean create;
+
+        create = db.createUser(user);
+
+        if (create) {
+            System.out.println("1");
+        } else {
+            System.out.println("2");
+        }
+
+        return false;
+    }
 }
 

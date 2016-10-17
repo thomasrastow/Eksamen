@@ -40,8 +40,8 @@ public class ServiceImplementation {
                 authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
 //USERS
                 createUserSQL = connection.prepareStatement(
-                        "INSERT INTO user" + " (type, username, password, phonenumber, address, email, mobilepay, cash, transfer)"
-                                + " VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        "INSERT INTO user" + " (username, password, phonenumber, address, email, mobilepay, cash, transfer, type)"
+                                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                 getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
@@ -84,7 +84,7 @@ public class ServiceImplementation {
             }
         }
 
-        public User authorizeUser (String username, String password) throws Exception {
+        public User authorizeUser (String username, String password) {
             ResultSet resultSet = null;
             User user = null;
 
@@ -125,20 +125,17 @@ public class ServiceImplementation {
             return user;
         }
 
-    public boolean createUser(User user) throws Exception {
+    public boolean createUser(User user) {
             try {
-                createUserSQL.setInt(1, user.getType());
-                createUserSQL.setString(2, user.getUsername());
-                createUserSQL.setString(3, user.getPassword());
-                createUserSQL.setInt(4, user.getPhonenumber());
-                createUserSQL.setString(5, user.getAddress());
-                createUserSQL.setString(6, user.getEmail());
-                createUserSQL.setInt(7, user.getMobilepay());
-                createUserSQL.setInt(8, user.getCash());
-                createUserSQL.setInt(9, user.getTransfer());
-
-
-                createUserSQL.executeUpdate();
+                createUserSQL.setString(1, user.getUsername());
+                createUserSQL.setString(2, user.getPassword());
+                createUserSQL.setInt(3, user.getPhonenumber());
+                createUserSQL.setString(4, user.getAddress());
+                createUserSQL.setString(5, user.getEmail());
+                createUserSQL.setInt(6, user.getMobilepay());
+                createUserSQL.setInt(7, user.getCash());
+                createUserSQL.setInt(8, user.getTransfer());
+                createUserSQL.setInt(9, user.getType());
 
                 int rowsAffected = createUserSQL.executeUpdate();
 

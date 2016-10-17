@@ -8,7 +8,7 @@ import ServiceImplementation.ServiceImplementation;
  */
 public class LoginController {
 
-    public User login(String username, String password) throws Exception {
+    public User login(String username, String password)  {
 
         ServiceImplementation db = new ServiceImplementation();
 

@@ -119,6 +119,9 @@ public class User {
     public void setMobilePay(int mobilePay) {
         this.mobilepay = mobilePay;
     }
+
+
+
 }
 
 
