@@ -18,6 +18,8 @@ public class BookController {
         return books;
     }
 
+    //Opretter validering
+
     public String createBook(int ISBN, String title, String edition, String author) {
 
         if (ISBN==10) {
