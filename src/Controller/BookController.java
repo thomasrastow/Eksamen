@@ -66,7 +66,7 @@ public class BookController {
 
         }
 
-    public void showBook(int i) {
-        return books.get(i);
+    public void showBook(int id) {
+        return serviceImpl.getBooks(id);
         }
 }

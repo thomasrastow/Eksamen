@@ -5,11 +5,11 @@ package DTOobjects;
  */
 public class Book {
 
-    public int id;
-    public int ISBN;
-    public String title;
-    public String edition;
-    public String author;
+    private int id;
+    private int ISBN;
+    private String title;
+    private String edition;
+    private String author;
 
 public Book (int id, int ISBN, String title, String edition, String author) {
 
