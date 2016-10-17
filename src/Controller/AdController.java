@@ -5,7 +5,7 @@ import java.util.Date;
 public class AdController {
     public Ad adDTO;
 
-        public String createAd(int price, int rating, int bookID, String comment)
+        public String createAd(int price, int rating, String comment)
 
         {
             byte deleted = 0;
@@ -14,7 +14,7 @@ public class AdController {
             int id = 0; //Autoincrement?
             java.util.Date date= new java.util.Date();
             java.sql.Timestamp time = new Timestamp(date.getTime()) ;
-
+            int bookID = 0;
             if (price == "") {
                 return "price cannot be blank.";
             }

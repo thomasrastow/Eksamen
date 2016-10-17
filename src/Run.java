@@ -18,33 +18,33 @@ public class Run {
 
             ServerSocket welcomeSocket = new ServerSocket(1337);
 
-            while(true){
+             while(true){
 
-                System.out.println("Waiting for client ...");
-                Socket connectionSocket = welcomeSocket.accept();
+            System.out.println("Waiting for client ...");
+              Socket connectionSocket = welcomeSocket.accept();
 
-                BufferedReader inFromClient =
-                        new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                      BufferedReader inFromClient =
+                      new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 
-                DataOutputStream outToClient =
-                        new DataOutputStream(connectionSocket.getOutputStream());
+                      DataOutputStream outToClient =
+                      new DataOutputStream(connectionSocket.getOutputStream());
 
-                String clientSentence = inFromClient.readLine();
-                System.out.println("Recieved: " + clientSentence);
+                      String clientSentence = inFromClient.readLine();
+              System.out.println("Recieved: " + clientSentence);
 
-                String capitalizedSentence = clientSentence.toUpperCase() + "\n";
-                outToClient.writeBytes(capitalizedSentence);
+                      String capitalizedSentence = clientSentence.toUpperCase() + "\n";
+              outToClient.writeBytes(capitalizedSentence);
 
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
+                  }
 
 
-    }
+              } catch (IOException e) {
+          e.printStackTrace();
+
+         }
+
+
+         }
 
 }
 
