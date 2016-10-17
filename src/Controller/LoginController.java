@@ -1,7 +1,17 @@
 package Controller;
 
-/**
- * Created by krist on 17-10-2016.
- */
+import DTOobjects.User;
+import ServiveImplementation.ServiceImplementation;
+
 public class LoginController {
+    ServiceImplementation serviceImpl = new ServiceImplementation();
+
+
+    private void login(String username, String password) {
+
+        serviceImpl.authorize(username,password);
+        
+    }
+
+
 }
