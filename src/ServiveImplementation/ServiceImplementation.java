@@ -64,6 +64,39 @@ public class ServiceImplementation {
             }
         }
 
+        // til at oprette en ny bog
+
+            public void createBook(Book book) throws IllegalArgumentException {
+
+                try {
+
+                    // The PreparedStatement som indsaetter/opretter en ny bog.
+
+                    PreparedStatement createBook = connection.prepareStatement("INSERT INTO Book (id, ISBN, Title, Edition, Author) VALUES (?, ?, ?, ?, ?)");
+
+
+                    createBook.setInt(1,book.getId());
+                    createBook.setInt(2,book.getISBN());
+                    createBook.setString(3,book.getTitle());
+                    createBook.setString(4,book.getEdition());
+                    createBook.setString(5,book.getAuthor());
+
+
+
+                    // preparedStatement bliver udfoert og den returnerer en row count
+
+
+                    int rowsAffected = createBook.executeUpdate();
+                    if (rowsAffected == 1) {
+                        return true;
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
 
     }
 
