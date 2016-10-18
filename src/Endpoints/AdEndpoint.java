@@ -35,7 +35,7 @@ import java.util.Map;
                 Gson gson = new Gson();
 
                 try {
-                    response.append(gson.toJson(adController.getAds()));
+                 //   response.append(gson.toJson(adController.getAds()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -43,10 +43,10 @@ import java.util.Map;
                 endpointController.writeResponse(httpExchange, response.toString());
             } else if (httpExchange.getRequestMethod().equals("POST")) {
                 // LAV EN NY AD
-                httpExchange.getRequestBody()
+                httpExchange.getRequestBody();
             } else if (httpExchange.getRequestMethod().equals("PUT")) {
                 // ÆNDRE AD
-                httpExchange.getRequestBody()
+                httpExchange.getRequestBody();
             } else if (httpExchange.getRequestMethod().equals("DELETE")) {
                 // DELETE AD
 
@@ -54,7 +54,7 @@ import java.util.Map;
 
             Gson gson = new Gson();
 
-            response.append(gson.toJson(adController.getAds()));
+          //  response.append(gson.toJson(adController.getAds()));
 
             endpointController.writeResponse(httpExchange, response.toString());
         }
