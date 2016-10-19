@@ -74,10 +74,6 @@ public class Config {
         this.srvPort = srvPort;
     }
 
-    public void setSrvPort(String srvPort) {
-        this.srvPort = srvPort;
-    }
-
     public String getSslKey() {
         return sslKey;
     }
