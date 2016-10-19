@@ -9,79 +9,85 @@ import DTOobjects.*;
 
 public class ServiceImplementation {
 
-        String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
-        String username = "brugtbog";
-        String password = "brugtpass";
+    String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
+    String username = "brugtbog";
+    String password = "brugtpass";
 
-        Connection connection = null;
+    Connection connection = null;
 
-        PreparedStatement authorizeUserSQL = null;
-        PreparedStatement createUserSQL = null;
-        PreparedStatement updateUserSQL = null;
-        PreparedStatement getUsersSQL = null;
-        PreparedStatement deleteUserSQL = null;
+    PreparedStatement authorizeUserSQL = null;
+    PreparedStatement createUserSQL = null;
+    PreparedStatement updateUserSQL = null;
+    PreparedStatement getUsersSQL = null;
+    PreparedStatement deleteUserSQL = null;
 
-        PreparedStatement createBookSQL = null;
-        PreparedStatement getBooksSQL = null;
-        PreparedStatement deleteBookSQL = null;
+    PreparedStatement createBookSQL = null;
+    PreparedStatement getBooksSQL = null;
+    PreparedStatement deleteBookSQL = null;
+    PreparedStatement showBookSQL = null;
 
-        PreparedStatement createAdSQL = null;
-        PreparedStatement getAdsSQL = null;
-        PreparedStatement updateAdSQL = null;
-        PreparedStatement deleteAdSQL = null;
-        PreparedStatement getMyAdsSQL = null;
+    PreparedStatement createAdSQL = null;
+    PreparedStatement getAdsSQL = null;
+    PreparedStatement updateAdSQL = null;
+    PreparedStatement deleteAdSQL = null;
+    PreparedStatement getMyAdsSQL = null;
 
 
-    	public ServiceImplementation() {
-            try {
-                connection = DriverManager.getConnection(url, username, password);
+    public ServiceImplementation() {
+        try {
+            connection = DriverManager.getConnection(url, username, password);
 
-                authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
+            authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
 //USERS
-                createUserSQL = connection.prepareStatement(
-                        "INSERT INTO user" + " (username, password, phonenumber, address, email, mobilepay, cash, transfer, type)"
-                                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            createUserSQL = connection.prepareStatement(
+                    "INSERT INTO user" + " (username, password, phonenumber, address, email, mobilepay, cash, transfer, type)"
+                            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                getUsersSQL = connection.prepareStatement("SELECT * FROM user");
+            getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
-                updateUserSQL = connection.prepareStatement("UPDATE user SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
+            updateUserSQL = connection.prepareStatement("UPDATE user SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
 
-                deleteUserSQL = connection.prepareStatement("DELETE FROM user WHERE id = ?");
+            deleteUserSQL = connection.prepareStatement("DELETE FROM user WHERE id = ?");
 //BOOKS
-                createBookSQL = connection.prepareStatement(
-                        "INSERT INTO book" + " (ISBN, title, edition, author)"
-                                + " VALUES (?, ?, ?, ?)");
+            createBookSQL = connection.prepareStatement(
+                    "INSERT INTO book" + " (ISBN, title, edition, author)"
+                            + " VALUES (?, ?, ?, ?)");
 
-                getBooksSQL = connection.prepareStatement("SELECT * FROM book");
+            getBooksSQL = connection.prepareStatement("SELECT * FROM book");
+
+            showBookSQL = connection.prepareStatement("SELECT FROM book WHERE id = ?");
 
 
-                deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
+            deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
 //ADS
-                createAdSQL = connection.prepareStatement(
-                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
-                                + " VALUES (?, ?, ?, ?, ?, 0, 0)");
+            createAdSQL = connection.prepareStatement(
+                    "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
+                            + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
-                getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
+            getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
 
-                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
-				
-                updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
+            getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
 
-                deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
+            updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
 
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
         }
+    }
 
-        private void close() {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    private void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+
+
 
         public User authorizeUser (String username, String password) {
             ResultSet resultSet = null;
@@ -251,6 +257,41 @@ public class ServiceImplementation {
 
         return false;
     }
+
+    public Book showBook() {
+        ResultSet resultSet = null;
+        Book book = null;
+
+        try {
+            showBookSQL.setInt(1, id);
+            resultSet = showBookSQL.executeQuery();
+
+            while (resultSet.next()) {
+                book = new Book();
+
+                book.setId(resultSet.getInt("id"));
+                book.setISBN(resultSet.getLong("ISBN"));
+                book.setTitle(resultSet.getString("title"));
+                book.setEdition(resultSet.getString("edition"));
+                book.setAuthor(resultSet.getString("author"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                close();
+            }
+        }
+        return book;
+    }
+
 
     public ArrayList<Book> getBooks() {
 

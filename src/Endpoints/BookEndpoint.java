@@ -87,5 +87,23 @@ public class BookEndpoint {
             }
         }
 
+
+    public static class ShowBookHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            ArrayList<Book> books = bookController.getBooks();
+
+            Gson gson = new Gson();
+
+            StringBuilder response = new StringBuilder();
+
+            if (books.isEmpty()) {
+                response.append("The book is not found");
+            } else {
+                response.append(gson.toJson(books));
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
 }
 
