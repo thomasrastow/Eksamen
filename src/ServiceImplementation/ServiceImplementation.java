@@ -156,7 +156,7 @@ public class ServiceImplementation {
         try {
             updateUserSQL.setInt(1, user.getType());
             updateUserSQL.setString(2, user.getUsername());
-            updateUserSQL.setString(3, user.getPassword());
+            updateUserSQL.setString(3, md5Hash(user.getPassword()));
             updateUserSQL.setInt(4, user.getPhonenumber());
             updateUserSQL.setString(5, user.getAddress());
             updateUserSQL.setString(6, user.getEmail());
