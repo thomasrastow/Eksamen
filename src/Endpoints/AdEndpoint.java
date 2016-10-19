@@ -43,10 +43,10 @@ import java.util.Map;
                 endpointController.writeResponse(httpExchange, response.toString());
             } else if (httpExchange.getRequestMethod().equals("POST")) {
                 // LAV EN NY AD
-                httpExchange.getRequestBody()
+                httpExchange.getRequestBody();
             } else if (httpExchange.getRequestMethod().equals("PUT")) {
                 // ÆNDRE AD
-                httpExchange.getRequestBody()
+                httpExchange.getRequestBody();
             } else if (httpExchange.getRequestMethod().equals("DELETE")) {
                 // DELETE AD
 

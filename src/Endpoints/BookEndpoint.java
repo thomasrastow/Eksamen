@@ -1,39 +1,53 @@
 package Endpoints;
 
-import Main.Run;
-
-import DTOobjects.Book;
-import ServiceImplementation.ServiceImplementation;
+import Controller.EndpointController;
+import Controller.BookController;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import Controller.EndpointController;
-import Controller.BookController;
 
-import static java.lang.Integer.parseInt;
+
+import DTOobjects.Book;
+
+import java.util.List;
+
+
 
 /**
  * Created by krist on 17-10-2016.
  */
 
-
-
 public class BookEndpoint {
+    EndpointController endpointController = new EndpointController();
+    BookController bookController = new BookController();
 
-    static EndpointController endpointController = new EndpointController();
-    static BookController bookController = new BookController();
+    public class DeleteBookHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            int id = Integer.parseInt(parms.get("id"));
+
+            Gson gson = new Gson();
+
+            if (id != 0 && BookController.deleteBook(id)) {
+                response.append(gson.toJson(id));
+            } else {
+                response.append("Cannot delete book!");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+
+        }
+    }
 
     // klasse som håndterer books kaldet
 
-    public static class GetBooksHandler implements HttpHandler {
+    public class GetBooksHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 

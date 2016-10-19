@@ -2,9 +2,6 @@ package Controller;
 
 import java.util.List;
 import java.util.Scanner;
-
-
-
 import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
@@ -14,9 +11,9 @@ import ServiceImplementation.ServiceImplementation;
 
 public class BookController {
 
-    public List<Book> getBooks() {
+    ServiceImplementation db = new ServiceImplementation();
 
-        ServiceImplementation db = new ServiceImplementation();
+    public List<Book> getBooks() {
 
         List<Book> books = db.getBooks();
 
@@ -28,18 +25,10 @@ public class BookController {
 
         return books;
     }
-}
-/*
+
+
+
     Scanner input = new Scanner(System.in);
-
-
-    ServiceImplementation serviceImpl = new ServiceImplementation();
-
-
-    public ArrayList<Book> getBooks() {
-        ArrayList<Book> books = serviceImpl.getBooks();
-        return books;
-    }
 
 
     public String createBook(long ISBN, String title, String edition, String author) {
@@ -76,23 +65,21 @@ public class BookController {
 
     }
 
+    public boolean deleteBook(int id) {
+        boolean verifyRequest;
 
-    public ArrayList<Book> books1 = new ArrayList<Book>();
+        verifyRequest = db.deleteBook(id);
 
-   public void test() {
-
-       books1.add(new Book(0, 1234567891234L, "big", "hey", "harryP"));
-
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-        public void deleteBook(int id) {
-            serviceImpl.getBooks(id).remove();
-        }
-
-        public void showBook(int id) {
-            return serviceImpl.getBooks(id);
+    public Book showBook(int id) {
+            return db.getBooks().remove(id);
         }
 
 
 }
-*/

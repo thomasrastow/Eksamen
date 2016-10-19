@@ -6,8 +6,6 @@ import java.util.List;
 
 import DTOobjects.*;
 
-import static sun.plugin.javascript.navig.JSType.URL;
-
 public class ServiceImplementation {
 
         String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";

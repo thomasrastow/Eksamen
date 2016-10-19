@@ -20,15 +20,15 @@ public class AdController {
             java.util.Date date= new java.util.Date();
             java.sql.Timestamp time = new Timestamp(date.getTime()) ;
             int bookID = 0;
-            if (price == "") {
+            if (price >= 0) {
                 return "price cannot be blank.";
             }
 
-            if (rating == "") {
+            if (rating >= 0) {
                 return "rating cannot be blank.";
             }
 
-            if (bookID == "") {
+            if (bookID >= 0) {
                 return "bookID cannot be blank";
             }
 
@@ -50,13 +50,14 @@ public class AdController {
             java.sql.Timestamp time = new Timestamp(date.getTime()) ;
             int bookID = 0;
 
-            if (price == "") {
+            if (price >= 0) {
                 return "price cannot be blank.";
             }
 
-            if (rating == "") {
+            if (rating >= 0) {
                 return "rating cannot be blank.";
             }
+            return "leggo";
         }
 
         public String reserveAd (int locked)
@@ -72,7 +73,7 @@ public class AdController {
             int rating = 0;
             String comment = "test";
             int deleted = 0;
-
+            return "Leggo"
         }
 
 
