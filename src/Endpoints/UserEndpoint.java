@@ -71,6 +71,10 @@ public class UserEndpoint {
 
             endpointController.writeResponse(httpExchange, response.toString());
 
+
+
+
+
         }
     }
 
@@ -91,6 +95,64 @@ public class UserEndpoint {
 
             endpointController.writeResponse(httpExchange, response.toString());
 
+        }
+    }
+
+
+
+
+
+
+   public static class UpdateUserHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException{
+           StringBuilder response = new StringBuilder();
+
+            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            int userID = Integer.parseInt(parms.get("userID"));
+
+            User user = userController.getUser(userID);
+
+            /*
+                Vi skal ikke ændre brugernavn og password endnu, da vi derved skal have tjekket
+                om brugernavn er unikt, samt passworden skal hashes.
+
+                http://localhost:8000/updateuser?userID=32&phonenumber=12345678&address=CBS&email=hej@farvel.dk&mobilepay=1&cash=1&transfer=1
+            */
+
+            if (parms.get("phonenumber") != null) {
+                user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
+            }
+
+            if (parms.get("address") != null) {
+                user.setAddress(parms.get("address"));
+            }
+
+            if (parms.get("email") != null) {
+                user.setEmail(parms.get("email"));
+            }
+
+            if (parms.get("mobilepay") != null) {
+                user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
+            }
+
+            if (parms.get("cash") != null) {
+                user.setCash(Integer.parseInt(parms.get("cash")));
+            }
+
+            if (parms.get("transfer") != null) {
+                user.setTransfer(Integer.parseInt(parms.get("transfer")));
+            }
+
+            Gson gson = new Gson();
+
+            if (userController.updateUser(user)) {
+                response.append(gson.toJson(user));
+            } else {
+                response.append("Cannot update user!");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
         }
     }
 }

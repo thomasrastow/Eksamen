@@ -25,6 +25,7 @@ public class ServiceImplementation {
         PreparedStatement updateUserSQL = null;
         PreparedStatement getUsersSQL = null;
         PreparedStatement deleteUserSQL = null;
+        PreparedStatement getUserSQL = null;
 
         PreparedStatement createBookSQL = null;
         PreparedStatement getBooksSQL = null;
@@ -49,9 +50,12 @@ public class ServiceImplementation {
 
                 getUsersSQL = connection.prepareStatement("SELECT * FROM user");
 
-                updateUserSQL = connection.prepareStatement("UPDATE user SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
+                updateUserSQL = connection.prepareStatement("UPDATE user SET phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
 
                 deleteUserSQL = connection.prepareStatement("DELETE FROM user WHERE id = ?");
+
+                getUserSQL = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
+
 //BOOKS
                 createBookSQL = connection.prepareStatement(
                         "INSERT INTO book" + " (ISBN, title, edition, author)"
@@ -156,16 +160,16 @@ public class ServiceImplementation {
 
     public boolean updateUser(User user) {
 
+        ResultSet resultSet = null;
+
         try {
-            updateUserSQL.setInt(1, user.getType());
-            updateUserSQL.setString(2, user.getUsername());
-            updateUserSQL.setString(3, md5Hash(user.getPassword()));
-            updateUserSQL.setInt(4, user.getPhonenumber());
-            updateUserSQL.setString(5, user.getAddress());
-            updateUserSQL.setString(6, user.getEmail());
-            updateUserSQL.setInt(7, user.getMobilepay());
-            updateUserSQL.setInt(8, user.getCash());
-            updateUserSQL.setInt(9, user.getTransfer());
+            updateUserSQL.setInt(1, user.getPhonenumber());
+            updateUserSQL.setString(2, user.getAddress());
+            updateUserSQL.setString(3, user.getEmail());
+            updateUserSQL.setInt(4, user.getMobilepay());
+            updateUserSQL.setInt(5, user.getCash());
+            updateUserSQL.setInt(6, user.getTransfer());
+            updateUserSQL.setInt(7, user.getId());
 
             int rowsAffected = updateUserSQL.executeUpdate();
 
@@ -233,6 +237,33 @@ public class ServiceImplementation {
 
         return false;
     }
+
+
+    public User getUser(int userID) throws Exception {
+        ArrayList<User> user = null;
+        ResultSet resultSet = null;
+
+        try{
+            user = new ArrayList<>();
+            getUserSQL.setInt(1, userID);
+
+            resultSet = getUserSQL.executeQuery();
+
+            while (resultSet.next()){
+                user.add(new User(resultSet.getInt("id"), resultSet.getString("username"),
+                        resultSet.getString("password"), resultSet.getInt("phonenumber"), resultSet.getString("address"),
+                        resultSet.getString("email"), resultSet.getInt("mobilepay"), resultSet.getInt("cash"),
+                        resultSet.getInt("transfer"), resultSet.getInt("type")));
+            }
+
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return user.get(0);
+    }
+
 
     public boolean createBook(Book book) {
         try {

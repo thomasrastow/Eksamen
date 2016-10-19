@@ -105,7 +105,6 @@ public class Ad {
         this.locked = locked;
     }
 
-
     public void setTime(Timestamp time) {
         this.time = time;
     }
