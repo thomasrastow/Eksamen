@@ -64,7 +64,7 @@ public class ServiceImplementation {
 
                 getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
 
-                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
+                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND userID = ?");
 				
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
 
@@ -368,15 +368,15 @@ public class ServiceImplementation {
         }
         return (ArrayList<Ad>) adList;
     }
-	
-    public ArrayList<Ad> getMyAds()  {
 
+    public ArrayList<Ad> getMyAds(int userID) {
         ArrayList<Ad> myAdList = null;
         ResultSet resultSet = null;
         Ad ad = null;
 
-
         try {
+            getMyAdsSQL.setInt(1, userID);
+
             resultSet = getMyAdsSQL.executeQuery();
             myAdList = new ArrayList<Ad>();
 
