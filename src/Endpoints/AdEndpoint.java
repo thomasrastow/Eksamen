@@ -62,7 +62,7 @@ public class AdEndpoint {
 
               Gson gson = new Gson();
 
-              if (adController.createAd(ad)) {
+              if (ad != null && adController.createAd(ad)) {
                   response.append(gson.toJson(ad));
               } else {
                   response.append("Cannot create ad!");

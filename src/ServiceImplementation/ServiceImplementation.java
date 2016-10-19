@@ -386,8 +386,6 @@ public class ServiceImplementation {
             createAdSQL.setInt(7, ad.getLocked());
             createAdSQL.setTimestamp(8,ad.getTime());
 
-            createAdSQL.executeUpdate();
-
             int rowsAffected = createAdSQL.executeUpdate();
 
             if (rowsAffected == 1) {
