@@ -1,5 +1,6 @@
 package Controller;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.util.Map;
 public class EndpointController {
 
     public void writeResponse(HttpExchange httpExchange, String response) throws IOException {
+        httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        httpExchange.getResponseHeaders().set("Content-Type", "application/json");
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
