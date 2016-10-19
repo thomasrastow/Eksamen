@@ -21,6 +21,7 @@ public class ServiceImplementation {
         Connection connection = null;
 
         PreparedStatement authorizeUserSQL = null;
+
         PreparedStatement createUserSQL = null;
         PreparedStatement updateUserSQL = null;
         PreparedStatement getUsersSQL = null;
@@ -32,9 +33,12 @@ public class ServiceImplementation {
 
         PreparedStatement createAdSQL = null;
         PreparedStatement getAdsSQL = null;
+        PreparedStatement getMyAdsSQL = null;
+        PreparedStatement getAdsBookSQL = null;
+        PreparedStatement getAdISBNSQL = null;
         PreparedStatement updateAdSQL = null;
         PreparedStatement deleteAdSQL = null;
-        PreparedStatement getMyAdsSQL = null;
+
 
 
     	public ServiceImplementation() {
@@ -66,9 +70,13 @@ public class ServiceImplementation {
                         "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
                                 + " VALUES (?, ?, ?, ?, ?, 0, 0)");
 
-                getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
+                getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL locked IS NULL");
 
-                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND WHERE userID = ?");
+                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND userID = ?");
+
+                getAdsBookSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted is NULL AND ISBN = ?");
+
+                getAdISBNSQL = connection.prepareStatement("SELECT ad.price, ad.rating, ad.userID, ad.comment, ad.locked, book.ISBN, book.title, book.edition, book.author FROM ad INNER JOIN books ON ad.ISBN = ?");
 				
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
 
@@ -214,7 +222,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return (ArrayList<User>) userlist;
+        return userlist;
     }
 
     public boolean deleteUser(int id) {
@@ -410,8 +418,6 @@ public class ServiceImplementation {
         }
         return myadlist;
     }
-	
-
 
     public boolean updateAd(Ad ad) {
 
@@ -434,6 +440,77 @@ public class ServiceImplementation {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<Ad> getAdsBook() {
+        ArrayList<Ad> adList = new ArrayList<>();
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = getAdsBookSQL.executeQuery();
+
+            while (resultSet.next()) {
+                Ad ad = new Ad();
+
+                ad.setId(resultSet.getInt("id"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setRating(resultSet.getInt("rating"));
+                ad.setUserID(resultSet.getInt("userID"));
+                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setLocked(resultSet.getInt("locked"));
+                ad.setTime(resultSet.getTimestamp("time"));
+                ad.setDeleted(resultSet.getInt("deleted"));
+
+                adList.add(ad);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                close();
+            }
+        }
+
+        return adList;
+    }
+
+
+    public Ad getAdISBN(long ISBN) {
+
+        ResultSet resultSet = null;
+        Ad ad = null;
+
+        try {
+            getAdISBNSQL.setLong(1, ISBN);
+
+            resultSet = getUsersSQL.executeQuery();
+
+            while (resultSet.next()) {
+                ad = new Ad();
+
+                ad.setId(resultSet.getInt("id"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setRating(resultSet.getInt("rating"));
+                ad.setUserID(resultSet.getInt("userID"));
+                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setLocked(resultSet.getInt("locked"));
+                ad.setTime(resultSet.getTimestamp("time"));
+                ad.setDeleted(resultSet.getInt("deleted"));
+                ad.setBookISBN(resultSet.getLong("ISBN"));
+                ad.setBookTitle(resultSet.getString("title"));
+                ad.setBookEdition(resultSet.getString("edition"));
+                ad.setBookAuthor(resultSet.getString("author"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ad;
     }
 
     public boolean deleteAd(int id) {

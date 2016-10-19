@@ -15,7 +15,7 @@ public class ConfigController {
 
         JSONParser parseJson = new JSONParser();
 
-        Config config = new Config();
+        Config config = null;
 
         try {
             Object parseObj = parseJson.parse(new FileReader("resources/config.json"));
@@ -33,8 +33,6 @@ public class ConfigController {
             config.setSrvPort((String) jsonObj.get("SERVER_PORT"));
             config.setSslKey((String) jsonObj.get("SSL_KEY"));
             config.setSslPwd((String) jsonObj.get("SSL_PWD"));
-
-            return config;
 
         } catch (Exception e) {
             e.printStackTrace();

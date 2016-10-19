@@ -14,26 +14,11 @@ public class Ad {
     private int deleted;
     private String comment;
     private int locked;
-    private java.sql.Timestamp time;
-
-
-
-
-    //Constructor oprettes
-    public Ad (int id, int price, int rating, int userID, int bookID, int deleted, String comment, int locked,
-               java.sql.Timestamp time) {
-
-        this.id = id;
-        this.price = price;
-        this.rating = rating;
-        this.userID = userID;
-        this.bookID = bookID;
-        this.deleted = deleted;
-        this.comment = comment;
-        this.locked = locked;
-        this.time = time;
-
-    }
+    private Timestamp time;
+    private Long bookISBN;
+    private String bookTitle;
+    private String bookEdition;
+    private String bookAuthor;
 
     public Ad() {
 
@@ -105,7 +90,6 @@ public class Ad {
         this.locked = locked;
     }
 
-
     public void setTime(Timestamp time) {
         this.time = time;
     }
@@ -114,5 +98,35 @@ public class Ad {
         return time;
     }
 
+    public void setBookISBN(Long bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public Long getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookEdition(String bookEdition) {
+        this.bookEdition = bookEdition;
+    }
+
+    public String getBookEdition() {
+        return bookEdition;
+    }
+    public void setBookAuthor(String bookAuthor) {
+        this.bookAuthor = bookAuthor;
+    }
+
+    public String getBookAuthor() {
+        return bookAuthor;
+    }
 }
 
