@@ -15,7 +15,7 @@ public class EndpointController {
     public void writeResponse(HttpExchange httpExchange, String response) throws IOException {
         httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(response.getBytes("latin1"));
         os.close();
     }
 

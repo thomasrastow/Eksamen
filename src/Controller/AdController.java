@@ -15,16 +15,26 @@ public class AdController {
 
         ArrayList<Ad> ads = db.getAds();
 
-        try {
-            ads =  db.getAds();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return ads;
     }
-}
 
+
+    public boolean createAd(Ad ad) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.createAd(ad);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+}
 /*
     public Ad adDTO;
 

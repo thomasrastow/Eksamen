@@ -59,8 +59,8 @@ public class ServiceImplementation {
                 deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
 //ADS
                 createAdSQL = connection.prepareStatement(
-                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
-                                + " VALUES (?, ?, ?, ?, ?, 0, 0)");
+                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted, time)"
+                                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
                 getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
 
@@ -312,9 +312,11 @@ public class ServiceImplementation {
             createAdSQL.setInt(3, ad.getUserID());
             createAdSQL.setInt(4, ad.getBookID());
             createAdSQL.setString(5, ad.getComment());
+            createAdSQL.setInt(6, ad.getDeleted());
+            createAdSQL.setInt(7, ad.getLocked());
+            createAdSQL.setTimestamp(8,ad.getTime());
 
-
-            createUserSQL.executeUpdate();
+            createAdSQL.executeUpdate();
 
             int rowsAffected = createAdSQL.executeUpdate();
 
@@ -332,40 +334,39 @@ public class ServiceImplementation {
 
     public ArrayList<Ad> getAds(){
 
-        ArrayList<Ad> adList = null;
+        ArrayList<Ad> adList = new ArrayList<>();
         ResultSet resultSet = null;
-        Ad ad = null;
 
         try {
             resultSet = getAdsSQL.executeQuery();
-            adList = new ArrayList<Ad>();
 
             while (resultSet.next()) {
-                ad = new Ad();
+                Ad ad = new Ad();
 
                 ad.setId(resultSet.getInt("id"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setRating(resultSet.getInt("rating"));
                 ad.setUserID(resultSet.getInt("userID"));
                 ad.setBookID(resultSet.getInt("bookID"));
+                ad.setDeleted(resultSet.getInt("deleted"));
                 ad.setComment(resultSet.getString("comment"));
                 ad.setLocked(resultSet.getInt("locked"));
                 ad.setTime(resultSet.getTimestamp("time"));
-                ad.setDeleted(resultSet.getInt("deleted"));
+
 
                 adList.add(ad);
             }
-        } catch (SQLException sqlException) {
-            System.out.println(sqlException);
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 resultSet.close();
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
                 close();
             }
         }
-        return adList;
+        return (ArrayList<Ad>) adList;
     }
 	
     public List<Ad> getMyAds()  {
