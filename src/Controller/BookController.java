@@ -12,12 +12,6 @@ public class BookController {
 
         ArrayList<Book> books = db.getBooks();
 
-        try {
-            books = db.getBooks();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return books;
     }
 

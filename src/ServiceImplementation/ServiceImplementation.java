@@ -254,7 +254,7 @@ public class ServiceImplementation {
 
     public ArrayList<Book> getBooks() {
 
-        List<Book> booklist = null;
+        ArrayList<Book> booklist = null;
         ResultSet resultSet = null;
         Book book = null;
 
