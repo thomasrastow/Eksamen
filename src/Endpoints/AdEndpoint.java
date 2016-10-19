@@ -1,22 +1,50 @@
-/*  package Endpoints;
+  package Endpoints;
 
 import Controller.EndpointController;
 import Controller.AdController;
+
 import DTOobjects.Ad;
-import Main.Run;
+
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+
 
 /**
  * Created by krist on 17-10-2016.
  */
-/*public class AdEndpoint {
+public class AdEndpoint {
+
+    static EndpointController endpointController = new EndpointController();
+    static AdController adController = new AdController();
+
+    public static class GetAdHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+
+            ArrayList<Ad> ads = adController.getAds();
+
+            Gson gson = new Gson();
+
+            if (ads.isEmpty()) {
+                response.append("No ads found!");
+            } else {
+                response.append(gson.toJson(ads));
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
+}
 
 
+
+
+
+    /*
     Run run = new Run();
 
     static AdController adController = new AdController();
