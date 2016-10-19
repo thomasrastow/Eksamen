@@ -14,8 +14,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static Endpoints.UserEndpoint.userController;
-
 
   /**
  * Created by krist on 17-10-2016.
@@ -75,6 +73,40 @@ public class AdEndpoint {
           }
       }
 
+      public static class UpdateAdHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+              // http://localhost:8000/updatead?id=1&price=2&rating=10&userID=2&bookID=2&comment=Dig%20med%20hej&time=2016-10-17%2016:00:00
+
+              int id = Integer.parseInt(parms.get("id"));
+
+              Ad ad = adController.getAd(id);
+
+              if(parms.get("price") != null) {
+                  ad.setPrice(Integer.parseInt(parms.get("price")));
+              }
+
+              if (parms.get("rating") != null){
+                  ad.setRating(Integer.parseInt(parms.get("rating")));
+              }
+              if (parms.get("comment") != null){
+                  ad.setComment(parms.get("comment"));
+              }
+
+              Gson gson = new Gson();
+
+              if (adController.updateAd(ad)) {
+                  response.append(gson.toJson(ad));
+              } else {
+                  response.append("Cannot update ad!");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+          }
+      }
+
       public static class DeleteAdHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
@@ -94,6 +126,8 @@ public class AdEndpoint {
 
           }
       }
+
+
 
       public static class GetMyAdsHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {

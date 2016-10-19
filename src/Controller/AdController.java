@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class AdController {
 
+    ServiceImplementation serviceImpl = new ServiceImplementation();
+
     public ArrayList<Ad> getAds() {
 
         ServiceImplementation db = new ServiceImplementation();
@@ -57,6 +59,33 @@ public class AdController {
         ArrayList<Ad> myAds = db.getMyAds(userID);
 
         return myAds;
+    }
+
+    public boolean updateAd(Ad ad) {
+
+        boolean verifyRequest;
+
+        verifyRequest = serviceImpl.updateAd(ad);
+        if (verifyRequest){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public Ad getAd(int id) {
+
+        Ad ad = null;
+
+        try{
+            ad = serviceImpl.getAd(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ad;
+
     }
 
 }

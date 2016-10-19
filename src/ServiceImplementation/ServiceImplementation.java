@@ -6,8 +6,6 @@ import java.util.List;
 
 import DTOobjects.*;
 
-import static sun.plugin.javascript.navig.JSType.URL;
-
 public class ServiceImplementation {
 
         String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
@@ -31,6 +29,7 @@ public class ServiceImplementation {
         PreparedStatement updateAdSQL = null;
         PreparedStatement deleteAdSQL = null;
         PreparedStatement getMyAdsSQL = null;
+        PreparedStatement getAdSQL = null;
 
 
     	public ServiceImplementation() {
@@ -69,6 +68,8 @@ public class ServiceImplementation {
                 updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
 
                 deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
+
+                getAdSQL = connection.prepareStatement("SELECT * from ad WHERE id = ?");
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -411,7 +412,6 @@ public class ServiceImplementation {
 
 
     public boolean updateAd(Ad ad) {
-
         try {
             updateAdSQL.setInt(1, ad.getPrice());
             updateAdSQL.setInt(2, ad.getRating());
@@ -419,7 +419,7 @@ public class ServiceImplementation {
             updateAdSQL.setInt(4, ad.getBookID());
             updateAdSQL.setString(5, ad.getComment());
             updateAdSQL.setInt(6, ad.getLocked());
-            updateAdSQL.setInt(7, ad.getDeleted());
+            updateAdSQL.setInt(7, ad.getId());
 
             int rowsAffected = updateAdSQL.executeUpdate();
 
@@ -432,6 +432,31 @@ public class ServiceImplementation {
         }
         return false;
     }
+
+    public Ad getAd(int id) throws Exception {
+        ArrayList<Ad> ads = null;
+        ResultSet resultSet = null;
+
+        try{
+            ads = new ArrayList<>();
+            getAdSQL.setInt(1, id);
+
+            resultSet = getAdSQL.executeQuery();
+
+            while(resultSet.next()){
+                ads.add(new Ad(resultSet.getInt("id"), resultSet.getInt("price"),
+                        resultSet.getInt("rating"), resultSet.getInt("userID"),
+                        resultSet.getInt("bookID"), resultSet.getInt("deleted"),
+                        resultSet.getString("comment"), resultSet.getInt("locked"), resultSet.getTimestamp("time")));
+            }
+
+            resultSet.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+           return ads.get(0);
+    }
+
 
     public boolean deleteAd(int id) {
         try {
