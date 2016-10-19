@@ -25,7 +25,7 @@ public class ServerController {
         String sslKey = config.getSslKey();
 
         // HTTPS server and SSL context:
-        HttpsServer httpServer = HttpsServer.create(new InetSocketAddress(srvPort), 0);
+        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(srvPort), 0);
         SSLContext sslContext = SSLContext.getInstance("TLS");
 
         // Keystore setup:
@@ -45,7 +45,7 @@ public class ServerController {
         // setup the HTTPS context and parameters
         sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
 
-        httpServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+        httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
             public void configure(HttpsParameters params) {
                 try {
                     // initialise the SSL context
@@ -65,12 +65,12 @@ public class ServerController {
             }
         });
 
-        httpServer.createContext("/login", new LoginEndpoint.LoginHandler());
-        httpServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
-        httpServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
-        httpServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
-        httpServer.setExecutor(null);
-        httpServer.start();
+        httpsServer.createContext("/login", new LoginEndpoint.LoginHandler());
+        httpsServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
+        httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
+        httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpsServer.setExecutor(null);
+        httpsServer.start();
 
         System.out.println("The server is running");
     }
