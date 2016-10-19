@@ -5,5 +5,5 @@
   "DB_NAME":"shop",
   "DB_USER":"brugtbog",
   "DB_PASS":"brugtpass",
-  "SERVER_PORT":"8000"
+  "SERVER_PORT":"1337"
 }
