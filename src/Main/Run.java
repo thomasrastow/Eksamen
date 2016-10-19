@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import DTOobjects.User;
 import Endpoints.UserEndpoint;
 import Endpoints.LoginEndpoint;
+import Endpoints.AdEndpoint;
 import com.sun.net.httpserver.HttpServer;
 
 
@@ -18,6 +19,7 @@ import com.sun.net.httpserver.HttpServer;
             server.createContext("/getusers", new UserEndpoint.GetUsersHandler());
             server.createContext("/createuser", new UserEndpoint.CreateUserHandler());
             server.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+            server.createContext("/getads", new AdEndpoint.GetAdHandler());
             server.setExecutor(null); // creates a default executor
             server.start();
             System.out.println("The server is running");

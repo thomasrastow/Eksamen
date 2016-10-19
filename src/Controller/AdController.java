@@ -1,13 +1,31 @@
 package Controller;
 import DTOobjects.Ad;
-import java.sql.Timestamp;
-import java.util.Date;
+
+import ServiceImplementation.ServiceImplementation;
+
+import java.util.ArrayList;
 
 
-/*
+
 public class AdController {
 
+    public ArrayList<Ad> getAds() {
 
+        ServiceImplementation db = new ServiceImplementation();
+
+        ArrayList<Ad> ads = db.getAds();
+
+        try {
+            ads =  db.getAds();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ads;
+    }
+}
+
+/*
     public Ad adDTO;
 
         public String createAd(int price, int rating, String comment)
