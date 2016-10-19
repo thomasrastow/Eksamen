@@ -4,6 +4,7 @@ import DTOobjects.Config;
 import Endpoints.LoginEndpoint;
 import Endpoints.UserEndpoint;
 import Endpoints.AdEndpoint;
+import Endpoints.BookEndpoint;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
@@ -76,6 +77,9 @@ public class ServerController {
         httpsServer.createContext("/myads", new AdEndpoint.GetMyAdsHandler());
         httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
         httpsServer.createContext("/updatead", new AdEndpoint.UpdateAdHandler());
+        httpsServer.createContext("/createbook", new BookEndpoint.CreateBookHandler());
+        httpsServer.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
+        httpsServer.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
         httpsServer.setExecutor(null);
         httpsServer.start();
 
