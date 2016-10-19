@@ -55,7 +55,7 @@ public class ServiceImplementation {
                 getBooksSQL = connection.prepareStatement("SELECT * FROM book");
 
 
-                deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
+                deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
 //ADS
                 createAdSQL = connection.prepareStatement(
                         "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
@@ -256,14 +256,14 @@ public class ServiceImplementation {
 
         ArrayList<Book> booklist = new ArrayList<>(); //ændret fra = null
         ResultSet resultSet = null;
-        Book book = null;
+
 
         try {
             resultSet = getBooksSQL.executeQuery();
             booklist = new ArrayList<Book>();
 
             while (resultSet.next()) {
-                book = new Book();
+                Book book = new Book();
 
                 book.setId(resultSet.getInt("id"));
                 book.setISBN(resultSet.getLong("isbn"));

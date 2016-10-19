@@ -15,6 +15,7 @@ import com.sun.net.httpserver.HttpServer;
 
         public static void main(String[] args) throws Exception {
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
             server.createContext("/login", new LoginEndpoint.LoginHandler());
             server.createContext("/getusers", new UserEndpoint.GetUsersHandler());
             server.createContext("/createuser", new UserEndpoint.CreateUserHandler());
