@@ -60,7 +60,7 @@ public class ServiceImplementation {
                 getBooksSQL = connection.prepareStatement("SELECT * FROM book");
 
 
-                deleteBookSQL = connection.prepareStatement("DELETE * FROM book WHERE id = ?");
+                deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
 //ADS
                 createAdSQL = connection.prepareStatement(
                         "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted)"
@@ -257,9 +257,9 @@ public class ServiceImplementation {
         return false;
     }
 
-    public List<Book> getBooks() {
+    public ArrayList<Book> getBooks() {
 
-        List<Book> booklist = null;
+        ArrayList<Book> booklist = null;
         ResultSet resultSet = null;
         Book book = null;
 

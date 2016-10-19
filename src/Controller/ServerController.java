@@ -1,6 +1,7 @@
 package Controller;
 
 import DTOobjects.Config;
+import Endpoints.BookEndpoint;
 import Endpoints.LoginEndpoint;
 import Endpoints.UserEndpoint;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -69,6 +70,9 @@ public class ServerController {
         httpsServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
         httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
         httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpsServer.createContext("/createbook", new BookEndpoint.CreateBookHandler());
+        httpsServer.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
+        httpsServer.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
         httpsServer.setExecutor(null);
         httpsServer.start();
 
