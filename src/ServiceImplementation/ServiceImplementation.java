@@ -231,11 +231,11 @@ public class ServiceImplementation {
 
     public boolean createBook(Book book) {
         try {
+
             createBookSQL.setLong(1, book.getISBN());
             createBookSQL.setString(2, book.getTitle());
             createBookSQL.setString(3, book.getEdition());
             createBookSQL.setString(4, book.getAuthor());
-
 
             createBookSQL.executeUpdate();
 

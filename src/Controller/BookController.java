@@ -15,7 +15,6 @@ public class BookController {
     }
 
     public boolean createBook(Book book) {
-
         ServiceImplementation serviceImpl = new ServiceImplementation();
 
         boolean verifyRequest;

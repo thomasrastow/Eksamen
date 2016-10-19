@@ -67,17 +67,18 @@ public class BookEndpoint {
 
                 Book book = new Book();
                 book.setISBN(Long.parseLong(parms.get("ISBN")));
-                book.setTitle(parms.get("Title"));
-                book.setEdition(parms.get("Edition"));
-                book.setAuthor(parms.get("Author"));
+                book.setTitle(parms.get("title"));
+                book.setEdition(parms.get("edition"));
+                book.setAuthor(parms.get("author"));
 
                 Gson gson = new Gson();
 
-                if (book != null && bookController.createBook(book)) {
+                if (bookController.createBook(book)) {
                     response.append(gson.toJson(book));
                 } else {
                     response.append("Cannot create book!");
 
+                    System.out.println(gson.toJson(book));
                     // Burde det ikke hedde "Book already exists"
                 }
 
