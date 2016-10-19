@@ -3,7 +3,7 @@ package Endpoints;
 import Main.Run;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -14,84 +14,90 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Controller.EndpointController;
+import Controller.UserController;
+
+import static java.lang.Integer.parseInt;
+
 /**
  * Created by krist on 17-10-2016.
  */
 public class UserEndpoint {
 
-    Run run = new Run();
+    static EndpointController endpointController = new EndpointController();
+    static UserController userController = new UserController();
 
-    public static class LoginHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException {
-            StringBuilder response = new StringBuilder();
-            Map<String,String> parms = queryToMap(httpExchange.getRequestURI().getQuery());
-            response.append("<html><body>");
-
-            String username = parms.get("username");
-            String password = parms.get("password");
-
-            Gson gson = new Gson();
-            ServiceImplementation db = new ServiceImplementation();
-            User user;
-
-            user = db.dbLogin(username,password);
-            ArrayList<User> users = new ArrayList<>();
-            users.add(user);
-            String responseSQL = gson.toJson(users);
-
-            response.append(responseSQL);
-
-            if(user == null) {
-                response.append("bruger findes ikke");
-            }
-            response.append("</body></html>");
-            writeResponse(httpExchange, response.toString());
-        }
-    }
     public static class GetUsersHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            response.append("<html><body>");
+            ArrayList<User> users = userController.getUsers();
 
             Gson gson = new Gson();
-            ServiceImplementation db = new ServiceImplementation();
-            User user;
 
-            ArrayList<User> users;
-            users = db.getUsers();
-
-            response.append(gson.toJson(users));
-
-            if(users == null) {
-                response.append("Liste findes ikke");
+            if(users.isEmpty()) {
+                response.append("No users found!");
+            } else {
+                response.append(gson.toJson(users));
             }
-            response.append("</body></html>");
-            writeResponse(httpExchange, response.toString());
+
+            endpointController.writeResponse(httpExchange, response.toString());
         }
     }
 
-    public static void writeResponse(HttpExchange httpExchange, String response) throws IOException {
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
+    public static class CreateUserHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-    public static Map<String, String> queryToMap(String query){
-        Map<String, String> result = new HashMap<String, String>();
-        for (String param : query.split("&")) {
-            String pair[] = param.split("=");
-            if (pair.length>1) {
-                result.put(pair[0], pair[1]);
-            }else{
-                result.put(pair[0], "");
+            User user = new User();
+            user.setUsername(parms.get("username"));
+            user.setPassword(parms.get("password"));
+            user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
+            user.setAddress(parms.get("address"));
+            user.setEmail(parms.get("username"));
+            user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
+            user.setCash(Integer.parseInt(parms.get("cash")));
+            user.setTransfer(Integer.parseInt(parms.get("transfer")));
+            user.setType(0);
+
+            Gson gson = new Gson();
+
+            if(user != null && userController.createUser(user)) {
+                response.append(gson.toJson(user));
+            } else {
+                response.append("Cannot create user!");
             }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+
         }
-        return result;
     }
 
+    public static class DeleteUserHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            int id = Integer.parseInt(parms.get("id"));
+
+            Gson gson = new Gson();
+
+            if (id != 0 && userController.deleteUser(id)) {
+                response.append(gson.toJson(id));
+            } else {
+                response.append("Cannot delete user!");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+
+        }
+    }
 }
+
+
+
+
 
 
 

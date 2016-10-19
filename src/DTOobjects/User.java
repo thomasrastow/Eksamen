@@ -9,7 +9,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private int phoneNumber;
+    private int phonenumber;
     private String address;
     private String email;
     private int mobilepay;
@@ -30,7 +30,7 @@ public class User {
     this.id = id;
     this.username = username;
     this.password = password;
-    this.phoneNumber = phonenumber;
+    this.phonenumber = phonenumber;
     this.address = address;
     this.email = email;
     this.mobilepay = mobilepay;
@@ -38,6 +38,7 @@ public class User {
     this.transfer = transfer;
     this.type = type;
     }
+
 
 
     // Getters og setters oprettes
@@ -67,16 +68,11 @@ public class User {
         this.password = password;
     }
 
-    public int getPhonenumber() {
-        return phoneNumber;
-    }
-
     public void setPhonenumber(int phonenumber) {
-        this.phoneNumber = phonenumber;
+        this.phonenumber = phonenumber;
     }
-    public int getPhonenumber() { return phonenumber; }
 
-    public void setPhonenumber(int phonenumber) { this.phonenumber = phonenumber; }
+    public int getPhonenumber() { return phonenumber; }
 
     public String getAddress() {
         return address;
@@ -119,6 +115,12 @@ public class User {
     public void setType(int type) {
         this.type = type;
     }
+
+    public void setMobilePay(int mobilePay) {
+        this.mobilepay = mobilePay;
+    }
+
+
 
 }
 

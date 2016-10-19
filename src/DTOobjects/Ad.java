@@ -1,6 +1,8 @@
 package DTOobjects;
 
 
+import java.sql.Timestamp;
+
 public class Ad {
 
     // Attributer for Ad oprettes
@@ -33,8 +35,9 @@ public class Ad {
 
     }
 
+    public Ad() {
 
-
+    }
 
     // Getters og setters oprettes
 
@@ -102,6 +105,14 @@ public class Ad {
         this.locked = locked;
     }
 
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public Timestamp getTime () {
+        return time;
+    }
 
 }
 
