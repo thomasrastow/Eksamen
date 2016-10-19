@@ -19,8 +19,6 @@ public class Run {
     public static void main(String[] args) throws Exception {
         ServerController serverController = new ServerController();
 
-        public class Run {
-
             public static void main(String[] args) throws Exception {
                 HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
