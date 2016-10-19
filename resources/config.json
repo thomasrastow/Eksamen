@@ -1,0 +1,9 @@
+{
+  "DB_TYPE":"jdbc:mysql://",
+  "DB_HOST":"shop.c50bqctooery.us-east-1.rds.amazonaws.com",
+  "DB_PORT":"3306",
+  "DB_NAME":"shop",
+  "DB_USER":"brugtbog",
+  "DB_PASS":"brugtpass",
+  "SERVER_PORT":"8000"
+}

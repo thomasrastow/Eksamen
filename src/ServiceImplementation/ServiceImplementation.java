@@ -1,18 +1,22 @@
 package ServiceImplementation;
 
+import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Controller.ConfigController;
 
 import DTOobjects.*;
 
-import static sun.plugin.javascript.navig.JSType.URL;
+
 
 public class ServiceImplementation {
 
-        String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
-        String username = "brugtbog";
-        String password = "brugtpass";
+    Config config = new ConfigController().getConfig();
+
+    String url = config.getDbType()+config.getDbHost()+":"+config.getDbPort()+"/" + config.getDbName()+ "?useSSL=false";
+    String username = config.getDbUser();
+    String password = config.getDbPass();
 
         Connection connection = null;
 
@@ -90,7 +94,7 @@ public class ServiceImplementation {
 
             try {
                 authorizeUserSQL.setString(1, username);
-                authorizeUserSQL.setString(2, password);
+                authorizeUserSQL.setString(2, md5Hash(password));
 
                 resultSet = authorizeUserSQL.executeQuery();
 
@@ -128,7 +132,7 @@ public class ServiceImplementation {
     public boolean createUser(User user) {
             try {
                 createUserSQL.setString(1, user.getUsername());
-                createUserSQL.setString(2, user.getPassword());
+                createUserSQL.setString(2, md5Hash(user.getPassword()));
                 createUserSQL.setInt(3, user.getPhonenumber());
                 createUserSQL.setString(4, user.getAddress());
                 createUserSQL.setString(5, user.getEmail());
@@ -155,7 +159,7 @@ public class ServiceImplementation {
         try {
             updateUserSQL.setInt(1, user.getType());
             updateUserSQL.setString(2, user.getUsername());
-            updateUserSQL.setString(3, user.getPassword());
+            updateUserSQL.setString(3, md5Hash(user.getPassword()));
             updateUserSQL.setInt(4, user.getPhonenumber());
             updateUserSQL.setString(5, user.getAddress());
             updateUserSQL.setString(6, user.getEmail());
@@ -447,6 +451,24 @@ public class ServiceImplementation {
         }
 
         return false;
+    }
+
+    public String md5Hash(String password) {
+        if(!password.isEmpty()) {
+            try {
+                MessageDigest digestPassword = MessageDigest.getInstance("MD5");
+                byte[] bytesPassword = digestPassword.digest(password.getBytes("UTF-8"));
+                StringBuffer sbPassword = new StringBuffer();
+                for (int i = 0; i < bytesPassword.length; ++i) {
+                    sbPassword.append(Integer.toHexString((bytesPassword[i] & 0xFF) | 0x100).substring(1,3));
+                }
+                return sbPassword.toString();
+            } catch (Exception ex) {
+                System.out.println("Fejl med hashing");
+            }
+        }
+
+        return null;
     }
 
 }
