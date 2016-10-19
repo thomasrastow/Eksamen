@@ -2,17 +2,28 @@ package Controller;
 
 
 import DTOobjects.Book;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.GsonBuilder;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 
 /**
  * Created by krist on 17-10-2016.
  */
 public class ConfigController {
+
+    public static final String JSON_FILE="resources/config.json";
+
+    public static void main(String[] args) throws IOExcepception 
+
+    InputStream fis = new FileInputStream(JSON_FILE);
+
+    JsonReader jsonReader = JsonReader.createReader(fis);
+
+
 
     private String DB_TYPE;
     private String DB_HOST;
@@ -25,6 +36,16 @@ public class ConfigController {
     private String ENCRYPT_KEY;
     private String SERVER_PORT;
     private String DEBUG;
+
+    public ConfigController() {
+
+
+
+
+    tion{
+
+        }
+    }
 
 
     public String getDB_TYPE() {
@@ -161,19 +182,26 @@ public class ConfigController {
             public String getDEBUG() { return this.DEBUG; }
             public void setDEBUG(String DEBUG) { this.DEBUG = DEBUG; }
     */
-    public void configParser() {
+   // public void configParser() {
 
+       //    public static void main(String[] args){
+        //    Gson gson = new GsonBuilder().create();
+        //    gson.toJson(getDB_TYPE, System.out);
+            //   gson.toJson(123, System.out);
+        }
 
-        JsonObject object = Json.parse(input).asObject();
-        String dB_TYPE = object.get("DB_USER").getAsString();
-        JsonArray items = object.get("DB_PASS").asArray();
+            //BuffedReader br = new BuffedReader()
+
+       // JsonObject object = Json.parse(input).asObject();
+       // String dB_TYPE = object.get("DB_USER").getAsString();
+        // JsonArray items;
 
         /*try {
             JsonReader reader = new JsonReader(new FileReader("resources/config.json"));
             Book bookAray = gson.fromJson(reader, Book[].class);
         } catch (FileNotFoundException e) {
-           System.out.println(e.getMessage()); 
+           System.out.println(e.getMessage());
         }*/
     }
-    }
+   // }
 
