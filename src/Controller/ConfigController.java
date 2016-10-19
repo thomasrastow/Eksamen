@@ -1,7 +1,6 @@
 package Controller;
 
 import DTOobjects.Config;
-import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;

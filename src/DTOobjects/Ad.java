@@ -1,7 +1,5 @@
 package DTOobjects;
 
-
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Ad {

@@ -1,8 +1,6 @@
 package Controller;
 import DTOobjects.Ad;
-
 import ServiceImplementation.ServiceImplementation;
-
 import java.util.ArrayList;
 
 

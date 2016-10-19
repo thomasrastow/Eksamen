@@ -1,23 +1,14 @@
 package Endpoints;
 
-import Main.Run;
-
 import DTOobjects.User;
-import ServiceImplementation.ServiceImplementation;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-
 import Controller.EndpointController;
 import Controller.UserController;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * Created by krist on 17-10-2016.
@@ -70,11 +61,6 @@ public class UserEndpoint {
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
-
-
-
-
-
         }
     }
 
@@ -156,12 +142,3 @@ public class UserEndpoint {
         }
     }
 }
-
-
-
-
-
-
-
-
-

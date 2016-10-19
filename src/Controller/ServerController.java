@@ -8,7 +8,6 @@ import Endpoints.BookEndpoint;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
-
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;

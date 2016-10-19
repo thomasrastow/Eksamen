@@ -1,11 +1,9 @@
 package Controller;
 
-        import DTOobjects.Book;
-        import ServiceImplementation.ServiceImplementation;
-        import java.util.ArrayList;
-/**
- * Created by krist on 17-10-2016.
- */
+import DTOobjects.Book;
+import ServiceImplementation.ServiceImplementation;
+import java.util.ArrayList;
+
 public class BookController {
     private static ServiceImplementation serviceImpl = new ServiceImplementation();
     public ArrayList<Book> getBooks() {

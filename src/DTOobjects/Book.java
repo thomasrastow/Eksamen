@@ -1,6 +1,5 @@
 package DTOobjects;
 
-
 public class Book {
 
     // Attributer for Book oprettes
