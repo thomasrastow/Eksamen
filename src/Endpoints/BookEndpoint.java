@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import DTOobjects.Book;
-import java.util.List;
+import java.util.ArrayList;
 
 
 
@@ -49,7 +49,7 @@ public class BookEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            List<Book> books = bookController.getBooks();
+            ArrayList<Book> books = bookController.getBooks();
 
             Gson gson = new Gson();
 
