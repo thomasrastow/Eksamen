@@ -31,10 +31,12 @@ public class ConfigController {
             config.setDbUser((String) jsonObj.get("DB_USER"));
             config.setDbPass((String) jsonObj.get("DB_PASS"));
             config.setSrvPort((String) jsonObj.get("SERVER_PORT"));
+            config.setSslKey((String) jsonObj.get("SSL_KEY"));
+            config.setSslPwd((String) jsonObj.get("SSL_PWD"));
 
             return config;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }

@@ -1,0 +1,77 @@
+package Controller;
+
+import DTOobjects.Config;
+import Endpoints.LoginEndpoint;
+import Endpoints.UserEndpoint;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsParameters;
+import com.sun.net.httpserver.HttpsServer;
+
+import javax.net.ssl.*;
+import java.io.FileInputStream;
+import java.net.InetSocketAddress;
+import java.security.KeyStore;
+
+/**
+ * Created by alanziberi on 19/10/2016.
+ */
+public class ServerController {
+
+    public void startServer() throws Exception {
+        // Config:
+        Config config = new ConfigController().getConfig();
+        int srvPort = Integer.parseInt(config.getSrvPort());
+        String sslPwd = config.getSslPwd();
+        String sslKey = config.getSslKey();
+
+        // HTTPS server and SSL context:
+        HttpsServer httpServer = HttpsServer.create(new InetSocketAddress(srvPort), 0);
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        // Keystore setup:
+        char[] keyPassword = sslPwd.toCharArray();
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        FileInputStream file = new FileInputStream(sslKey);
+
+        keyStore.load(file, keyPassword);
+
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+        keyManagerFactory.init(keyStore, keyPassword);
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+
+        trustManagerFactory.init(keyStore);
+
+        // setup the HTTPS context and parameters
+        sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+
+        httpServer.setHttpsConfigurator(new HttpsConfigurator(sslContext) {
+            public void configure(HttpsParameters params) {
+                try {
+                    // initialise the SSL context
+                    SSLContext contextSSL = SSLContext.getDefault();
+                    SSLEngine engineSSL = contextSSL.createSSLEngine();
+                    params.setNeedClientAuth(false);
+                    params.setCipherSuites(engineSSL.getEnabledCipherSuites());
+                    params.setProtocols(engineSSL.getEnabledProtocols());
+
+                    // get the default parameters
+                    SSLParameters defaultSSLParameters = contextSSL.getDefaultSSLParameters();
+                    params.setSSLParameters(defaultSSLParameters);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        httpServer.createContext("/login", new LoginEndpoint.LoginHandler());
+        httpServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
+        httpServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
+        httpServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpServer.setExecutor(null);
+        httpServer.start();
+
+        System.out.println("The server is running");
+    }
+}
