@@ -2,6 +2,14 @@ package Controller;
 import java.util.ArrayList;
 import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
+<<<<<<< HEAD
+=======
+//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+
+import java.util.ArrayList;
+
+/*
+>>>>>>> master
 
 public class BookController {
 
