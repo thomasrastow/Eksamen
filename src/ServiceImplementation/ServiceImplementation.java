@@ -252,7 +252,7 @@ public class ServiceImplementation {
         return false;
     }
 
-    public List<Book> getBooks() {
+    public ArrayList<Book> getBooks() {
 
         ArrayList<Book> booklist = null;
         ResultSet resultSet = null;
