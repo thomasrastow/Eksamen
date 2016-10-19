@@ -1,9 +1,9 @@
 package Controller;
 
 import DTOobjects.Config;
-import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
 import java.io.FileReader;
 
 /**
@@ -31,10 +31,6 @@ public class ConfigController {
             config.setDbUser((String) jsonObj.get("DB_USER"));
             config.setDbPass((String) jsonObj.get("DB_PASS"));
             config.setSrvPort((String) jsonObj.get("SERVER_PORT"));
-
-            return config;
-
-        }catch (Exception e){
             config.setSslKey((String) jsonObj.get("SSL_KEY"));
             config.setSslPwd((String) jsonObj.get("SSL_PWD"));
 
