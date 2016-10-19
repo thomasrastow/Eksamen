@@ -23,7 +23,7 @@ public class User {
     }
 
     // Getters og setters for attributterne laves
-    public User( int id, String username, String password, int phonenumber, String address,
+  /*  public User( int id, String username, String password, int phonenumber, String address,
                  String email, int mobilepay, int cash, int transfer, int type) {
 
 
@@ -37,7 +37,7 @@ public class User {
     this.cash = cash;
     this.transfer = transfer;
     this.type = type;
-    }
+    }*/
 
 
 

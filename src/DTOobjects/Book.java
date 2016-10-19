@@ -10,16 +10,6 @@ public class Book {
     private String edition;
     private String author;
 
-public Book (int id, long ISBN, String title, String edition, String author) {
-
-        this.id = id;
-        this.ISBN = ISBN;
-        this.title = title;
-        this.edition = edition;
-        this.author = author;
-
-    }
-
     public Book() {
 
     }
