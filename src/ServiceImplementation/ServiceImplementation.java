@@ -369,16 +369,16 @@ public class ServiceImplementation {
         return (ArrayList<Ad>) adList;
     }
 	
-    public List<Ad> getMyAds()  {
+    public ArrayList<Ad> getMyAds()  {
 
-        List<Ad> myadlist = null;
+        ArrayList<Ad> myAdList = null;
         ResultSet resultSet = null;
         Ad ad = null;
 
 
         try {
             resultSet = getMyAdsSQL.executeQuery();
-            myadlist = new ArrayList<Ad>();
+            myAdList = new ArrayList<Ad>();
 
             while (resultSet.next()) {
                 ad = new Ad();
@@ -393,7 +393,7 @@ public class ServiceImplementation {
                 ad.setTime(resultSet.getTimestamp("time"));
                 ad.setDeleted(resultSet.getInt("deleted"));
 
-                myadlist.add(ad);
+                myAdList.add(ad);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -405,7 +405,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return myadlist;
+        return myAdList;
     }
 	
 

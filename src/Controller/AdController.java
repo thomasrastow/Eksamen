@@ -34,6 +34,22 @@ public class AdController {
         }
     }
 
+    public boolean deleteAd(int id) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.deleteAd(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 }
 /*
     public Ad adDTO;

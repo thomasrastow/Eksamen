@@ -76,6 +76,26 @@ public class AdEndpoint {
 
             }
         }
+
+      public static class DeleteAdHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+              int id = Integer.parseInt(parms.get("id"));
+
+              Gson gson = new Gson();
+
+              if (adController.deleteAd(id)) {
+                  response.append(gson.toJson(id));
+              } else {
+                  response.append("Cannot delete ad!");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+
+          }
+      }
     }
 
 

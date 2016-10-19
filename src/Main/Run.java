@@ -21,6 +21,7 @@ import com.sun.net.httpserver.HttpServer;
             server.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
             server.createContext("/getads", new AdEndpoint.GetAdHandler());
             server.createContext("/createad", new AdEndpoint.CreateAdHandler());
+            server.createContext("/deletead", new AdEndpoint.DeleteAdHandler());
             server.setExecutor(null); // creates a default executor
             server.start();
             System.out.println("The server is running");
