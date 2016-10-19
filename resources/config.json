@@ -6,4 +6,6 @@
   "DB_USER":"brugtbog",
   "DB_PASS":"brugtpass",
   "SERVER_PORT":"1337"
+  "SSL_KEY":"resources/keystore.jks",
+  "SSL_PWD":"brugtbog"
 }

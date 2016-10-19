@@ -35,6 +35,12 @@ public class ConfigController {
             return config;
 
         }catch (Exception e){
+            config.setSslKey((String) jsonObj.get("SSL_KEY"));
+            config.setSslPwd((String) jsonObj.get("SSL_PWD"));
+
+            return config;
+
+        } catch (Exception e) {
             e.printStackTrace();
 
         }

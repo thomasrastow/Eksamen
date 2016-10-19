@@ -11,6 +11,8 @@ public class Config {
     private String dbUser;
     private String dbPass;
     private String srvPort;
+    private String sslKey;
+    private String sslPwd;
 
     public Config() {
 
@@ -19,6 +21,7 @@ public class Config {
     public String getDbType() {
         return dbType;
     }
+
     public void setDbType(String dbType) {
         this.dbType = dbType;
     }
@@ -26,11 +29,15 @@ public class Config {
     public String getDbHost() {
         return dbHost;
     }
+
     public void setDbHost(String dbHost) {
         this.dbHost = dbHost;
     }
 
-    public String getDbPort() {return dbPort;}
+    public String getDbPort() {
+        return dbPort;
+    }
+
     public void setDbPort(String dbPort) {
         this.dbPort = dbPort;
     }
@@ -38,6 +45,7 @@ public class Config {
     public String getDbName() {
         return dbName;
     }
+
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
@@ -45,6 +53,7 @@ public class Config {
     public String getDbUser() {
         return dbUser;
     }
+
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
@@ -52,6 +61,7 @@ public class Config {
     public String getDbPass() {
         return dbPass;
     }
+
     public void setDbPass(String dbPass) {
         this.dbPass = dbPass;
     }
@@ -59,7 +69,29 @@ public class Config {
     public String getSrvPort() {
         return srvPort;
     }
+
     public void setSrvPort(String srvPort) {
         this.srvPort = srvPort;
     }
+
+    public void setSrvPort(String srvPort) {
+        this.srvPort = srvPort;
+    }
+
+    public String getSslKey() {
+        return sslKey;
+    }
+
+    public void setSslKey(String sslKey) {
+        this.sslKey = sslKey;
+    }
+
+    public String getSslPwd() {
+        return sslPwd;
+    }
+
+    public void setSslPwd(String sslPwd) {
+        this.sslPwd = sslPwd;
+    }
+
 }

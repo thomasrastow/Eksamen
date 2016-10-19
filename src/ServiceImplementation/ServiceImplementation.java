@@ -1,12 +1,15 @@
 package ServiceImplementation;
 
+import Controller.ConfigController;
+import DTOobjects.Ad;
+import DTOobjects.Book;
+import DTOobjects.Config;
+import DTOobjects.User;
+
 import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import Controller.ConfigController;
-
-import DTOobjects.*;
 
 public class ServiceImplementation {
 

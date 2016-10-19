@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany.app</groupId>
     <artifactId>project_eva</artifactId>
+    <artifactId>Projekt_Brugtbog</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <build>
@@ -31,6 +32,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.40</version>
+            <version>6.0.4</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>

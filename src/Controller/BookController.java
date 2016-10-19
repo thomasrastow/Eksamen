@@ -1,11 +1,6 @@
 package Controller;
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
-
-import DTOobjects.Book;
 import ServiceImplementation.*;
-import java.util.ArrayList;
-
 public class BookController {
 
     private static ServiceImplementation serviceImpl = new ServiceImplementation();
