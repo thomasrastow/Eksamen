@@ -3,6 +3,8 @@ package Main; /**
  */
 import java.net.InetSocketAddress;
 
+import Controller.ConfigController;
+import DTOobjects.Config;
 import DTOobjects.User;
 import Endpoints.BookEndpoint;
 import Endpoints.UserEndpoint;
@@ -14,8 +16,14 @@ import com.sun.net.httpserver.HttpServer;
     public class Run {
 
         public static void main(String[] args) throws Exception {
+<<<<<<< HEAD
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
+=======
+            Config config = new ConfigController().getConfig();
+            int srvPort = Integer.parseInt(config.getSrvPort());
+            HttpServer server = HttpServer.create(new InetSocketAddress(srvPort), 0);
+>>>>>>> master
             server.createContext("/login", new LoginEndpoint.LoginHandler());
             server.createContext("/getusers", new UserEndpoint.GetUsersHandler());
             server.createContext("/createuser", new UserEndpoint.CreateUserHandler());
