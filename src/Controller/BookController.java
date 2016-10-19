@@ -37,7 +37,7 @@ public class BookController {
     }
 
 
-    public boolean deleteBook(int id) {
+    public static boolean deleteBook(int id) {
 
         ServiceImplementation db = new ServiceImplementation();
 
