@@ -90,7 +90,7 @@ public class Run {
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
 
             trustManagerFactory.init(keyStore);
-
+            //bøllemisher
             // setup the HTTPS context and parameters
             sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
 
