@@ -78,7 +78,7 @@ public class BookEndpoint {
                 } else {
                     response.append("Cannot create book!");
 
-                    // Burde det ikke hedde "Book already exists"?
+                    // Burde det ikke hedde "Book already exists"
                 }
 
                 endpointController.writeResponse(httpExchange, response.toString());
