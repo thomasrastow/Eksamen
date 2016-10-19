@@ -3,6 +3,7 @@ package Controller;
 import DTOobjects.Config;
 import Endpoints.LoginEndpoint;
 import Endpoints.UserEndpoint;
+import Endpoints.AdEndpoint;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
@@ -69,6 +70,12 @@ public class ServerController {
         httpsServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
         httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
         httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpsServer.createContext("/getads", new AdEndpoint.GetAdHandler());
+        httpsServer.createContext("/createad", new AdEndpoint.CreateAdHandler());
+        httpsServer.createContext("/deletead", new AdEndpoint.DeleteAdHandler());
+        httpsServer.createContext("/myads", new AdEndpoint.GetMyAdsHandler());
+        httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
+        httpsServer.createContext("/updatead", new AdEndpoint.UpdateAdHandler());
         httpsServer.setExecutor(null);
         httpsServer.start();
 

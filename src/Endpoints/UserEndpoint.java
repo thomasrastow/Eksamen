@@ -88,7 +88,7 @@ public class UserEndpoint {
             Gson gson = new Gson();
 
             if (id != 0 && userController.deleteUser(id)) {
-                response.append(gson.toJson(id));
+                response.append(gson.toJson("The user with id: "+id+" is now deleted"));
             } else {
                 response.append("Cannot delete user!");
             }

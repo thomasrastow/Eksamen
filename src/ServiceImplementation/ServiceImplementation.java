@@ -8,11 +8,7 @@ import Controller.ConfigController;
 
 import DTOobjects.*;
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> AdEndpoint
 public class ServiceImplementation {
 
     Config config = new ConfigController().getConfig();
