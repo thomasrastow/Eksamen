@@ -10,28 +10,20 @@ import java.util.ArrayList;
  */
 public class UserController {
 
+    ServiceImplementation serviceImpl = new ServiceImplementation();
+
     public ArrayList<User> getUsers() {
 
-        ServiceImplementation db = new ServiceImplementation();
-
-        ArrayList<User> users = db.getUsers();
-
-        try {
-            users =  db.getUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ArrayList<User> users = serviceImpl.getUsers();
 
         return users;
     }
 
     public boolean createUser(User user) {
 
-        ServiceImplementation db = new ServiceImplementation();
-
         boolean verifyRequest;
 
-        verifyRequest = db.createUser(user);
+        verifyRequest = serviceImpl.createUser(user);
 
         if (verifyRequest) {
             return true;
@@ -43,11 +35,9 @@ public class UserController {
 
     public boolean deleteUser(int id) {
 
-        ServiceImplementation db = new ServiceImplementation();
-
         boolean verifyRequest;
 
-        verifyRequest = db.deleteUser(id);
+        verifyRequest = serviceImpl.deleteUser(id);
 
         if (verifyRequest) {
             return true;
