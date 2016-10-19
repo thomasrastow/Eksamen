@@ -1,10 +1,7 @@
 package Controller;
-
 import java.util.List;
-import java.util.Scanner;
 import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
-//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 public class BookController {
 
@@ -23,28 +20,23 @@ public class BookController {
         return books;
     }
 
-
-
-    Scanner input = new Scanner(System.in);
-
-
     public String createBook(long ISBN, String title, String edition, String author) {
 
         if (ISBN==13) {
             return "ISBN has to be 13 digits";
         }
 
-   if (title.contains("")){
+        if (title.contains("")){
        return "Title cannot be blank";
-   }
+        }
 
-   if (edition.contains("")){
+        if (edition.contains("")){
        return "Edition cannot be blank";
-   }
+        }
 
-   if (author.contains("")){
+        if (author.contains("")){
        return "Author cannot be blank";
-   }
+        }
 
    Book book = new Book (0, ISBN, title, edition, author);
 
