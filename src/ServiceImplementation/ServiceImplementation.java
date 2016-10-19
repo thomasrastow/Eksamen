@@ -24,7 +24,7 @@ public class ServiceImplementation {
     PreparedStatement createBookSQL = null;
     PreparedStatement getBooksSQL = null;
     PreparedStatement deleteBookSQL = null;
-    PreparedStatement showBookSQL = null;
+
 
     PreparedStatement createAdSQL = null;
     PreparedStatement getAdsSQL = null;
@@ -54,9 +54,6 @@ public class ServiceImplementation {
                             + " VALUES (?, ?, ?, ?)");
 
             getBooksSQL = connection.prepareStatement("SELECT * FROM book");
-
-            showBookSQL = connection.prepareStatement("SELECT FROM book WHERE id = ?");
-
 
             deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
 //ADS
@@ -258,46 +255,11 @@ public class ServiceImplementation {
         return false;
     }
 
-    public Book showBook() {
-        ResultSet resultSet = null;
-        Book book = null;
-
-        try {
-            showBookSQL.setInt(1, id);
-            resultSet = showBookSQL.executeQuery();
-
-            while (resultSet.next()) {
-                book = new Book();
-
-                book.setId(resultSet.getInt("id"));
-                book.setISBN(resultSet.getLong("ISBN"));
-                book.setTitle(resultSet.getString("title"));
-                book.setEdition(resultSet.getString("edition"));
-                book.setAuthor(resultSet.getString("author"));
-
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                close();
-            }
-        }
-        return book;
-    }
-
 
     public ArrayList<Book> getBooks() {
 
         ArrayList<Book> booklist = new ArrayList<>(); //ændret fra = null
         ResultSet resultSet = null;
-
 
         try {
             resultSet = getBooksSQL.executeQuery();

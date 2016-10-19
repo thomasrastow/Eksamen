@@ -1,6 +1,7 @@
 package Controller;
 import java.util.ArrayList;
 import DTOobjects.Book;
+import DTOobjects.User;
 import ServiceImplementation.ServiceImplementation;
 
 public class BookController {
@@ -29,20 +30,7 @@ public class BookController {
     }
 
 
-    public static showBook(int id){
 
-        ServiceImplementation serviceImpl = new ServiceImplementation();
-
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.showBook(id);
-
-        if (verifyRequest) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public static boolean deleteBook(int id) {
 

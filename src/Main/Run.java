@@ -25,7 +25,7 @@ import com.sun.net.httpserver.HttpServer;
             server.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
             server.createContext("/createbook", new BookEndpoint.CreateBookHandler());
             server.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
-            server.createContext("/showbooks", new BookEndpoint.ShowBookHandler());
+
 
 
             server.setExecutor(null); // creates a default executor

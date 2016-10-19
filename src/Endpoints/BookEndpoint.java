@@ -2,6 +2,7 @@ package Endpoints;
 
 import Controller.EndpointController;
 import Controller.BookController;
+import DTOobjects.User;
 import com.google.gson.Gson;
 import com.sun.deploy.net.proxy.StaticProxyManager;
 import com.sun.net.httpserver.HttpExchange;
@@ -87,23 +88,5 @@ public class BookEndpoint {
             }
         }
 
-
-    public static class ShowBookHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException {
-            ArrayList<Book> books = bookController.getBooks();
-
-            Gson gson = new Gson();
-
-            StringBuilder response = new StringBuilder();
-
-            if (books.isEmpty()) {
-                response.append("The book is not found");
-            } else {
-                response.append(gson.toJson(books));
-            }
-
-            endpointController.writeResponse(httpExchange, response.toString());
-        }
-    }
 }
 
