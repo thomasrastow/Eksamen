@@ -1,21 +1,19 @@
 package Controller;
-import java.util.ArrayList;
 import DTOobjects.Book;
 import DTOobjects.User;
 import ServiceImplementation.ServiceImplementation;
-
+import java.util.ArrayList;
 public class BookController {
 
-    ServiceImplementation serviceImpl = new ServiceImplementation();
-
-    public ArrayList<Book> getBooks() {
+    private static ServiceImplementation serviceImpl = new ServiceImplementation();
+    public static ArrayList<Book> getBooks() {
 
         ArrayList<Book> books = serviceImpl.getBooks();
 
         return books;
     }
 
-    public boolean createBook(Book book) {
+    public static boolean createBook(Book book) {
         ServiceImplementation serviceImpl = new ServiceImplementation();
 
         boolean verifyRequest;

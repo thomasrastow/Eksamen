@@ -17,6 +17,7 @@ public class EndpointController {
         httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().set("Content-Type", "application/json");
         httpExchange.sendResponseHeaders(1000, response.length());
+        httpExchange.sendResponseHeaders(200, response.length());
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes("latin1"));
         os.close();
