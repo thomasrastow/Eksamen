@@ -254,7 +254,7 @@ public class ServiceImplementation {
 
     public ArrayList<Book> getBooks() {
 
-        ArrayList<Book> booklist = null;
+        ArrayList<Book> booklist = new ArrayList<>(); //ændret fra = null
         ResultSet resultSet = null;
         Book book = null;
 
@@ -331,7 +331,7 @@ public class ServiceImplementation {
 
     public List<Ad> getAds() {
 
-        List<Ad> adlist = null;
+        ArrayList<Ad> adlist = new ArrayList<>();
         ResultSet resultSet = null;
         Ad ad = null;
 

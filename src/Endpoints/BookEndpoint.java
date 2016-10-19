@@ -7,7 +7,6 @@ import com.sun.deploy.net.proxy.StaticProxyManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import DTOobjects.Book;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class BookEndpoint {
         }
     }
 
-    // klasse som håndterer books kaldet
+    // klasse som håndterer get books kaldet
 
     public static class GetBooksHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
