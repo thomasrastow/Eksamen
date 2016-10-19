@@ -1,4 +1,5 @@
 package Controller;
+import java.util.ArrayList;
 import java.util.List;
 import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
@@ -7,9 +8,9 @@ public class BookController {
 
     ServiceImplementation db = new ServiceImplementation();
 
-    public List<Book> getBooks() {
+    public ArrayList<Book> getBooks() {
 
-        List<Book> books = db.getBooks();
+        ArrayList<Book> books = db.getBooks();
 
         try {
             books = db.getBooks();
