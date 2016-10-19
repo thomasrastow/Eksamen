@@ -3,6 +3,7 @@ package Endpoints;
 import Controller.EndpointController;
 import Controller.BookController;
 import com.google.gson.Gson;
+import com.sun.deploy.net.proxy.StaticProxyManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -19,10 +20,10 @@ import java.util.List;
 
 
 public class BookEndpoint {
-    EndpointController endpointController = new EndpointController();
-    BookController bookController = new BookController();
+    static EndpointController endpointController = new EndpointController();
+    static BookController bookController = new BookController();
 
-    public class DeleteBookHandler implements HttpHandler {
+    public static class DeleteBookHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
             Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
@@ -44,7 +45,7 @@ public class BookEndpoint {
 
     // klasse som håndterer books kaldet
 
-    public class GetBooksHandler implements HttpHandler {
+    public static class GetBooksHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 

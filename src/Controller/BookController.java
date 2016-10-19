@@ -20,41 +20,27 @@ public class BookController {
         return books;
     }
 
-    public String createBook(long ISBN, String title, String edition, String author) {
+    public boolean createBook(Book book) {
 
-        if (ISBN==13) {
-            return "ISBN has to be 13 digits";
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.createBook(book);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
         }
-
-        if (title.contains("")){
-       return "Title cannot be blank";
-        }
-
-        if (edition.contains("")){
-       return "Edition cannot be blank";
-        }
-
-        if (author.contains("")){
-       return "Author cannot be blank";
-        }
-
-   Book book = new Book (0, ISBN, title, edition, author);
-
-        ServiceImplementation serviceImpl = new ServiceImplementation();
-
-        try {
-            serviceImpl.createBook(book);
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-   return "Error";
 
     }
 
+
     public boolean deleteBook(int id) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
         boolean verifyRequest;
 
         verifyRequest = db.deleteBook(id);
@@ -64,11 +50,6 @@ public class BookController {
         } else {
             return false;
         }
+
     }
-
-    public Book showBook(int id) {
-            return db.getBooks().remove(id);
-        }
-
-
 }

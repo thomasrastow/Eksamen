@@ -23,6 +23,9 @@ import com.sun.net.httpserver.HttpServer;
             // book run
 
             server.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
+            server.createContext("/createbook", new BookEndpoint.CreateBookHandler());
+            //server.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
+
 
 
 
