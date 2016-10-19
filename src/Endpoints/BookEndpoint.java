@@ -47,13 +47,12 @@ public class BookEndpoint {
 
     public static class GetBooksHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
-            StringBuilder response = new StringBuilder();
-
             ArrayList<Book> books = bookController.getBooks();
-
             Gson gson = new Gson();
 
-            if(books.isEmpty()) {
+            StringBuilder response = new StringBuilder();
+
+            if (books.isEmpty()) {
                 response.append("No books found!");
             } else {
                 response.append(gson.toJson(books));
@@ -62,32 +61,31 @@ public class BookEndpoint {
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
+        public static class CreateBookHandler implements HttpHandler {
+            public void handle(HttpExchange httpExchange) throws IOException {
+                StringBuilder response = new StringBuilder();
+                Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-    public static class CreateBookHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException {
-            StringBuilder response = new StringBuilder();
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+                Book book = new Book();
+                book.setISBN(Long.parseLong(parms.get("ISBN")));
+                book.setTitle(parms.get("Title"));
+                book.setEdition(parms.get("Edition"));
+                book.setAuthor(parms.get("Author"));
 
-            Book book = new Book();
-            book.setISBN(Long.parseLong(parms.get("ISBN")));
-            book.setTitle(parms.get("Title"));
-            book.setEdition(parms.get("Edition"));
-            book.setAuthor(parms.get("Author"));
+                Gson gson = new Gson();
 
-            Gson gson = new Gson();
+                if (book != null && bookController.createBook(book)) {
+                    response.append(gson.toJson(book));
+                } else {
+                    response.append("Cannot create book!");
 
-            if(book != null && bookController.createBook(book)) {
-                response.append(gson.toJson(book));
+                    // Burde det ikke hedde "Book already exists"?
+                }
+
+                endpointController.writeResponse(httpExchange, response.toString());
+
             }
-            else {
-                response.append("Cannot create book!");
-
-             // Burde det ikke hedde "Book already exists"?
-            }
-
-            endpointController.writeResponse(httpExchange, response.toString());
-
         }
-    }
+
 }
 

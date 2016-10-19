@@ -16,9 +16,9 @@ public class EndpointController {
     public void writeResponse(HttpExchange httpExchange, String response) throws IOException {
         httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().set("Content-Type", "application/json");
-        httpExchange.sendResponseHeaders(200, response.length());
+        httpExchange.sendResponseHeaders(1000, response.length());
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(response.getBytes("latin1"));
         os.close();
     }
 
