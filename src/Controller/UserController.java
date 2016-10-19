@@ -16,12 +16,6 @@ public class UserController {
 
         ArrayList<User> users = serviceImpl.getUsers();
 
-        try {
-            users =  serviceImpl.getUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return users;
     }
 
