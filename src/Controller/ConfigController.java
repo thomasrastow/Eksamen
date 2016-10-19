@@ -1,65 +1,61 @@
 package Controller;
 
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.FileReader;
 
 /**
  * Created by krist on 17-10-2016.
  */
-/*public class ConfigController {
+public class ConfigController {
+
+    public static void main (String[]args){
+
+        JSONParser parseJson = new JSONParser();
 
 
-        private String DB_TYPE;
-        public String getDBTYPE() { return this.DB_TYPE; }
-        public void setDBTYPE(String DB_TYPE) { this.DB_TYPE = DB_TYPE; }
+        Gson gson = new Gson();
+
+        try {
+            Object parseObj = parseJson.parse(new FileReader("resources/config.json"));
 
 
-        private String DB_HOST;
-        public String getDBHOST() { return this.DB_HOST; }
-        public void setDBHOST(String DB_HOST) { this.DB_HOST = DB_HOST; }
 
-        private String DB_PORT;
-        public String getDBPORT() { return this.DB_PORT; }
-        public void setDBPORT(String DB_PORT) { this.DB_PORT = DB_PORT; }
+            JSONObject jsonObj = (JSONObject) parseObj;
 
-        private String DB_NAME;
-        public String getDBNAME() { return this.DB_NAME; }
-        public void setDBNAME(String DB_NAME) { this.DB_NAME = DB_NAME; }
 
-        private String DB_USER;
-        public String getDBUSER() { return this.DB_USER; }
-        public void setDBUSER(String DB_USER) { this.DB_USER = DB_USER; }
+            String dbType = (String) jsonObj.get("DB_TYPE");
+            String dbHost = (String) jsonObj.get("DB_HOST");
+            String dbPort = (String) jsonObj.get("DB_PORT");
+            String dbNAME = (String) jsonObj.get("DB_NAME");
+            String dbUSER = (String) jsonObj.get("DB_USER");
+            String dbPASS = (String) jsonObj.get("DB_PASS");
+            String serverPort = (String) jsonObj.get("SERVER_PORT");
 
-        private String DB_PASS;
-        public String getDBPASS() { return this.DB_PASS; }
-        public void setDBPASS(String DB_PASS) { this.DB_PASS = DB_PASS; }
 
-        private String COURSES_JSON;
-        public String getCOURSESJSON() { return this.COURSES_JSON; }
-        public void setCOURSESJSON(String COURSES_JSON) { this.COURSES_JSON = COURSES_JSON; }
+            System.out.println(dbType  + "\n" +
+                    dbHost + "\n" +
+                    dbPort + "\n" +
+                    dbNAME + "\n" +
+                    dbUSER + "\n" +
+                    dbPASS + "\n" +
+                    serverPort);
 
-        private String HASH_SALT;
-        public String getHASHSALT() { return this.HASH_SALT; }
-        public void setHASHSALT(String HASH_SALT) { this.HASH_SALT = HASH_SALT; }
+        }catch (Exception e){
+            e.printStackTrace();
 
-        private String ENCRYPT_KEY;
-        public String getENCRYPTKEY() { return this.ENCRYPT_KEY; }
-
-        public void setENCRYPTKEY(String ENCRYPT_KEY) { this.ENCRYPT_KEY = ENCRYPT_KEY; }
-
-        private String SERVER_PORT;
-        public String getSERVERPORT() { return this.SERVER_PORT; }
-        public void setSERVERPORT(String SERVER_PORT) { this.SERVER_PORT = SERVER_PORT; }
-
-        private String DEBUG;
-        public String getDEBUG() { return this.DEBUG; }
-        public void setDEBUG(String DEBUG) { this.DEBUG = DEBUG; }
-
-    public void configParser() {
-
-            JsonReader jreader = new JsonReader();
+        }
 
     }
+
+
     }
 
-*/
