@@ -55,7 +55,7 @@ public class UserEndpoint {
             user.setPassword(parms.get("password"));
             user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
             user.setAddress(parms.get("address"));
-            user.setEmail(parms.get("username"));
+            user.setEmail(parms.get("email"));
             user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
             user.setCash(Integer.parseInt(parms.get("cash")));
             user.setTransfer(Integer.parseInt(parms.get("transfer")));
@@ -67,7 +67,10 @@ public class UserEndpoint {
                 response.append(gson.toJson(user));
             } else {
                 response.append("Cannot create user!");
+
+             //Burde det ikke hedde "User already exists"?
             }
+
 
             endpointController.writeResponse(httpExchange, response.toString());
 
