@@ -1,19 +1,35 @@
 package Controller;
 
+import java.util.List;
 import java.util.Scanner;
 
 
 
 import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+//import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
-import java.util.ArrayList;
 
-/*
+
 
 public class BookController {
 
+    public List<Book> getBooks() {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        List<Book> books = db.getBooks();
+
+        try {
+            books = db.getBooks();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
+}
+/*
     Scanner input = new Scanner(System.in);
 
 

@@ -4,6 +4,7 @@ package Main; /**
 import java.net.InetSocketAddress;
 
 import DTOobjects.User;
+import Endpoints.BookEndpoint;
 import Endpoints.UserEndpoint;
 import Endpoints.LoginEndpoint;
 import com.sun.net.httpserver.HttpServer;
@@ -18,6 +19,13 @@ import com.sun.net.httpserver.HttpServer;
             server.createContext("/getusers", new UserEndpoint.GetUsersHandler());
             server.createContext("/createuser", new UserEndpoint.CreateUserHandler());
             server.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+
+            // book run
+
+            server.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
+
+
+
             server.setExecutor(null); // creates a default executor
             server.start();
             System.out.println("The server is running");
