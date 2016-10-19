@@ -1,28 +1,23 @@
 package Controller;
-import java.util.ArrayList;
-import DTOobjects.Book;
-import ServiceImplementation.ServiceImplementation;
-<<<<<<< HEAD
-=======
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
-import java.util.ArrayList;
 
-/*
->>>>>>> master
+import DTOobjects.Book;
+import ServiceImplementation.*;
+import java.util.ArrayList;
 
 public class BookController {
 
-    ServiceImplementation serviceImpl = new ServiceImplementation();
+    private static ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public ArrayList<Book> getBooks() {
+    public static ArrayList<Book> getBooks() {
 
         ArrayList<Book> books = serviceImpl.getBooks();
 
         return books;
     }
 
-    public boolean createBook(Book book) {
+    public static boolean createBook(Book book) {
         ServiceImplementation serviceImpl = new ServiceImplementation();
 
         boolean verifyRequest;

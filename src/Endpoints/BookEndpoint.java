@@ -1,21 +1,13 @@
 package Endpoints;
 
-import Controller.EndpointController;
-import Controller.BookController;
+import Controller.*;
+import DTOobjects.Book;
 import com.google.gson.Gson;
-import com.sun.deploy.net.proxy.StaticProxyManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
-import java.util.Map;
-import DTOobjects.Book;
 import java.util.ArrayList;
-
-
-
-/**
- * Created by krist 
- */
+import java.util.Map;
 
 
 public class BookEndpoint {
@@ -31,7 +23,7 @@ public class BookEndpoint {
 
             Gson gson = new Gson();
 
-            if (id != 0 && BookController.deleteBook(id)) {
+            if (id != 0 && bookController.deleteBook(id)) {
                 response.append(gson.toJson(id));
             } else {
                 response.append("Cannot delete book!");
