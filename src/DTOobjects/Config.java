@@ -22,36 +22,40 @@ public class Config {
     public void setDbType(String dbType) {
         this.dbType = dbType;
     }
+
     public String getDbHost() {
         return dbHost;
     }
     public void setDbHost(String dbHost) {
         this.dbHost = dbHost;
     }
-    public String getDbPort() {
-        return dbPort;
-    }
+
+    public String getDbPort() {return dbPort;}
     public void setDbPort(String dbPort) {
         this.dbPort = dbPort;
     }
+
     public String getDbName() {
         return dbName;
     }
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
+
     public String getDbUser() {
         return dbUser;
     }
     public void setDbUser(String dbUser) {
         this.dbUser = dbUser;
     }
+
     public String getDbPass() {
         return dbPass;
     }
     public void setDbPass(String dbPass) {
         this.dbPass = dbPass;
     }
+
     public String getSrvPort() {
         return srvPort;
     }
