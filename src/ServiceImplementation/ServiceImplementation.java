@@ -4,12 +4,18 @@ import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import Controller.ConfigController;
 
 import DTOobjects.*;
 
-import static sun.plugin.javascript.navig.JSType.URL;
+
 
 public class ServiceImplementation {
+
+      ConfigController config = new ConfigController();
+
+
+
 
         String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
         String username = "brugtbog";

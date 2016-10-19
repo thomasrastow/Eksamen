@@ -1,15 +1,9 @@
 package Controller;
 
-
+import DTOobjects.Config;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.io.FileReader;
 
 /**
@@ -31,23 +25,18 @@ public class ConfigController {
 
             JSONObject jsonObj = (JSONObject) parseObj;
 
+            Config config = new Config();
 
-            String dbType = (String) jsonObj.get("DB_TYPE");
-            String dbHost = (String) jsonObj.get("DB_HOST");
-            String dbPort = (String) jsonObj.get("DB_PORT");
-            String dbNAME = (String) jsonObj.get("DB_NAME");
-            String dbUSER = (String) jsonObj.get("DB_USER");
-            String dbPASS = (String) jsonObj.get("DB_PASS");
-            String serverPort = (String) jsonObj.get("SERVER_PORT");
+            config.setDbType((String) jsonObj.get("DB_TYPE"));
+            config.setDbHost((String) jsonObj.get("DB_HOST"));
+            config.setDbPort((String) jsonObj.get("DB_PORT"));
+            config.setDbName((String) jsonObj.get("DB_NAME"));
+            config.setDbUser((String) jsonObj.get("DB_USER"));
+            config.setDbPass((String) jsonObj.get("DB_PASS"));
+            config.setSrvPort((String) jsonObj.get("SERVER_PORT"));
 
 
-            System.out.println(dbType  + "\n" +
-                    dbHost + "\n" +
-                    dbPort + "\n" +
-                    dbNAME + "\n" +
-                    dbUSER + "\n" +
-                    dbPASS + "\n" +
-                    serverPort);
+
 
         }catch (Exception e){
             e.printStackTrace();
