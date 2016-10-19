@@ -11,21 +11,18 @@ import java.io.FileReader;
  */
 public class ConfigController {
 
-    public static void main (String[]args){
+    public Config getConfig() {
 
         JSONParser parseJson = new JSONParser();
 
-
-        Gson gson = new Gson();
+        Config config = new Config();
 
         try {
             Object parseObj = parseJson.parse(new FileReader("resources/config.json"));
 
-
-
             JSONObject jsonObj = (JSONObject) parseObj;
 
-            Config config = new Config();
+            config = new Config();
 
             config.setDbType((String) jsonObj.get("DB_TYPE"));
             config.setDbHost((String) jsonObj.get("DB_HOST"));
@@ -35,16 +32,14 @@ public class ConfigController {
             config.setDbPass((String) jsonObj.get("DB_PASS"));
             config.setSrvPort((String) jsonObj.get("SERVER_PORT"));
 
-
-
+            return config;
 
         }catch (Exception e){
             e.printStackTrace();
 
         }
 
+        return config;
     }
-
-
-    }
+}
 

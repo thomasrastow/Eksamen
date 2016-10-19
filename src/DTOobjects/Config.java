@@ -12,6 +12,10 @@ public class Config {
     private String dbPass;
     private String srvPort;
 
+    public Config() {
+
+    }
+
     public String getDbType() {
         return dbType;
     }

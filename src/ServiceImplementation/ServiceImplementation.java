@@ -12,14 +12,11 @@ import DTOobjects.*;
 
 public class ServiceImplementation {
 
-      ConfigController config = new ConfigController();
+    Config config = new ConfigController().getConfig();
 
-
-
-
-        String url = "jdbc:mysql://shop.c50bqctooery.us-east-1.rds.amazonaws.com:3306/shop?useSSL=false";
-        String username = "brugtbog";
-        String password = "brugtpass";
+    String url = config.getDbType()+config.getDbHost()+":"+config.getDbPort()+"/" + config.getDbName()+ "?useSSL=false";
+    String username = config.getDbUser();
+    String password = config.getDbPass();
 
         Connection connection = null;
 
