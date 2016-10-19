@@ -1,92 +1,91 @@
 package Controller;
 import DTOobjects.Ad;
-import java.sql.Timestamp;
-import java.util.Date;
+
+import ServiceImplementation.ServiceImplementation;
+
+import java.util.ArrayList;
 
 
-/*
+
 public class AdController {
 
+    ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public Ad adDTO;
+    public ArrayList<Ad> getAds() {
 
-        public String createAd(int price, int rating, String comment)
+        ServiceImplementation db = new ServiceImplementation();
 
-        {
-            int deleted = 0;
-            int locked = 0;
-            int userID = 10; //Current user metode
-            int id = 0; //Autoincrement?
-            java.util.Date date= new java.util.Date();
-            java.sql.Timestamp time = new Timestamp(date.getTime()) ;
-            int bookID = 0;
-            if (price == "") {
-                return "price cannot be blank.";
-            }
+        ArrayList<Ad> ads = db.getAds();
 
-            if (rating == "") {
-                return "rating cannot be blank.";
-            }
-
-            if (bookID == "") {
-                return "bookID cannot be blank";
-            }
-
-             //new ad();
-            adDTO = new Ad(id,price, rating,userID, bookID, deleted, comment, locked, time);
+        return ads;
+    }
 
 
-            // TODO: save in the database.
+    public boolean createAd(Ad ad) {
 
-            return "OK";
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.createAd(ad);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteAd(int id) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.deleteAd(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
         }
 
-        public String editAd (int price, int rating, String comment, int deleted, int locked)
+    }
 
-        {
-            int userID = 10; //Current user metode
-            int id = 0; //Autoincrement?
-            java.util.Date date= new java.util.Date();
-            java.sql.Timestamp time = new Timestamp(date.getTime()) ;
-            int bookID = 0;
+    public ArrayList<Ad> getMyAds(int userID) {
 
-            if (price == "") {
-                return "price cannot be blank.";
-            }
+        ServiceImplementation db = new ServiceImplementation();
 
-            if (rating == "") {
-                return "rating cannot be blank.";
-            }
+        ArrayList<Ad> myAds = db.getMyAds(userID);
+
+        return myAds;
+    }
+
+    public boolean updateAd(Ad ad) {
+
+        boolean verifyRequest;
+
+        verifyRequest = serviceImpl.updateAd(ad);
+        if (verifyRequest){
+            return true;
+        } else {
+            return false;
         }
 
-        public String reserveAd (int locked)
+    }
 
-        {
-            locked = 1;
-            int userID = 10; //Current user metode
-            int id = 0; //Autoincrement?
-            java.util.Date date= new java.util.Date();
-            java.sql.Timestamp time = new Timestamp(date.getTime()) ;
-            int bookID = 0; //get bookid
-            int price = 0; //
-            int rating = 0;
-            String comment = "test";
-            int deleted = 0;
+    public Ad getAd(int id) {
 
+        Ad ad = null;
+
+        try{
+            ad = serviceImpl.getAd(id);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        return ad;
+
+    }
 
 }
-
-
-  //public getAds();
-   // get ads were bookID = ? and locked = 0, and deleted = 0
-
-  // public getMyAds();
-
-     //   get ads were userID = correntID, and deleted = 0
-
-
- }
-}
-*/
