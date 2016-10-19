@@ -1,7 +1,7 @@
 package Controller;
 
 import DTOobjects.User;
-import ServiveImplementation.ServiceImplementation;
+import ServiceImplementation.ServiceImplementation;
 
 import java.util.ArrayList;
 
@@ -14,10 +14,47 @@ public class UserController {
 
         ServiceImplementation db = new ServiceImplementation();
 
-        ArrayList<User> users;
-        users = db.getUsers();
+        ArrayList<User> users = db.getUsers();
+
+        try {
+            users =  db.getUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return users;
+    }
+
+    public boolean createUser(User user) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.createUser(user);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean deleteUser(int id) {
+
+        ServiceImplementation db = new ServiceImplementation();
+
+        boolean verifyRequest;
+
+        verifyRequest = db.deleteUser(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
 
