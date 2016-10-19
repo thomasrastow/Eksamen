@@ -46,5 +46,35 @@ public class UserController {
         }
 
     }
+
+    public boolean updateUser(User user){
+
+        boolean verifyRequest;
+
+        verifyRequest = serviceImpl.updateUser(user);
+        if (verifyRequest) {
+            return true;
+        }else {
+            return false;
+
+        }
+
+
+    }
+
+
+    public User getUser(int userID) {
+
+        User user = null;
+        try {
+            user = serviceImpl.getUser(userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
+
+
+    }
 }
 
