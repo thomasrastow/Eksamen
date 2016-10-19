@@ -8,11 +8,6 @@ import Controller.ConfigController;
 
 import DTOobjects.*;
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> master
 public class ServiceImplementation {
 
     Config config = new ConfigController().getConfig();
