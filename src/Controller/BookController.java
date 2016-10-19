@@ -6,9 +6,6 @@ import DTOobjects.Book;
 import ServiceImplementation.ServiceImplementation;
 //import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
-
-
-
 public class BookController {
 
     ServiceImplementation db = new ServiceImplementation();
