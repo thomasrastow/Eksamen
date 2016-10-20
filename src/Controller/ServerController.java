@@ -68,18 +68,26 @@ public class ServerController {
         });
 
         httpsServer.createContext("/login", new LoginEndpoint.LoginHandler());
+
         httpsServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
         httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
         httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
+
         httpsServer.createContext("/getads", new AdEndpoint.GetAdHandler());
         httpsServer.createContext("/createad", new AdEndpoint.CreateAdHandler());
         httpsServer.createContext("/deletead", new AdEndpoint.DeleteAdHandler());
         httpsServer.createContext("/myads", new AdEndpoint.GetMyAdsHandler());
-        httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
         httpsServer.createContext("/updatead", new AdEndpoint.UpdateAdHandler());
+        httpsServer.createContext("/getadsbook", new AdEndpoint.GetAdsBookHandler());
+        httpsServer.createContext("/getadsall", new AdEndpoint.GetAdsAllHandler());
+
         httpsServer.createContext("/createbook", new BookEndpoint.CreateBookHandler());
         httpsServer.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
         httpsServer.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
+
+        httpsServer.createContext("/searchbooks", new BookEndpoint.SearchBooksHandler());
+
         httpsServer.setExecutor(null);
         httpsServer.start();
 

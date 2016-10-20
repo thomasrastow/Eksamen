@@ -6,7 +6,7 @@ package DTOobjects;
 public class User {
 
     // Attributter oprettes
-    private int id;
+    private int userId;
     private String username;
     private String password;
     private int phonenumber;
@@ -45,11 +45,11 @@ public class User {
 
 
     public int getId() {
-        return id;
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import Controller.EndpointController;
@@ -31,13 +32,12 @@ public class LoginEndpoint {
             User user = new User();
             user = loginController.login(username, password);
 
-
             Gson gson = new Gson();
 
-            if (user == null) {
-                response.append("User not found!");
-            } else {
+            if (user != null) {
                 response.append(gson.toJson(user));
+            } else {
+                response.append("User not found!");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());

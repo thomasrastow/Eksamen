@@ -63,17 +63,13 @@ public class UserController {
     }
 
 
-    public User getUser(int userID) {
+    public User getUser(int id) {
 
-        User user = null;
-        try {
-            user = serviceImpl.getUser(userID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        User user = serviceImpl.getUser(id);
+
+        serviceImpl.getUser(id);
 
         return user;
-
 
     }
 }

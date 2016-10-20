@@ -53,16 +53,15 @@ public class AdEndpoint {
 
               ad.setPrice(Integer.parseInt(parms.get("price")));
               ad.setRating(Integer.parseInt(parms.get("rating")));
-              ad.setUserID(Integer.parseInt(parms.get("userID")));
-              ad.setBookID(Integer.parseInt(parms.get("bookID")));
+              ad.setUserId(Integer.parseInt(parms.get("userid")));
+              ad.setBookISBN(Long.parseLong(parms.get("isbn")));
               ad.setDeleted(Integer.parseInt(parms.get("deleted")));
               ad.setComment(parms.get("comment"));
               ad.setLocked(Integer.parseInt(parms.get("locked")));
-              ad.setTime(Timestamp.valueOf(parms.get("time")));
 
               Gson gson = new Gson();
 
-              if (adController.createAd(ad)) {
+              if (ad != null && adController.createAd(ad)) {
                   response.append(gson.toJson(ad));
               } else {
                   response.append("Cannot create ad!");
@@ -97,7 +96,7 @@ public class AdEndpoint {
 
               Gson gson = new Gson();
 
-              if (adController.updateAd(ad)) {
+              if (ad != null && adController.updateAd(ad)) {
                   response.append(gson.toJson(ad));
               } else {
                   response.append("Cannot update ad!");
@@ -134,7 +133,7 @@ public class AdEndpoint {
               StringBuilder response = new StringBuilder();
               Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              ArrayList<Ad> myAds = adController.getMyAds(Integer.parseInt(parms.get("userID")));
+              ArrayList<Ad> myAds = adController.getMyAds(Integer.parseInt(parms.get("userid")));
 
               Gson gson = new Gson();
 
@@ -142,6 +141,45 @@ public class AdEndpoint {
                   response.append("No ads found!");
               } else {
                   response.append(gson.toJson(myAds));
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+
+          }
+      }
+
+      public static class GetAdsBookHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+              ArrayList<Ad> ads = adController.getAdsBook(Long.parseLong(parms.get("isbn")));
+
+              Gson gson = new Gson();
+
+              if (ads.isEmpty()) {
+                  response.append("No ads found!");
+              } else {
+                  response.append(gson.toJson(ads));
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+
+          }
+      }
+
+      public static class GetAdsAllHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+
+              ArrayList<Ad> ads = adController.getAdsAll();
+
+              Gson gson = new Gson();
+
+              if (ads.isEmpty()) {
+                  response.append("No ads found!");
+              } else {
+                  response.append(gson.toJson(ads));
               }
 
               endpointController.writeResponse(httpExchange, response.toString());

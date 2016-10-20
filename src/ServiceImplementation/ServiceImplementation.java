@@ -13,165 +13,165 @@ public class ServiceImplementation {
 
     Config config = new ConfigController().getConfig();
 
-    String url = config.getDbType()+config.getDbHost()+":"+config.getDbPort()+"/" + config.getDbName()+ "?useSSL=false";
+    String url = config.getDbType() + config.getDbHost() + ":" + config.getDbPort() + "/" + config.getDbName() + "?useSSL=false";
     String username = config.getDbUser();
     String password = config.getDbPass();
 
-        Connection connection = null;
+    Connection connection = null;
 
-        PreparedStatement authorizeUserSQL = null;
+    PreparedStatement authorizeUserSQL = null;
 
-        PreparedStatement createUserSQL = null;
-        PreparedStatement updateUserSQL = null;
-        PreparedStatement getUsersSQL = null;
-        PreparedStatement deleteUserSQL = null;
-        PreparedStatement getUserSQL = null;
+    PreparedStatement createUserSQL = null;
+    PreparedStatement updateUserSQL = null;
+    PreparedStatement getUsersSQL = null;
+    PreparedStatement deleteUserSQL = null;
+    PreparedStatement getUserSQL = null;
 
-        PreparedStatement createBookSQL = null;
-        PreparedStatement getBooksSQL = null;
-        PreparedStatement deleteBookSQL = null;
+    PreparedStatement createBookSQL = null;
+    PreparedStatement getBooksSQL = null;
+    PreparedStatement deleteBookSQL = null;
 
-        PreparedStatement createAdSQL = null;
-        PreparedStatement getAdsSQL = null;
-        PreparedStatement getMyAdsSQL = null;
-        PreparedStatement getAdsBookSQL = null;
-        PreparedStatement getAdISBNSQL = null;
-        PreparedStatement updateAdSQL = null;
-        PreparedStatement deleteAdSQL = null;
+    PreparedStatement createAdSQL = null;
+    PreparedStatement getAdsAllSQL = null;
+    PreparedStatement getAdsSQL = null;
+    PreparedStatement getMyAdsSQL = null;
+    PreparedStatement getAdsBookSQL = null;
+    PreparedStatement updateAdSQL = null;
+    PreparedStatement deleteAdSQL = null;
 
-        PreparedStatement getAdSQL = null;
+    PreparedStatement getAdSQL = null;
 
+    PreparedStatement searchBooksTitleSQL = null;
+    PreparedStatement searchBooksAuthorSQL = null;
 
-    	public ServiceImplementation() {
-            try {
-                connection = DriverManager.getConnection(url, username, password);
+    public ServiceImplementation() {
+        try {
+            connection = DriverManager.getConnection(url, username, password);
 
-                authorizeUserSQL = connection.prepareStatement("SELECT * FROM user where username = ? AND password = ?");
+            authorizeUserSQL = connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
 //USERS
-                createUserSQL = connection.prepareStatement(
-                        "INSERT INTO user" + " (username, password, phonenumber, address, email, mobilepay, cash, transfer, type)"
-                                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            createUserSQL = connection.prepareStatement(
+                    "INSERT INTO users (username, password, phonenumber, address, email, mobilepay, cash, transfer, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                getUsersSQL = connection.prepareStatement("SELECT * FROM user");
+            getUsersSQL = connection.prepareStatement("SELECT * FROM users");
 
-               // updateUserSQL = connection.prepareStatement("UPDATE user SET phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
-                updateUserSQL = connection.prepareStatement("UPDATE user SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
+            // updateUserSQL = connection.prepareStatement("UPDATE user SET phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
+            updateUserSQL = connection.prepareStatement("UPDATE users SET username = ?, password = ?, phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE userid = ?");
 
+            deleteUserSQL = connection.prepareStatement("DELETE FROM users WHERE userid = ?");
 
-
-                deleteUserSQL = connection.prepareStatement("DELETE FROM user WHERE id = ?");
-
-                getUserSQL = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
+            getUserSQL = connection.prepareStatement("SELECT * FROM users WHERE userid = ?");
 
 //BOOKS
-                createBookSQL = connection.prepareStatement(
-                        "INSERT INTO book" + " (ISBN, title, edition, author)"
-                                + " VALUES (?, ?, ?, ?)");
+            createBookSQL = connection.prepareStatement(
+                    "INSERT INTO books (isbn, title, edition, author) VALUES (?, ?, ?, ?)");
 
-                getBooksSQL = connection.prepareStatement("SELECT * FROM book");
+            getBooksSQL = connection.prepareStatement("SELECT * FROM books");
 
 
-                deleteBookSQL = connection.prepareStatement("DELETE FROM book WHERE id = ?");
+            deleteBookSQL = connection.prepareStatement("DELETE FROM books WHERE isbn = ?");
 //ADS
-                createAdSQL = connection.prepareStatement(
-                        "INSERT INTO ad" + " (price, rating, userID, bookID, comment, locked, deleted, time)"
-                                + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            createAdSQL = connection.prepareStatement(
+                    "INSERT INTO ads (price, rating, userid, isbn, comment, locked, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-                getAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND locked IS NULL");
+            getAdsAllSQL = connection.prepareStatement("SELECT * FROM ads");
 
-                getMyAdsSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted IS NULL AND userID = ?");
+            getAdsSQL = connection.prepareStatement("SELECT * FROM ads WHERE deleted=0 AND locked=0");
 
+            getMyAdsSQL = connection.prepareStatement("SELECT * FROM ads WHERE deleted=0 AND userid = ?");
 
-                getAdsBookSQL = connection.prepareStatement("SELECT * FROM ad WHERE deleted is NULL AND ISBN = ?");
+            getAdsBookSQL = connection.prepareStatement("SELECT ads.adid, ads.price, ads.rating, ads.userid, ads.comment, ads.isbn, books.title, books.edition, books.author FROM ads INNER JOIN books ON books.isbn = ? WHERE ads.locked=0 AND ads.deleted=0");
 
-                getAdISBNSQL = connection.prepareStatement("SELECT ad.price, ad.rating, ad.userID, ad.comment, ad.locked, book.ISBN, book.title, book.edition, book.author FROM ad INNER JOIN books ON ad.ISBN = ?");
+            updateAdSQL = connection.prepareStatement("UPDATE ads SET price = ?, rating = ?, userid = ?, isbn = ?, comment = ?, locked = ? WHERE id = ?");
 
+            deleteAdSQL = connection.prepareStatement("UPDATE ads SET deleted = 1 WHERE id = ?");
 
-                updateAdSQL = connection.prepareStatement("UPDATE ad SET price = ?, rating = ?, userID = ?, bookID = ?, comment = ?, locked = ? WHERE id = ?");
+            getAdSQL = connection.prepareStatement("SELECT * from ads WHERE id = ?");
 
-                deleteAdSQL = connection.prepareStatement("UPDATE ad SET deleted = 1 WHERE id = ?");
+            searchBooksTitleSQL = connection.prepareStatement("SELECT * FROM books WHERE title LIKE ?");
 
-                getAdSQL = connection.prepareStatement("SELECT * from ad WHERE id = ?");
+            searchBooksAuthorSQL = connection.prepareStatement("SELECT * FROM books WHERE author LIKE ?");
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public User authorizeUser (String username, String password) {
+        ResultSet resultSet = null;
+        User user = null;
+
+        try {
+            authorizeUserSQL.setString(1, username);
+            authorizeUserSQL.setString(2, md5Hash(password));
+
+            resultSet = authorizeUserSQL.executeQuery();
+
+            while (resultSet.next()) {
+                user = new User();
+
+                user.setId(resultSet.getInt("userid"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setPhonenumber(resultSet.getInt("phonenumber"));
+                user.setAddress(resultSet.getString("address"));
+                user.setEmail(resultSet.getString("email"));
+                user.setMobilepay(resultSet.getInt("mobilepay"));
+                user.setCash(resultSet.getInt("cash"));
+                user.setTransfer(resultSet.getInt("transfer"));
+                user.setType(resultSet.getInt("type"));
 
             }
-        }
 
-        private void close() {
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+
+        } finally {
             try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                close();
             }
         }
-
-        public User authorizeUser (String username, String password) {
-            ResultSet resultSet = null;
-            User user = null;
-
-            try {
-                authorizeUserSQL.setString(1, username);
-                authorizeUserSQL.setString(2, md5Hash(password));
-
-                resultSet = authorizeUserSQL.executeQuery();
-
-                while (resultSet.next()) {
-                    user = new User();
-
-                    user.setId(resultSet.getInt("id"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setPhonenumber(resultSet.getInt("phonenumber"));
-                    user.setAddress(resultSet.getString("address"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setMobilepay(resultSet.getInt("mobilepay"));
-                    user.setCash(resultSet.getInt("cash"));
-                    user.setTransfer(resultSet.getInt("transfer"));
-                    user.setType(resultSet.getInt("type"));
-
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-
-
-            } finally {
-                try {
-                    resultSet.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    close();
-                }
-            }
-            return user;
-        }
+        return user;
+    }
 
     public boolean createUser(User user) {
-            try {
-                createUserSQL.setString(1, user.getUsername());
-                createUserSQL.setString(2, md5Hash(user.getPassword()));
-                createUserSQL.setInt(3, user.getPhonenumber());
-                createUserSQL.setString(4, user.getAddress());
-                createUserSQL.setString(5, user.getEmail());
-                createUserSQL.setInt(6, user.getMobilepay());
-                createUserSQL.setInt(7, user.getCash());
-                createUserSQL.setInt(8, user.getTransfer());
-                createUserSQL.setInt(9, user.getType());
 
-                int rowsAffected = createUserSQL.executeUpdate();
+        try {
+            createUserSQL.setString(1, user.getUsername());
+            createUserSQL.setString(2, md5Hash(user.getPassword()));
+            createUserSQL.setInt(3, user.getPhonenumber());
+            createUserSQL.setString(4, user.getAddress());
+            createUserSQL.setString(5, user.getEmail());
+            createUserSQL.setInt(6, user.getMobilepay());
+            createUserSQL.setInt(7, user.getCash());
+            createUserSQL.setInt(8, user.getTransfer());
+            createUserSQL.setInt(9, user.getType());
 
-                if (rowsAffected == 1) {
-                    return true;
-                }
+            int rowsAffected = createUserSQL.executeUpdate();
 
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (rowsAffected == 1) {
+                return true;
             }
 
-            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return false;
+    }
 
     public boolean updateUser(User user) {
 
@@ -185,15 +185,15 @@ public class ServiceImplementation {
             updateUserSQL.setInt(5, user.getCash());
             updateUserSQL.setInt(6, user.getTransfer());
             updateUserSQL.setInt(7, user.getId());*/
-            updateUserSQL.setInt(1, user.getType());
-            updateUserSQL.setString(2, user.getUsername());
-            updateUserSQL.setString(3, md5Hash(user.getPassword()));
-            updateUserSQL.setInt(4, user.getPhonenumber());
-            updateUserSQL.setString(5, user.getAddress());
-            updateUserSQL.setString(6, user.getEmail());
-            updateUserSQL.setInt(7, user.getMobilepay());
-            updateUserSQL.setInt(8, user.getCash());
-            updateUserSQL.setInt(9, user.getTransfer());
+            updateUserSQL.setString(1, user.getUsername());
+            updateUserSQL.setString(2, md5Hash(user.getPassword()));
+            updateUserSQL.setInt(3, user.getPhonenumber());
+            updateUserSQL.setString(4, user.getAddress());
+            updateUserSQL.setString(5, user.getEmail());
+            updateUserSQL.setInt(6, user.getMobilepay());
+            updateUserSQL.setInt(7, user.getCash());
+            updateUserSQL.setInt(8, user.getTransfer());
+            updateUserSQL.setInt(9, user.getId());
 
 
 
@@ -211,7 +211,7 @@ public class ServiceImplementation {
     }
 
     public ArrayList<User> getUsers() {
-        ArrayList<User> userlist = new ArrayList<>();
+        ArrayList<User> listUsers = new ArrayList<>();
         ResultSet resultSet = null;
 
         try {
@@ -220,7 +220,7 @@ public class ServiceImplementation {
             while (resultSet.next()) {
                 User user = new User();
 
-                user.setId(resultSet.getInt("id"));
+                user.setId(resultSet.getInt("userid"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPassword(resultSet.getString("password"));
                 user.setPhonenumber(resultSet.getInt("phonenumber"));
@@ -231,7 +231,7 @@ public class ServiceImplementation {
                 user.setTransfer(resultSet.getInt("transfer"));
                 user.setType(resultSet.getInt("type"));
 
-                userlist.add(user);
+                listUsers.add(user);
 
             }
         } catch (SQLException e) {
@@ -244,7 +244,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return userlist;
+        return listUsers;
     }
 
     public boolean deleteUser(int id) {
@@ -265,20 +265,20 @@ public class ServiceImplementation {
     }
 
 
-    public User getUser(int userID) throws Exception {
+    public User getUser(int id) {
         ResultSet resultSet = null;
         User user = null;
 
         try{
 
-            getUserSQL.setInt(1, userID);
+            getUserSQL.setInt(1, id);
 
             resultSet = getUserSQL.executeQuery();
 
             while (resultSet.next()){
                 user = new User();
 
-                user.setId(resultSet.getInt("id"));
+                user.setId(resultSet.getInt("userid"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPassword(resultSet.getString("password"));
                 user.setPhonenumber(resultSet.getInt("phonenumber"));
@@ -290,7 +290,7 @@ public class ServiceImplementation {
                 user.setType(resultSet.getInt("type"));
 
 
-                }
+            }
 
             resultSet.close();
         }catch (SQLException e){
@@ -307,9 +307,6 @@ public class ServiceImplementation {
             createBookSQL.setString(3, book.getEdition());
             createBookSQL.setString(4, book.getAuthor());
 
-
-            createBookSQL.executeUpdate();
-
             int rowsAffected = createBookSQL.executeUpdate();
 
             if (rowsAffected == 1) {
@@ -325,24 +322,23 @@ public class ServiceImplementation {
 
     public ArrayList<Book> getBooks() {
 
-        ArrayList<Book> booklist = null;
+        ArrayList<Book> listBooks = new ArrayList<>();
         ResultSet resultSet = null;
         Book book = null;
 
         try {
             resultSet = getBooksSQL.executeQuery();
-            booklist = new ArrayList<Book>();
+            listBooks = new ArrayList<Book>();
 
             while (resultSet.next()) {
                 book = new Book();
 
-                book.setId(resultSet.getInt("id"));
                 book.setISBN(resultSet.getLong("isbn"));
                 book.setTitle(resultSet.getString("title"));
                 book.setEdition(resultSet.getString("edition"));
                 book.setAuthor(resultSet.getString("author"));
 
-                booklist.add(book);
+                listBooks.add(book);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -354,7 +350,7 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return booklist;
+        return listBooks;
     }
 
     public boolean deleteBook(int id) {
@@ -379,14 +375,11 @@ public class ServiceImplementation {
         try {
             createAdSQL.setInt(1, ad.getPrice());
             createAdSQL.setInt(2, ad.getRating());
-            createAdSQL.setInt(3, ad.getUserID());
-            createAdSQL.setInt(4, ad.getBookID());
+            createAdSQL.setInt(3, ad.getUserId());
+            createAdSQL.setLong(4, ad.getBookISBN());
             createAdSQL.setString(5, ad.getComment());
-            createAdSQL.setInt(6, ad.getDeleted());
-            createAdSQL.setInt(7, ad.getLocked());
-            createAdSQL.setTimestamp(8,ad.getTime());
-
-            createAdSQL.executeUpdate();
+            createAdSQL.setInt(6, ad.getLocked());
+            createAdSQL.setInt(7, ad.getDeleted());
 
             int rowsAffected = createAdSQL.executeUpdate();
 
@@ -404,7 +397,7 @@ public class ServiceImplementation {
 
     public ArrayList<Ad> getAds(){
 
-        ArrayList<Ad> adList = new ArrayList<>();
+        ArrayList<Ad> listAds = new ArrayList<>();
         ResultSet resultSet = null;
 
         try {
@@ -413,18 +406,16 @@ public class ServiceImplementation {
             while (resultSet.next()) {
                 Ad ad = new Ad();
 
-                ad.setId(resultSet.getInt("id"));
+                ad.setId(resultSet.getInt("adid"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setRating(resultSet.getInt("rating"));
-                ad.setUserID(resultSet.getInt("userID"));
-                ad.setBookID(resultSet.getInt("bookID"));
-                ad.setDeleted(resultSet.getInt("deleted"));
+                ad.setUserId(resultSet.getInt("userid"));
+                ad.setBookISBN(resultSet.getLong("isbn"));
                 ad.setComment(resultSet.getString("comment"));
                 ad.setLocked(resultSet.getInt("locked"));
-                ad.setTime(resultSet.getTimestamp("time"));
+                ad.setDeleted(resultSet.getInt("deleted"));
 
-
-                adList.add(ad);
+                listAds.add(ad);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -436,34 +427,68 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return (ArrayList<Ad>) adList;
+        return listAds;
     }
 
-    public ArrayList<Ad> getMyAds(int userID) {
-        ArrayList<Ad> myAdList = null;
+    public ArrayList<Ad> getAdsAll(){
+
+        ArrayList<Ad> listAds = new ArrayList<>();
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = getAdsAllSQL.executeQuery();
+
+            while (resultSet.next()) {
+                Ad ad = new Ad();
+
+                ad.setId(resultSet.getInt("adid"));
+                ad.setPrice(resultSet.getInt("price"));
+                ad.setRating(resultSet.getInt("rating"));
+                ad.setUserId(resultSet.getInt("userid"));
+                ad.setBookISBN(resultSet.getLong("isbn"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setLocked(resultSet.getInt("locked"));
+                ad.setDeleted(resultSet.getInt("deleted"));
+
+                listAds.add(ad);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                close();
+            }
+        }
+        return listAds;
+    }
+
+    public ArrayList<Ad> getMyAds(int id) {
+        ArrayList<Ad> listMyAds = new ArrayList<>();
         ResultSet resultSet = null;
         Ad ad = null;
 
         try {
-            getMyAdsSQL.setInt(1, userID);
+            getMyAdsSQL.setInt(1, id);
 
             resultSet = getMyAdsSQL.executeQuery();
-            myAdList = new ArrayList<Ad>();
+            listMyAds = new ArrayList<Ad>();
 
             while (resultSet.next()) {
                 ad = new Ad();
 
-                ad.setId(resultSet.getInt("id"));
+                ad.setId(resultSet.getInt("adid"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setRating(resultSet.getInt("rating"));
-                ad.setUserID(resultSet.getInt("userID"));
-                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setUserId(resultSet.getInt("userid"));
+                ad.setBookISBN(resultSet.getLong("isbn"));
                 ad.setComment(resultSet.getString("comment"));
                 ad.setLocked(resultSet.getInt("locked"));
-                ad.setTime(resultSet.getTimestamp("time"));
                 ad.setDeleted(resultSet.getInt("deleted"));
 
-                myAdList.add(ad);
+                listMyAds.add(ad);
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException);
@@ -475,15 +500,15 @@ public class ServiceImplementation {
                 close();
             }
         }
-        return myAdList;
+        return listMyAds;
     }
 
     public boolean updateAd(Ad ad) {
         try {
             updateAdSQL.setInt(1, ad.getPrice());
             updateAdSQL.setInt(2, ad.getRating());
-            updateAdSQL.setInt(3, ad.getUserID());
-            updateAdSQL.setInt(4, ad.getBookID());
+            updateAdSQL.setInt(3, ad.getUserId());
+            updateAdSQL.setLong(4, ad.getBookISBN());
             updateAdSQL.setString(5, ad.getComment());
             updateAdSQL.setInt(6, ad.getLocked());
             updateAdSQL.setInt(7, ad.getId());
@@ -500,78 +525,39 @@ public class ServiceImplementation {
         return false;
     }
 
-    public ArrayList<Ad> getAdsBook() {
-        ArrayList<Ad> adList = new ArrayList<>();
+    public ArrayList<Ad> getAdsBook(long ISBN) {
+
+        ArrayList<Ad> listAds = new ArrayList<>();
         ResultSet resultSet = null;
 
         try {
+            getAdsBookSQL.setLong(1, ISBN);
+
             resultSet = getAdsBookSQL.executeQuery();
 
             while (resultSet.next()) {
                 Ad ad = new Ad();
 
-                ad.setId(resultSet.getInt("id"));
+                ad.setId(resultSet.getInt("adid"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setRating(resultSet.getInt("rating"));
-                ad.setUserID(resultSet.getInt("userID"));
-                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setUserId(resultSet.getInt("userid"));
                 ad.setComment(resultSet.getString("comment"));
-                ad.setLocked(resultSet.getInt("locked"));
-                ad.setTime(resultSet.getTimestamp("time"));
-                ad.setDeleted(resultSet.getInt("deleted"));
-
-                adList.add(ad);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                close();
-            }
-        }
-
-        return adList;
-    }
-
-
-    public Ad getAdISBN(long ISBN) {
-
-        ResultSet resultSet = null;
-        Ad ad = null;
-
-        try {
-            getAdISBNSQL.setLong(1, ISBN);
-
-            resultSet = getUsersSQL.executeQuery();
-
-            while (resultSet.next()) {
-                ad = new Ad();
-
-                ad.setId(resultSet.getInt("id"));
-                ad.setPrice(resultSet.getInt("price"));
-                ad.setRating(resultSet.getInt("rating"));
-                ad.setUserID(resultSet.getInt("userID"));
-                ad.setBookID(resultSet.getInt("bookID"));
-                ad.setComment(resultSet.getString("comment"));
-                ad.setLocked(resultSet.getInt("locked"));
-                ad.setTime(resultSet.getTimestamp("time"));
-                ad.setDeleted(resultSet.getInt("deleted"));
-                ad.setBookISBN(resultSet.getLong("ISBN"));
+                ad.setBookISBN(resultSet.getLong("isbn"));
                 ad.setBookTitle(resultSet.getString("title"));
                 ad.setBookEdition(resultSet.getString("edition"));
                 ad.setBookAuthor(resultSet.getString("author"));
+
+                listAds.add(ad);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return ad;
+        return listAds;
     }
 
-    public Ad getAd(int id) throws Exception {
+    public Ad getAd(int id) {
         ResultSet resultSet = null;
         Ad ad = null;
 
@@ -583,23 +569,21 @@ public class ServiceImplementation {
             while(resultSet.next()){
                 ad = new Ad();
 
-                ad.setId(resultSet.getInt("id"));
+                ad.setId(resultSet.getInt("adid"));
                 ad.setPrice(resultSet.getInt("price"));
                 ad.setRating(resultSet.getInt("rating"));
-                ad.setUserID(resultSet.getInt("userID"));
-                ad.setBookID(resultSet.getInt("bookID"));
+                ad.setUserId(resultSet.getInt("userid"));
                 ad.setComment(resultSet.getString("comment"));
                 ad.setLocked(resultSet.getInt("locked"));
-                ad.setTime(resultSet.getTimestamp("time"));
                 ad.setDeleted(resultSet.getInt("deleted"));
-                ad.setBookISBN(resultSet.getLong("ISBN"));
+                ad.setBookISBN(resultSet.getLong("isbn"));
             }
 
             resultSet.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
-           return ad;
+        return ad;
     }
 
 
@@ -618,6 +602,60 @@ public class ServiceImplementation {
         }
 
         return false;
+    }
+
+    public ArrayList<Book> searchBooksTitle(String title) {
+
+        ArrayList<Book> listBooks = new ArrayList<>();
+        ResultSet resultSet = null;
+
+        try {
+            searchBooksTitleSQL.setString(1, "%" + title + "%");
+
+            resultSet = searchBooksTitleSQL.executeQuery();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+
+                book.setISBN(resultSet.getLong("isbn"));
+                book.setTitle(resultSet.getString("title"));
+                book.setEdition(resultSet.getString("edition"));
+                book.setAuthor(resultSet.getString("author"));
+
+                listBooks.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listBooks;
+    }
+
+    public ArrayList<Book> searchBooksAuthor(String author) {
+
+        ArrayList<Book> listBooks = new ArrayList<>();
+        ResultSet resultSet = null;
+
+        try {
+            searchBooksAuthorSQL.setString(1, "%" + author + "%");
+
+            resultSet = searchBooksAuthorSQL.executeQuery();
+
+            while (resultSet.next()) {
+                Book book = new Book();
+
+                book.setISBN(resultSet.getLong("isbn"));
+                book.setTitle(resultSet.getString("title"));
+                book.setEdition(resultSet.getString("edition"));
+                book.setAuthor(resultSet.getString("author"));
+
+                listBooks.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listBooks;
     }
 
     public String md5Hash(String password) {

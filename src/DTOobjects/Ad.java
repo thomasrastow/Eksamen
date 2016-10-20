@@ -7,15 +7,14 @@ import java.sql.Timestamp;
 public class Ad {
 
     // Attributer for Ad oprettes
-    private int id;
+    private int adId;
+    private int userId;
+    private int isbn;
     private int price;
     private int rating;
-    private int userID;
-    private int bookID;
     private int deleted;
     private String comment;
     private int locked;
-    private Timestamp time;
     private Long bookISBN;
     private String bookTitle;
     private String bookEdition;
@@ -28,11 +27,11 @@ public class Ad {
     // Getters og setters oprettes
 
     public int getId() {
-        return id;
+        return adId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int adId) {
+        this.adId = adId;
     }
 
     public int getPrice() {
@@ -51,20 +50,12 @@ public class Ad {
         this.rating = rating;
     }
 
-    public int getUserID() {
-        return userID;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public int getBookID() {
-        return bookID;
-    }
-
-    public void setBookID(int bookID) {
-        this.bookID = bookID;
+    public void setUserId(int userID) {
+        this.userId = userId;
     }
 
     public int getDeleted() {
@@ -89,14 +80,6 @@ public class Ad {
 
     public void setLocked(int locked) {
         this.locked = locked;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
-    public Timestamp getTime () {
-        return time;
     }
 
     public void setBookISBN(Long bookISBN) {

@@ -4,8 +4,7 @@ package DTOobjects;
 public class Book {
 
     // Attributer for Book oprettes
-    private int id;
-    private long ISBN;
+    private long isbn;
     private String title;
     private String edition;
     private String author;
@@ -15,20 +14,12 @@ public class Book {
     }
 
     //Opretter getters og setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public long getISBN() {
-        return ISBN;
+        return isbn;
     }
 
-    public void setISBN(long ISBN) {
-        this.ISBN = ISBN;
+    public void setISBN(long isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {

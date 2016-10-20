@@ -13,9 +13,7 @@ public class AdController {
 
     public ArrayList<Ad> getAds() {
 
-        ServiceImplementation db = new ServiceImplementation();
-
-        ArrayList<Ad> ads = db.getAds();
+        ArrayList<Ad> ads = serviceImpl.getAds();
 
         return ads;
     }
@@ -23,11 +21,9 @@ public class AdController {
 
     public boolean createAd(Ad ad) {
 
-        ServiceImplementation db = new ServiceImplementation();
-
         boolean verifyRequest;
 
-        verifyRequest = db.createAd(ad);
+        verifyRequest = serviceImpl.createAd(ad);
 
         if (verifyRequest) {
             return true;
@@ -38,11 +34,9 @@ public class AdController {
 
     public boolean deleteAd(int id) {
 
-        ServiceImplementation db = new ServiceImplementation();
-
         boolean verifyRequest;
 
-        verifyRequest = db.deleteAd(id);
+        verifyRequest = serviceImpl.deleteAd(id);
 
         if (verifyRequest) {
             return true;
@@ -52,11 +46,9 @@ public class AdController {
 
     }
 
-    public ArrayList<Ad> getMyAds(int userID) {
+    public ArrayList<Ad> getMyAds(int id) {
 
-        ServiceImplementation db = new ServiceImplementation();
-
-        ArrayList<Ad> myAds = db.getMyAds(userID);
+        ArrayList<Ad> myAds = serviceImpl.getMyAds(id);
 
         return myAds;
     }
@@ -66,6 +58,7 @@ public class AdController {
         boolean verifyRequest;
 
         verifyRequest = serviceImpl.updateAd(ad);
+
         if (verifyRequest){
             return true;
         } else {
@@ -76,16 +69,23 @@ public class AdController {
 
     public Ad getAd(int id) {
 
-        Ad ad = null;
-
-        try{
-            ad = serviceImpl.getAd(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Ad ad = serviceImpl.getAd(id);
 
         return ad;
+    }
 
+    public ArrayList<Ad> getAdsAll() {
+
+        ArrayList<Ad> ads = serviceImpl.getAdsAll();
+
+        return ads;
+    }
+
+    public ArrayList<Ad> getAdsBook(long isbn) {
+
+        ArrayList<Ad> ads = serviceImpl.getAdsBook(isbn);
+
+        return ads;
     }
 
 }

@@ -70,11 +70,6 @@ public class UserEndpoint {
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
-
-
-
-
-
         }
     }
 
@@ -87,21 +82,15 @@ public class UserEndpoint {
 
             Gson gson = new Gson();
 
-            if (id != 0 && userController.deleteUser(id)) {
+            if (userController.deleteUser(id)) {
                 response.append(gson.toJson("The user with id: "+id+" is now deleted"));
             } else {
                 response.append("Cannot delete user!");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
-
         }
     }
-
-
-
-
-
 
    public static class UpdateUserHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException{
@@ -109,7 +98,7 @@ public class UserEndpoint {
 
             Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-            int userID = Integer.parseInt(parms.get("userID"));
+            int userID = Integer.parseInt(parms.get("id"));
 
             User user = userController.getUser(userID);
 
@@ -119,6 +108,14 @@ public class UserEndpoint {
 
                 http://localhost:8000/updateuser?userID=32&phonenumber=12345678&address=CBS&email=hej@farvel.dk&mobilepay=1&cash=1&transfer=1
             */
+
+            if (parms.get("username") != null) {
+                user.setUsername(parms.get("username"));
+            }
+
+            if (parms.get("password") != null) {
+                user.setPassword(parms.get("password"));
+            }
 
             if (parms.get("phonenumber") != null) {
                 user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
@@ -146,7 +143,7 @@ public class UserEndpoint {
 
             Gson gson = new Gson();
 
-            if (userController.updateUser(user)) {
+            if (user != null && userController.updateUser(user)) {
                 response.append(gson.toJson(user));
             } else {
                 response.append("Cannot update user!");
@@ -156,12 +153,3 @@ public class UserEndpoint {
         }
     }
 }
-
-
-
-
-
-
-
-
-

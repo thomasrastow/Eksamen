@@ -1,10 +1,12 @@
 package Controller;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +14,7 @@ import java.util.Map;
  * Created by alanziberi on 17/10/2016.
  */
 public class EndpointController {
-
+Gson gson = new Gson();
     public void writeResponse(HttpExchange httpExchange, String response) throws IOException {
         httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
         httpExchange.getResponseHeaders().set("Content-Type", "application/json");
@@ -28,7 +30,7 @@ public class EndpointController {
             String pair[] = param.split("=");
             if (pair.length>1) {
                 result.put(pair[0], pair[1]);
-            }else{
+            } else {
                 result.put(pair[0], "");
             }
         }
