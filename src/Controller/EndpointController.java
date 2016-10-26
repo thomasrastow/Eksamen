@@ -35,7 +35,7 @@ public class EndpointController {
 
     public boolean checkSession(HttpExchange httpExchange, int userId) throws IOException {
         Gson gson = new Gson();
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
 
         SessionController sessionController = new SessionController();
 
@@ -59,7 +59,7 @@ public class EndpointController {
 
     public int getSessionUserId(HttpExchange httpExchange) throws IOException {
         Gson gson = new Gson();
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
 
         SessionController sessionController = new SessionController();
 
@@ -85,11 +85,14 @@ public class EndpointController {
     public boolean createSession(HttpExchange httpExchange, User user) throws IOException {
         Gson gson = new Gson();
 
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         Session session = new Session();
         session.setSessionToken(sessionController.generateToken());
         session.setUserId(user.getId());
         session.setUserType(user.getType());
+
+        String hasCookie = httpExchange.getRequestHeaders().getFirst(("Cookie"));
+
 
         HttpCookie httpCookie = new HttpCookie("sessionId", session.getSessionToken());
         httpCookie.setSecure(true);

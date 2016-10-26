@@ -68,12 +68,17 @@ public class ServerController {
         });
 
         httpsServer.createContext("/login", new LoginEndpoint.LoginHandler());
+        httpsServer.createContext("/logout", new LoginEndpoint.LogoutHandler());
 
         httpsServer.createContext("/getusers", new UserEndpoint.GetUsersHandler());
         httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
         httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
+        httpsServer.createContext("/deleteuseradmin", new UserEndpoint.DeleteUserAdminHandler());
         httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
         httpsServer.createContext("/updateuseradmin", new UserEndpoint.UpdateUserAdminHandler());
+
+        httpsServer.createContext("/getuserpublic", new UserEndpoint.GetUserPublicHandler());
+        httpsServer.createContext("/getuser", new UserEndpoint.GetUserHandler());
 
         httpsServer.createContext("/getads", new AdEndpoint.GetAdsHandler());
         httpsServer.createContext("/createad", new AdEndpoint.CreateAdHandler());
@@ -84,9 +89,14 @@ public class ServerController {
         httpsServer.createContext("/lockad", new AdEndpoint.LockAdHandler());
         httpsServer.createContext("/unlockad", new AdEndpoint.UnlockAdHandler());
 
+        httpsServer.createContext("/reservead", new AdEndpoint.ReserveAdHandler());
+        httpsServer.createContext("/deletereservation", new AdEndpoint.DeleteReservationHandler());
+        httpsServer.createContext("/getmyreservations", new AdEndpoint.GetMyReservationsHandler());
+
         httpsServer.createContext("/getadsbook", new AdEndpoint.GetAdsBookHandler());
         httpsServer.createContext("/getadsall", new AdEndpoint.GetAdsAllHandler());
         httpsServer.createContext("/getadsuser", new AdEndpoint.GetAdsUserHandler());
+
         httpsServer.createContext("/getad", new AdEndpoint.GetAdHandler());
         httpsServer.createContext("/getadpublic", new AdEndpoint.GetAdPublicHandler());
 

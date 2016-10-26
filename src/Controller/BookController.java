@@ -19,9 +19,7 @@ public class BookController {
 
     public boolean createBook(Book book) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.createBook(book);
+        boolean verifyRequest = serviceImpl.createBook(book);
 
         if (verifyRequest) {
             return true;
@@ -32,9 +30,7 @@ public class BookController {
 
     public boolean deleteBook(Long isbn) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.deleteBook(isbn);
+        boolean verifyRequest = serviceImpl.deleteBook(isbn);
 
         if (verifyRequest) {
             return true;

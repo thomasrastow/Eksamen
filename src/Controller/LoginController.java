@@ -8,13 +8,23 @@ import ServiceImplementation.ServiceImplementation;
  */
 public class LoginController {
 
+    ServiceImplementation serviceImpl = new ServiceImplementation();
+
     public User login(String username, String password)  {
 
-        ServiceImplementation serviceImpl = new ServiceImplementation();
-
-        User user = new User();
-        user = serviceImpl.authorizeUser(username, password);
+        User user = serviceImpl.authorizeUser(username, password);
 
         return user;
+    }
+
+    public boolean logout(int userId)  {
+
+        boolean verifySession = serviceImpl.clearSessions(userId);
+
+        if (verifySession) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

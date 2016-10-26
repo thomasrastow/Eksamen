@@ -29,11 +29,9 @@ public class LoginEndpoint {
     public static class LoginHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
-            //Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
-
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            if (jsonObject.containsKey("username") && jsonObject.containsKey("username")) {
+            if (jsonObject.containsKey("username") & jsonObject.containsKey("username")) {
 
                 String username = (String) jsonObject.get("username");
                 String password = (String) jsonObject.get("password");
@@ -55,6 +53,29 @@ public class LoginEndpoint {
             } else {
                 response.append("Failure: Incorrect parameters");
             }
+            endpointController.writeResponse(httpExchange, response.toString());
+
+        }
+    }
+
+    public static class LogoutHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+
+            int verifySession = endpointController.getSessionUserId(httpExchange);
+
+            if (verifySession != 0) {
+                boolean verifyLogout = loginController.logout(verifySession);
+
+                if (verifyLogout) {
+                    response.append(gson.toJson("Success: User with ID: " + verifySession + " has been logged out"));
+                } else {
+                    response.append("Failure: Can not log user out");
+                }
+            } else {
+                response.append("Failure: Session not verified");
+            }
+
             endpointController.writeResponse(httpExchange, response.toString());
 
         }

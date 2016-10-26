@@ -26,6 +26,7 @@ public class ServiceImplementation {
     PreparedStatement getUsersSQL = null;
     PreparedStatement deleteUserSQL = null;
     PreparedStatement getUserSQL = null;
+    PreparedStatement getUserPublicSQL = null;
 
     PreparedStatement createBookSQL = null;
     PreparedStatement getBooksSQL = null;
@@ -40,6 +41,11 @@ public class ServiceImplementation {
     PreparedStatement lockAdSQL = null;
     PreparedStatement unlockAdSQL = null;
 
+    PreparedStatement createReservationSQL = null;
+    PreparedStatement deleteReservationSQL = null;
+    PreparedStatement getMyReservationsSQL = null;
+    PreparedStatement getReservationSQL = null;
+
     PreparedStatement getAdsUserSQL = null;
     PreparedStatement getAdsBookSQL = null;
     PreparedStatement deleteAdSQL = null;
@@ -47,8 +53,9 @@ public class ServiceImplementation {
     PreparedStatement getAdSQL = null;
     PreparedStatement getAdPublicSQL = null;
 
-    PreparedStatement getSessionSQL = null;
     PreparedStatement createSessionSQL = null;
+    PreparedStatement getSessionSQL = null;
+    PreparedStatement clearSessionsSQL = null;
 
     public ServiceImplementation() {
         try {
@@ -59,14 +66,16 @@ public class ServiceImplementation {
             createUserSQL = connection.prepareStatement(
                     "INSERT INTO users (username, password, phonenumber, address, email, mobilepay, cash, transfer, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            getUsersSQL = connection.prepareStatement("SELECT * FROM users");
+            getUsersSQL = connection.prepareStatement("SELECT * FROM users WHERE type != 1");
 
             // updateUserSQL = connection.prepareStatement("UPDATE user SET phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
             updateUserSQL = connection.prepareStatement("UPDATE users SET username = ?, password = COALESCE(?,password), phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE userid = ? AND type != 1");
 
             deleteUserSQL = connection.prepareStatement("DELETE FROM users WHERE userid = ? AND type != 1");
 
-            getUserSQL = connection.prepareStatement("SELECT * FROM users WHERE userid = ?");
+            getUserSQL = connection.prepareStatement("SELECT * FROM users WHERE userid = ? AND type != 1");
+
+            getUserPublicSQL = connection.prepareStatement("SELECT username, address, mobilepay, cash, transfer FROM users WHERE userid = ? AND type != 1");
 
 //BOOKS
             createBookSQL = connection.prepareStatement(
@@ -82,17 +91,25 @@ public class ServiceImplementation {
 
             getAdsAllSQL = connection.prepareStatement("SELECT * FROM ads");
 
-            getAdsSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE deleted=0 AND locked=0");
+            getAdsSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE deleted = 0 AND locked = 0");
 
             getMyAdsSQL = connection.prepareStatement("SELECT * FROM ads WHERE userid = ? AND deleted = 0");
 
-            getAdsUserSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE users.userid = ? AND deleted=0 AND locked=0");
+            getAdsUserSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE users.userid = ? AND deleted = 0 AND locked = 0");
 
-            getAdsBookSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE books.isbn = ? AND deleted=0 AND locked=0");
+            getAdsBookSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE books.isbn = ? AND deleted = 0 AND locked = 0");
 
             updateAdSQL = connection.prepareStatement("UPDATE ads SET rating = ?, comment = ?, price = ? WHERE adid = ? AND locked = 0 AND deleted = 0");
 
             deleteAdSQL = connection.prepareStatement("UPDATE ads SET deleted = 1 WHERE adid = ?");
+//RESERVATION
+            createReservationSQL = connection.prepareStatement("INSERT INTO reservations (adid, userid) VALUES (?, ?)");
+
+            deleteReservationSQL = connection.prepareStatement("DELETE FROM reservations WHERE adid = ?");
+
+            getMyReservationsSQL = connection.prepareStatement("SELECT reservations.adid, reservations.timestamp, ads.isbn, users.username, users.phonenumber FROM reservations INNER JOIN ads ON reservations.adid = ads.adid INNER JOIN users ON ads.userid = users.userid WHERE reservations.userid = ? AND deleted = 0");
+
+            getReservationSQL = connection.prepareStatement("SELECT * FROM reservations WHERE adid = ?");
 
             lockAdSQL = connection.prepareStatement("UPDATE ads SET locked = 1 WHERE adid = ? AND deleted = 0");
 
@@ -100,11 +117,14 @@ public class ServiceImplementation {
 
             getAdSQL = connection.prepareStatement("SELECT * from ads WHERE adid = ?");
 
-            getAdPublicSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, ads.comment, users.username, users.address, users.mobilepay, users.cash, users.transfer, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE ads.adid = ? AND deleted=0 AND locked=0");
+            getAdPublicSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, ads.comment, users.username, users.address, users.mobilepay, users.cash, users.transfer, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE ads.adid = ? AND deleted = 0 AND locked = 0");
 
+//SESSIONS
             createSessionSQL = connection.prepareStatement("INSERT INTO sessions (token, userid) VALUES (?, ?)");
 
             getSessionSQL = connection.prepareStatement("SELECT sessions.*, users.type FROM sessions INNER JOIN users ON sessions.userid=users.userid WHERE token = ?");
+
+            clearSessionsSQL = connection.prepareStatement("DELETE FROM sessions WHERE userid = ?");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -304,7 +324,32 @@ public class ServiceImplementation {
         return user;
     }
 
+    public User getUserPublic(int id) {
+        ResultSet resultSet = null;
+        User user = null;
 
+        try{
+
+            getUserPublicSQL.setInt(1, id);
+
+            resultSet = getUserPublicSQL.executeQuery();
+
+            while (resultSet.next()){
+                user = new User();
+
+                user.setUsername(resultSet.getString("username"));
+                user.setAddress(resultSet.getString("address"));
+                user.setMobilepay(resultSet.getInt("mobilepay"));
+                user.setCash(resultSet.getInt("cash"));
+                user.setTransfer(resultSet.getInt("transfer"));
+            }
+
+            resultSet.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return user;
+    }
 
     public boolean createBook(Book book) {
         try {
@@ -478,7 +523,6 @@ public class ServiceImplementation {
             getMyAdsSQL.setInt(1, id);
 
             resultSet = getMyAdsSQL.executeQuery();
-            listMyAds = new ArrayList<Ad>();
 
             while (resultSet.next()) {
                 ad = new Ad();
@@ -713,6 +757,98 @@ public class ServiceImplementation {
         return false;
     }
 
+
+    public boolean createReservation(Reservation reservation) {
+        try {
+            createReservationSQL.setInt(1, reservation.getAdId());
+            createReservationSQL.setInt(2, reservation.getUserId());
+
+            int rowsAffected = createReservationSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteReservation(int adId) {
+        try {
+            deleteReservationSQL.setInt(1, adId);
+
+            int rowsAffected = deleteReservationSQL.executeUpdate();
+
+            if (rowsAffected == 1) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public ArrayList<Reservation> getMyReservations(int userId) {
+
+        ArrayList<Reservation> listReservations = new ArrayList<>();
+        ResultSet resultSet = null;
+
+        try {
+            getMyReservationsSQL.setInt(1, userId);
+
+            resultSet = getMyReservationsSQL.executeQuery();
+
+            while (resultSet.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setAdId(resultSet.getInt("adid"));
+                reservation.setTimestamp(resultSet.getTimestamp("timestamp"));
+                reservation.setBookIsbn(resultSet.getLong("isbn"));
+                reservation.setUserUsername(resultSet.getString("username"));
+                reservation.setUserPhonenumber(resultSet.getInt("phonenumber"));
+
+                listReservations.add(reservation);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                close();
+            }
+        }
+        return listReservations;
+    }
+
+    public Reservation getReservation(int adId) {
+        ResultSet resultSet = null;
+        Reservation reservation = null;
+        try {
+            getReservationSQL.setInt(1, adId);
+
+            resultSet = getReservationSQL.executeQuery();
+
+            while(resultSet.next()) {
+                reservation = new Reservation();
+                reservation.setAdId(resultSet.getInt("adid"));
+                reservation.setUserId(resultSet.getInt("userid"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reservation;
+    }
+
+
+
     public boolean createSession (Session session) {
 
         try {
@@ -732,7 +868,7 @@ public class ServiceImplementation {
         return false;
     }
 
-    public Session getSessionUser (String sessionToken) {
+    public Session getSession (String sessionToken) {
         ResultSet resultSet = null;
         Session session = null;
 
@@ -751,8 +887,6 @@ public class ServiceImplementation {
 
         } catch (SQLException e) {
             e.printStackTrace();
-
-
         } finally {
             try {
                 resultSet.close();
@@ -764,36 +898,21 @@ public class ServiceImplementation {
         return session;
     }
 
-    public Session getSessionAdmin (String sessionToken) {
-        ResultSet resultSet = null;
-        Session session = null;
-
+    public boolean clearSessions(int userId) {
         try {
-            getSessionSQL.setString(1, md5Hash(sessionToken));
+            clearSessionsSQL.setInt(1, userId);
 
-            resultSet = getSessionSQL.executeQuery();
+            int rowsAffected = clearSessionsSQL.executeUpdate();
 
-            while (resultSet.next()) {
-                session = new Session();
-
-                session.setSessionToken(resultSet.getString("token"));
-                session.setUserId(resultSet.getInt("userid"));
-                session.setUserType(resultSet.getInt("type"));
+            if (rowsAffected == 1) {
+                return true;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-
-
-        } finally {
-            try {
-                resultSet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                close();
-            }
         }
-        return session;
+
+        return false;
     }
 
     public String md5Hash(String password) {

@@ -16,6 +16,7 @@ public class Ad {
     private String comment;
     private int locked;
     private String userUsername;
+    private int userPhonenumber;
     private String userAddress;
     private int userMobilepay;
     private int userCash;
@@ -92,6 +93,14 @@ public class Ad {
 
     public String getUserUsername() {
         return userUsername;
+    }
+
+    public void setUserPhonenumber(int userPhonenumber) {
+        this.userPhonenumber = userPhonenumber;
+    }
+
+    public int getUserPhonenumber() {
+        return userPhonenumber;
     }
 
     public void setUserAddress(String userAddress) {

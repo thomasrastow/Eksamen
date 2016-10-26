@@ -17,7 +17,7 @@ public class SessionController {
 
     public boolean getSession (String sessionToken, int userId) {
 
-        Session session = serviceImpl.getSessionUser(sessionToken);
+        Session session = serviceImpl.getSession(sessionToken);
 
         if(session != null) {
             if (session.getUserType() == 1 | session.getUserId() == userId) {
@@ -32,7 +32,7 @@ public class SessionController {
 
     public int getSessionUserId (String sessionToken) {
 
-        Session session = serviceImpl.getSessionUser(sessionToken);
+        Session session = serviceImpl.getSession(sessionToken);
 
         if(session != null) {
             return session.getUserId();
@@ -43,9 +43,7 @@ public class SessionController {
 
     public boolean createSession (Session session) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.createSession(session);
+        boolean verifyRequest = serviceImpl.createSession(session);
 
         if (verifyRequest) {
             return true;

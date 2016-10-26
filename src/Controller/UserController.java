@@ -21,9 +21,7 @@ public class UserController {
 
     public boolean createUser(User user) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.createUser(user);
+        boolean verifyRequest = serviceImpl.createUser(user);
 
         if (verifyRequest) {
             return true;
@@ -35,9 +33,7 @@ public class UserController {
 
     public boolean deleteUser(int id) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.deleteUser(id);
+        boolean verifyRequest = serviceImpl.deleteUser(id);
 
         if (verifyRequest) {
             return true;
@@ -49,9 +45,8 @@ public class UserController {
 
     public boolean updateUser(User user){
 
-        boolean verifyRequest;
+        boolean verifyRequest = serviceImpl.updateUser(user);
 
-        verifyRequest = serviceImpl.updateUser(user);
         if (verifyRequest) {
             return true;
         }else {
@@ -65,7 +60,13 @@ public class UserController {
 
         User user = serviceImpl.getUser(id);
 
-        serviceImpl.getUser(id);
+        return user;
+    }
+
+
+    public User getUserPublic(int id) {
+
+        User user = serviceImpl.getUserPublic(id);
 
         return user;
     }

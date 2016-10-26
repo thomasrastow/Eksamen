@@ -6,6 +6,7 @@ import Controller.AdController;
 import Controller.SessionController;
 import DTOobjects.Ad;
 
+import DTOobjects.Reservation;
 import DTOobjects.Session;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -216,7 +217,7 @@ public class AdEndpoint {
                     boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
 
                     if (verifySession) {
-                        if (adController.unlockAd(adId)) {
+                        if (adController.deleteReservation(adId) & adController.unlockAd(adId)) {
                             response.append(gson.toJson("Success: Ad with ID: " + adId + " unlocked"));
                         } else {
                             response.append("Failure: Can not unlock ad");
@@ -235,11 +236,108 @@ public class AdEndpoint {
         }
     }
 
-    public static class GetMyAdsHandler implements HttpHandler {
+    public static class ReserveAdHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+            if (jsonObject.containsKey("id")) {
+
+                int adId = (((Long) jsonObject.get("id")).intValue());
+
+                Ad ad = adController.getAd(adId);
+
+                if (ad != null | ad.getDeleted() != 1 | ad.getDeleted() != 1) {
+                    int verifySession = endpointController.getSessionUserId(httpExchange);
+
+                    if (verifySession != 0) {
+                        Reservation reservation = new Reservation();
+                        reservation.setAdId(adId);
+                        reservation.setUserId(verifySession);
+
+                        if (adController.reserveAd(reservation) & adController.lockAd(adId)) {
+                            response.append(gson.toJson("Success: Ad with ID: " + adId + " reserved"));
+                        } else {
+                            response.append("Failure: Can not reserve ad");
+                        }
+                    } else {
+                        response.append("Failure: Session not verified");
+                    }
+                } else {
+                    response.append("Failure: Can not reserve ad");
+                }
+            } else {
+                response.append("Failure: Incorrect parameters");
+            }
+
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
+
+    public static class GetMyReservationsHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+
+            int verifySession = endpointController.getSessionUserId(httpExchange);
+
+            if (verifySession != 0) {
+                ArrayList<Reservation> reservations = adController.getMyReservations(verifySession);
+
+                if (!reservations.isEmpty()) {
+                    response.append(gson.toJson(reservations));
+                } else {
+                    response.append("Failure: Can not find reservations");
+                }
+            } else {
+                response.append("Failure: Session not verified");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+
+        }
+    }
+
+    public static class DeleteReservationHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+            if (jsonObject.containsKey("id")) {
+
+                int adId = (((Long) jsonObject.get("id")).intValue());
+
+                Reservation reservation = adController.getReservation(adId);
+
+                if (reservation != null) {
+
+                    boolean verifySession = endpointController.checkSession(httpExchange, reservation.getUserId());
+
+                    if (verifySession) {
+                        if (adController.deleteReservation(adId) & adController.unlockAd(adId)) {
+                            response.append(gson.toJson("Success: Reservation with Ad ID: " + adId + " deleted"));
+                        } else {
+                            response.append("Failure: Can not delete reservation");
+                        }
+                    } else {
+                        response.append("Failure: Session not verified");
+                    }
+                } else {
+                    response.append("Failure: Can not delete reservation");
+                }
+            } else {
+                response.append("Failure: Incorrect parameters");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
+
+    public static class GetMyAdsHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
 
             int verifySession = endpointController.getSessionUserId(httpExchange);
 
@@ -266,6 +364,7 @@ public class AdEndpoint {
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
             if (jsonObject.containsKey("id")) {
+
                 ArrayList<Ad> ads = adController.getAdsUser(((Long) jsonObject.get("id")).intValue());
 
                 if (!ads.isEmpty()) {
@@ -340,10 +439,16 @@ public class AdEndpoint {
 
                 Ad ad = adController.getAd(adId);
 
-                if (ad != null) {
-                    response.append(gson.toJson(ad));
+                boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+
+                if (verifySession) {
+                    if (ad != null) {
+                        response.append(gson.toJson(ad));
+                    } else {
+                        response.append("Failure: Can not find ad");
+                    }
                 } else {
-                    response.append("Failure: Can not find ad");
+                    response.append("Failure: Session not verified");
                 }
             } else {
                 response.append("Failure: Incorrect parameters");

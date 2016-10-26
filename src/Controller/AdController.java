@@ -1,6 +1,7 @@
 package Controller;
 import DTOobjects.Ad;
 
+import DTOobjects.Reservation;
 import ServiceImplementation.ServiceImplementation;
 
 import java.util.ArrayList;
@@ -21,9 +22,7 @@ public class AdController {
 
     public boolean createAd(Ad ad) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.createAd(ad);
+        boolean verifyRequest = serviceImpl.createAd(ad);
 
         if (verifyRequest) {
             return true;
@@ -34,9 +33,7 @@ public class AdController {
 
     public boolean deleteAd(int id) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.deleteAd(id);
+        boolean verifyRequest = serviceImpl.deleteAd(id);
 
         if (verifyRequest) {
             return true;
@@ -48,9 +45,7 @@ public class AdController {
 
     public boolean lockAd(int id) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.lockAd(id);
+        boolean verifyRequest = serviceImpl.lockAd(id);
 
         if (verifyRequest) {
             return true;
@@ -58,6 +53,43 @@ public class AdController {
             return false;
         }
 
+    }
+
+    public boolean reserveAd(Reservation reservation) {
+
+        boolean verifyRequest = serviceImpl.createReservation(reservation);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteReservation(int adId) {
+
+        boolean verifyRequest = serviceImpl.deleteReservation(adId);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public ArrayList<Reservation> getMyReservations(int userId) {
+
+        ArrayList<Reservation> myAdReservations = serviceImpl.getMyReservations(userId);
+
+        return myAdReservations;
+    }
+
+    public Reservation getReservation(int adId) {
+
+        Reservation reservation = serviceImpl.getReservation(adId);
+
+        return reservation;
     }
 
     public boolean unlockAd(int id) {
@@ -83,9 +115,7 @@ public class AdController {
 
     public boolean updateAd(Ad ad) {
 
-        boolean verifyRequest;
-
-        verifyRequest = serviceImpl.updateAd(ad);
+        boolean verifyRequest = serviceImpl.updateAd(ad);
 
         if (verifyRequest){
             return true;
