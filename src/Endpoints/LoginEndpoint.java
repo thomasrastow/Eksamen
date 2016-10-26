@@ -33,27 +33,27 @@ public class LoginEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            String username = (String) jsonObject.get("username");
-            String password = (String) jsonObject.get("password");
+            if (jsonObject.containsKey("username") && jsonObject.containsKey("username")) {
 
-            User user = new User();
-            user = loginController.login(username, password);
-//
-//            if (user != null) {
-//                response.append(gson.toJson(user));
-//            } else {
-//                response.append("User not found!");
-//            }
+                String username = (String) jsonObject.get("username");
+                String password = (String) jsonObject.get("password");
 
-            if(user != null) {
-                boolean verifySession = endpointController.createSession(httpExchange, user);
-                if (verifySession) {
-                    response.append(gson.toJson(user));
+                User user = new User();
+                user = loginController.login(username, password);
+
+                if (user != null) {
+                    boolean verifySession = endpointController.createSession(httpExchange, user);
+                    if (verifySession) {
+                        response.append(gson.toJson(user));
+                    } else {
+                        response.append("Failure: Can not create session");
+                    }
                 } else {
-                    response.append("Failure: Can not create session");
+                    response.append("Failure: Wrong username or password");
                 }
+
             } else {
-                response.append("Failure: Wrong username or password");
+                response.append("Failure: Incorrect parameters");
             }
             endpointController.writeResponse(httpExchange, response.toString());
 
