@@ -165,7 +165,7 @@ public class AdEndpoint {
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
-    
+
     public static class UnlockAdHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();

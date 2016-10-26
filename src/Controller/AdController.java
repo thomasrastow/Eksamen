@@ -43,6 +43,18 @@ public class AdController {
 
     }
 
+    public boolean lockAd(int id) {
+
+        boolean verifyRequest = serviceImpl.lockAd(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public boolean reserveAd(Reservation reservation) {
 
         boolean verifyRequest = serviceImpl.createReservation(reservation);
