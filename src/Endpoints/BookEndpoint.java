@@ -5,6 +5,8 @@ package Endpoints;
         import com.google.gson.Gson;
         import com.sun.net.httpserver.HttpExchange;
         import com.sun.net.httpserver.HttpHandler;
+        import org.json.simple.JSONObject;
+
         import java.io.IOException;
         import java.util.ArrayList;
         import java.util.Map;
@@ -15,40 +17,42 @@ public class BookEndpoint {
     static EndpointController endpointController = new EndpointController();
     static BookController bookController = new BookController();
 
-
+    static Gson gson = new Gson();
 
     public static class DeleteBookHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-            int id = Integer.parseInt(parms.get("id"));
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            Gson gson = new Gson();
+            Long bookIsbn = ((Long) jsonObject.get("isbn"));
 
-            if (bookController.deleteBook(id)) {
-                response.append(gson.toJson(id));
+            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+
+            if (verifySession) {
+                if (bookController.deleteBook(bookIsbn)) {
+                    response.append(gson.toJson("Success: Book with ISBN: " + bookIsbn + " deleted"));
+                } else {
+                    response.append("Failure: Can not delete book");
+                }
             } else {
-                response.append("Cannot delete book!");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
 
-    // klasse som håndterer get books kaldet
     public static class GetBooksHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
             ArrayList<Book> books = bookController.getBooks();
 
-            Gson gson = new Gson();
-
-            if (books.isEmpty()) {
-                response.append("No books found!");
-            } else {
+            if (!books.isEmpty()) {
                 response.append(gson.toJson(books));
+            } else {
+                response.append("Failure: Can not not find books");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -58,51 +62,29 @@ public class BookEndpoint {
     public static class CreateBookHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
             Book book = new Book();
-            book.setISBN(Long.parseLong(parms.get("ISBN")));
-            book.setTitle(parms.get("title"));
-            book.setEdition(parms.get("edition"));
-            book.setAuthor(parms.get("author"));
+            book.setISBN((Long) jsonObject.get("isbn"));
+            book.setTitle((String) jsonObject.get("title"));
+            book.setEdition((String) jsonObject.get("edition"));
+            book.setAuthor((String) jsonObject.get("author"));
 
-            Gson gson = new Gson();
+            boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-            if (book != null && bookController.createBook(book)) {
-                response.append(gson.toJson(book));
+            if (verifySession) {
+                if (book != null & bookController.createBook(book)) {
+                    response.append(gson.toJson(book));
+                } else {
+                    response.append("Failure: Can not create book");
+                }
             } else {
-                response.append("Cannot create book!");
-                System.out.println(gson.toJson(book));
-                // Burde det ikke hedde "Book already exists"
-            }
-
-            endpointController.writeResponse(httpExchange, response.toString());
-            //https://localhost:8000/createbook?ISBN=1234567891111&title=hehj123&edition=1&author=jens
-        }
-    }
-
-    public static class SearchBooksHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException {
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
-            StringBuilder response = new StringBuilder();
-
-            ArrayList<Book> books = new ArrayList<>();
-
-           if(parms.containsKey("title")) {
-                books = bookController.searchBooksTitle(parms.get("title"));
-            } else if (parms.containsKey("author")) {
-                books = bookController.searchBooksAuthor(parms.get("author"));
-            }
-
-            Gson gson = new Gson();
-
-            if (books.isEmpty()) {
-                response.append("No books found!");
-            } else {
-                response.append(gson.toJson(books));
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
+
 }

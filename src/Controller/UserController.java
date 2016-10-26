@@ -58,8 +58,6 @@ public class UserController {
             return false;
 
         }
-
-
     }
 
 
@@ -70,7 +68,7 @@ public class UserController {
         serviceImpl.getUser(id);
 
         return user;
-
     }
+
 }
 

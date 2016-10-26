@@ -10,10 +10,10 @@ public class LoginController {
 
     public User login(String username, String password)  {
 
-        ServiceImplementation db = new ServiceImplementation();
+        ServiceImplementation serviceImpl = new ServiceImplementation();
 
         User user = new User();
-        user = db.authorizeUser(username, password);
+        user = serviceImpl.authorizeUser(username, password);
 
         return user;
     }

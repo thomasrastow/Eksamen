@@ -7,5 +7,6 @@
   "DB_PASS":"brugtpass",
   "SERVER_PORT":"8000",
   "SSL_KEY":"resources/keystore.jks",
-  "SSL_PWD":"brugtbog"
+  "SSL_PWD":"brugtbog",
+  "ALLOW_ORIGIN": "http://localhost:63343"
 }

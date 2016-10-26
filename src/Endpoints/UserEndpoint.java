@@ -16,6 +16,7 @@ import java.util.Map;
 
 import Controller.EndpointController;
 import Controller.UserController;
+import org.json.simple.JSONObject;
 
 import static java.lang.Integer.parseInt;
 
@@ -27,46 +28,54 @@ public class UserEndpoint {
     static EndpointController endpointController = new EndpointController();
     static UserController userController = new UserController();
 
+    static Gson gson = new Gson();
+
     public static class GetUsersHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
             ArrayList<User> users = userController.getUsers();
 
-            Gson gson = new Gson();
 
-            if(users.isEmpty()) {
-                response.append("No users found!");
+            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+
+            if(verifySession) {
+                if (users.isEmpty()) {
+                    response.append("Failure: No users found");
+                } else {
+                    response.append(gson.toJson(users));
+                }
             } else {
-                response.append(gson.toJson(users));
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
+
         }
     }
 
     public static class CreateUserHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
             User user = new User();
-            user.setUsername(parms.get("username"));
-            user.setPassword(parms.get("password"));
-            user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
-            user.setAddress(parms.get("address"));
-            user.setEmail(parms.get("username"));
-            user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
-            user.setCash(Integer.parseInt(parms.get("cash")));
-            user.setTransfer(Integer.parseInt(parms.get("transfer")));
+            user.setUsername((String) jsonObject.get("username"));
+            user.setPassword((String) jsonObject.get("password"));
+            user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
+            user.setAddress((String) jsonObject.get("address"));
+            user.setEmail((String) jsonObject.get("email"));
+            user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
+            user.setCash(((Long) jsonObject.get("cash")).intValue());
+            user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+
             user.setType(0);
 
-            Gson gson = new Gson();
-
-            if(user != null && userController.createUser(user)) {
-                response.append(gson.toJson(user));
+            if (user != null & userController.createUser(user)) {
+                    response.append(gson.toJson(user));
             } else {
-                response.append("Cannot create user!");
+                    response.append("Failure: Can not create user");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -76,80 +85,143 @@ public class UserEndpoint {
     public static class DeleteUserHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-            int id = Integer.parseInt(parms.get("id"));
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            Gson gson = new Gson();
+            int userId = (((Long) jsonObject.get("id")).intValue());
 
-            if (userController.deleteUser(id)) {
-                response.append(gson.toJson("The user with id: "+id+" is now deleted"));
+            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+
+            if(verifySession) {
+                if (userController.deleteUser(userId)) {
+                    response.append(gson.toJson("Success: User with ID: " + userId + " deleted"));
+                } else {
+                    response.append("Failure: Can not delete user");
+                }
             } else {
-                response.append("Cannot delete user!");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
 
-   public static class UpdateUserHandler implements HttpHandler {
+   public static class UpdateUserAdminHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException{
            StringBuilder response = new StringBuilder();
 
-            Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            int userID = Integer.parseInt(parms.get("id"));
+            boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-            User user = userController.getUser(userID);
+            if (verifySession) {
 
-            /*
-                Vi skal ikke ændre brugernavn og password endnu, da vi derved skal have tjekket
-                om brugernavn er unikt, samt passworden skal hashes.
+                int userId = (((Long) jsonObject.get("id")).intValue());
 
-                http://localhost:8000/updateuser?userID=32&phonenumber=12345678&address=CBS&email=hej@farvel.dk&mobilepay=1&cash=1&transfer=1
-            */
+                User user = userController.getUser(userId);
 
-            if (parms.get("username") != null) {
-                user.setUsername(parms.get("username"));
-            }
+                if (user != null) {
+                    if (!jsonObject.get("username").equals("")) {
+                        user.setUsername((String) jsonObject.get("username"));
+                    }
 
-            if (parms.get("password") != null) {
-                user.setPassword(parms.get("password"));
-            }
+                    user.setPassword((String) jsonObject.get("password"));
 
-            if (parms.get("phonenumber") != null) {
-                user.setPhonenumber(Integer.parseInt(parms.get("phonenumber")));
-            }
+                    if (!jsonObject.get("phonenumber").equals("")) {
+                        user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
+                    }
 
-            if (parms.get("address") != null) {
-                user.setAddress(parms.get("address"));
-            }
+                    if (!jsonObject.get("address").equals("")) {
+                        user.setAddress((String) jsonObject.get("address"));
+                    }
 
-            if (parms.get("email") != null) {
-                user.setEmail(parms.get("email"));
-            }
+                    if (!jsonObject.get("email").equals("")) {
+                        user.setEmail((String) jsonObject.get("email"));
+                    }
 
-            if (parms.get("mobilepay") != null) {
-                user.setMobilepay(Integer.parseInt(parms.get("mobilepay")));
-            }
+                    if (!jsonObject.get("mobilepay").equals("")) {
+                        user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
+                    }
 
-            if (parms.get("cash") != null) {
-                user.setCash(Integer.parseInt(parms.get("cash")));
-            }
+                    if (!jsonObject.get("cash").equals("")) {
+                        user.setCash(((Long) jsonObject.get("cash")).intValue());
+                    }
 
-            if (parms.get("transfer") != null) {
-                user.setTransfer(Integer.parseInt(parms.get("transfer")));
-            }
+                    if (!jsonObject.get("transfer").equals("")) {
+                        user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+                    }
 
-            Gson gson = new Gson();
-
-            if (user != null && userController.updateUser(user)) {
-                response.append(gson.toJson(user));
+                    if (user != null & userController.updateUser(user)) {
+                        response.append(gson.toJson(user));
+                    }
+                } else {
+                    response.append("Failure: Can not update user");
+                }
             } else {
-                response.append("Cannot update user!");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
+
+    public static class UpdateUserHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException{
+            StringBuilder response = new StringBuilder();
+
+            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+            int verifySession = endpointController.getSessionUserId(httpExchange);
+
+            if (verifySession != 0) {
+
+                int userId = (verifySession);
+
+                User user = userController.getUser(userId);
+
+                if (user != null) {
+                    if (!jsonObject.get("username").equals("")) {
+                        user.setUsername((String) jsonObject.get("username"));
+                    }
+
+                    user.setPassword((String) jsonObject.get("password"));
+
+                    if (!jsonObject.get("phonenumber").equals("")) {
+                        user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
+                    }
+
+                    if (!jsonObject.get("address").equals("")) {
+                        user.setAddress((String) jsonObject.get("address"));
+                    }
+
+                    if (!jsonObject.get("email").equals("")) {
+                        user.setEmail((String) jsonObject.get("email"));
+                    }
+
+                    if (!jsonObject.get("mobilepay").equals("")) {
+                        user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
+                    }
+
+                    if (!jsonObject.get("cash").equals("")) {
+                        user.setCash(((Long) jsonObject.get("cash")).intValue());
+                    }
+
+                    if (!jsonObject.get("transfer").equals("")) {
+                        user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+                    }
+
+                    if (user != null & userController.updateUser(user)) {
+                        response.append(gson.toJson(user));
+                    }
+                } else {
+                    response.append("Failure: Can not update user");
+                }
+            } else {
+                response.append("Failure: Session not verified");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
+
 }

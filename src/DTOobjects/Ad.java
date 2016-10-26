@@ -9,13 +9,17 @@ public class Ad {
     // Attributer for Ad oprettes
     private int adId;
     private int userId;
-    private int isbn;
+    private Long isbn;
     private int price;
     private int rating;
     private int deleted;
     private String comment;
     private int locked;
-    private Long bookISBN;
+    private String userUsername;
+    private String userAddress;
+    private int userMobilepay;
+    private int userCash;
+    private int userTransfer;
     private String bookTitle;
     private String bookEdition;
     private String bookAuthor;
@@ -54,7 +58,7 @@ public class Ad {
         return userId;
     }
 
-    public void setUserId(int userID) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -82,12 +86,52 @@ public class Ad {
         this.locked = locked;
     }
 
-    public void setBookISBN(Long bookISBN) {
-        this.bookISBN = bookISBN;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
-    public Long getBookISBN() {
-        return bookISBN;
+    public String getUserUsername() {
+        return userUsername;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserMobilepay(int userMobilepay) {
+        this.userMobilepay = userMobilepay;
+    }
+
+    public int getUserMobilepay() {
+        return userMobilepay;
+    }
+
+    public void setUserCash(int userCash) {
+        this.userCash = userCash;
+    }
+
+    public int getUserCash() {
+        return userCash;
+    }
+
+    public void setUserTransfer(int userTransfer) {
+        this.userTransfer = userTransfer;
+    }
+
+    public int getUserTransfer() {
+        return userTransfer;
+    }
+
+    public void setIsbn(Long isbn) {
+        this.isbn = isbn;
+    }
+
+    public Long getIsbn() {
+        return isbn;
     }
 
     public void setBookTitle(String bookTitle) {

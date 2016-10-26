@@ -30,11 +30,11 @@ public class BookController {
         }
     }
 
-    public boolean deleteBook(int id) {
+    public boolean deleteBook(Long isbn) {
 
         boolean verifyRequest;
 
-        verifyRequest = serviceImpl.deleteBook(id);
+        verifyRequest = serviceImpl.deleteBook(isbn);
 
         if (verifyRequest) {
             return true;
@@ -43,19 +43,4 @@ public class BookController {
         }
     }
 
-    public ArrayList<Book> searchBooksTitle(String title) {
-
-        ArrayList<Book> books = serviceImpl.searchBooksTitle(title);
-
-        return books;
-
-    }
-
-    public ArrayList<Book> searchBooksAuthor(String author) {
-
-        ArrayList<Book> books = serviceImpl.searchBooksAuthor(author);
-
-        return books;
-
-    }
 }

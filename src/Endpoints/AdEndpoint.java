@@ -3,11 +3,14 @@
 import Controller.EndpointController;
 import Controller.AdController;
 
+import Controller.SessionController;
 import DTOobjects.Ad;
 
+import DTOobjects.Session;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -22,19 +25,20 @@ public class AdEndpoint {
 
       static EndpointController endpointController = new EndpointController();
       static AdController adController = new AdController();
+      static SessionController sessionController = new SessionController();
 
-      public static class GetAdHandler implements HttpHandler {
+      static Gson gson = new Gson();
+
+      public static class GetAdsHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
 
               ArrayList<Ad> ads = adController.getAds();
 
-              Gson gson = new Gson();
-
-              if (ads.isEmpty()) {
-                  response.append("No ads found!");
-              } else {
+              if (!ads.isEmpty()) {
                   response.append(gson.toJson(ads));
+              } else {
+                  response.append("Failure: Can not find ads");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
@@ -45,61 +49,69 @@ public class AdEndpoint {
       public static class CreateAdHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
-              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              Ad ad = new Ad();
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-              // http://localhost:8000/createad?price=199&rating=2&userID=3&bookID=7&deleted=0&comment=123&locked=0&time=2016-10-17%2016:00:00
+              int verifySession = endpointController.getSessionUserId(httpExchange);
 
-              ad.setPrice(Integer.parseInt(parms.get("price")));
-              ad.setRating(Integer.parseInt(parms.get("rating")));
-              ad.setUserId(Integer.parseInt(parms.get("userid")));
-              ad.setBookISBN(Long.parseLong(parms.get("isbn")));
-              ad.setDeleted(Integer.parseInt(parms.get("deleted")));
-              ad.setComment(parms.get("comment"));
-              ad.setLocked(Integer.parseInt(parms.get("locked")));
+              if (verifySession != 0) {
+                  Ad ad = new Ad();
+                  ad.setUserId(verifySession);
+                  ad.setIsbn((Long) jsonObject.get("isbn"));
+                  ad.setRating(((Long) jsonObject.get("rating")).intValue());
+                  ad.setComment((String) jsonObject.get("comment"));
+                  ad.setPrice(((Long) jsonObject.get("price")).intValue());
 
-              Gson gson = new Gson();
-
-              if (ad != null && adController.createAd(ad)) {
-                  response.append(gson.toJson(ad));
+                  if (ad != null & adController.createAd(ad)) {
+                      response.append(gson.toJson(ad));
+                  } else {
+                      response.append("Failure: Can not create ad");
+                  }
               } else {
-                  response.append("Cannot create ad!");
+                  response.append("Failure: Session not verified");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
-
           }
       }
 
       public static class UpdateAdHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
-              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              // http://localhost:8000/updatead?id=1&price=2&rating=10&userID=2&bookID=2&comment=Dig%20med%20hej&time=2016-10-17%2016:00:00
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-              int id = Integer.parseInt(parms.get("id"));
+              int adId = (((Long) jsonObject.get("id")).intValue());
 
-              Ad ad = adController.getAd(id);
+              Ad ad = adController.getAd(adId);
 
-              if(parms.get("price") != null) {
-                  ad.setPrice(Integer.parseInt(parms.get("price")));
-              }
+              if (ad != null) {
+                  if (!jsonObject.get("comment").equals("")) {
+                      ad.setComment((String) jsonObject.get("comment"));
+                  }
 
-              if (parms.get("rating") != null){
-                  ad.setRating(Integer.parseInt(parms.get("rating")));
-              }
-              if (parms.get("comment") != null){
-                  ad.setComment(parms.get("comment"));
-              }
+                  if (!jsonObject.get("price").equals("")) {
+                      ad.setPrice(((Long) jsonObject.get("price")).intValue());
+                  }
 
-              Gson gson = new Gson();
+                  if (!jsonObject.get("rating").equals("")) {
+                      ad.setRating(((Long) jsonObject.get("rating")).intValue());
+                  }
 
-              if (ad != null && adController.updateAd(ad)) {
-                  response.append(gson.toJson(ad));
+                  boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+
+                  if (verifySession) {
+                      if (adController.updateAd(ad)) {
+                          response.append(gson.toJson(ad));
+                      } else {
+                          response.append("Failure: Can not update ad");
+                      }
+                  } else {
+                      response.append("Failure: Session not verified");
+                  }
+
               } else {
-                  response.append("Cannot update ad!");
+                  response.append("Failure: Can not update ad");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
@@ -109,38 +121,129 @@ public class AdEndpoint {
       public static class DeleteAdHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
-              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              int id = Integer.parseInt(parms.get("id"));
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-              Gson gson = new Gson();
+              int adId = (((Long) jsonObject.get("id")).intValue());
 
-              if (adController.deleteAd(id)) {
-                  response.append(gson.toJson(id));
+              Ad ad = adController.getAd(adId);
+
+              if(ad != null) {
+                  boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+
+                  if (verifySession) {
+                      if (adController.deleteAd(adId)) {
+                          response.append(gson.toJson("Success: Ad with ID: " + adId + " deleted"));
+                      } else {
+                          response.append("Failure: Can not delete ad");
+                      }
+                  } else {
+                      response.append("Failure: Session not verified");
+                  }
               } else {
-                  response.append("Cannot delete ad!");
+                  response.append("Failure: Can not delete ad");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
-
           }
       }
 
+      public static class LockAdHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
 
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+              int adId = (((Long) jsonObject.get("id")).intValue());
+
+              Ad ad = adController.getAd(adId);
+
+              if(ad != null) {
+                  boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+
+                  if (verifySession) {
+                      if (adController.lockAd(adId)) {
+                          response.append(gson.toJson("Success: Ad with ID: " + adId + " locked"));
+                      } else {
+                          response.append("Failure: Can not lock ad");
+                      }
+                  } else {
+                      response.append("Failure: Session not verified");
+                  }
+              } else {
+                  response.append("Failure: Can not lock ad");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+          }
+      }
+
+      public static class UnlockAdHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+              int adId = (((Long) jsonObject.get("id")).intValue());
+
+              Ad ad = adController.getAd(adId);
+
+              if(ad != null) {
+                  boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+
+                  if (verifySession) {
+                      if (adController.unlockAd(adId)) {
+                          response.append(gson.toJson("Success: Ad with ID: " + adId + " unlocked"));
+                      } else {
+                          response.append("Failure: Can not unlock ad");
+                      }
+                  } else {
+                      response.append("Failure: Session not verified");
+                  }
+              } else {
+                  response.append("Failure: Can not unlock ad");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+          }
+      }
 
       public static class GetMyAdsHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
-              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              ArrayList<Ad> myAds = adController.getMyAds(Integer.parseInt(parms.get("userid")));
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-              Gson gson = new Gson();
+              int verifySession = endpointController.getSessionUserId(httpExchange);
 
-              if (myAds.isEmpty()) {
-                  response.append("No ads found!");
+              if (verifySession != 0) {
+                  ArrayList<Ad> myAds = adController.getMyAds(verifySession);
+
+                  if (!myAds.isEmpty()) {
+                      response.append(gson.toJson(myAds));
+                  } else {
+                      response.append("Failure: Can not find ads");
+                  }
               } else {
-                  response.append(gson.toJson(myAds));
+                  response.append("Failure: Session not verified");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+          }
+      }
+
+      public static class GetAdsUserHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+              ArrayList<Ad> ads = adController.getAdsUser(((Long) jsonObject.get("id")).intValue());
+
+              if (!ads.isEmpty()) {
+                  response.append(gson.toJson(ads));
+              } else {
+                  response.append("Failure: Can not find ads");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
@@ -151,16 +254,15 @@ public class AdEndpoint {
       public static class GetAdsBookHandler implements HttpHandler {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
-              Map<String, String> parms = endpointController.queryToMap(httpExchange.getRequestURI().getQuery());
 
-              ArrayList<Ad> ads = adController.getAdsBook(Long.parseLong(parms.get("isbn")));
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-              Gson gson = new Gson();
+              ArrayList<Ad> ads = adController.getAdsBook(((Long) jsonObject.get("isbn")));
 
-              if (ads.isEmpty()) {
-                  response.append("No ads found!");
-              } else {
+              if (!ads.isEmpty()) {
                   response.append(gson.toJson(ads));
+              } else {
+                  response.append("Failure: Can not find ads");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());
@@ -172,14 +274,59 @@ public class AdEndpoint {
           public void handle(HttpExchange httpExchange) throws IOException {
               StringBuilder response = new StringBuilder();
 
-              ArrayList<Ad> ads = adController.getAdsAll();
+              boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-              Gson gson = new Gson();
+              if (verifySession) {
+                  ArrayList<Ad> ads = adController.getAdsAll();
 
-              if (ads.isEmpty()) {
-                  response.append("No ads found!");
+                  if (!ads.isEmpty()) {
+                      response.append(gson.toJson(ads));
+                  } else {
+                      response.append("Failure: Can not find ads");
+                  }
               } else {
-                  response.append(gson.toJson(ads));
+                  response.append("Failure: Session not verified");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+          }
+      }
+
+      public static class GetAdHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+              int adId = (((Long) jsonObject.get("id")).intValue());
+
+              Ad ad = adController.getAd(adId);
+
+              if (ad != null) {
+                  response.append(gson.toJson(ad));
+              } else {
+                  response.append("Failure: Can not find ad");
+              }
+
+              endpointController.writeResponse(httpExchange, response.toString());
+
+          }
+      }
+
+      public static class GetAdPublicHandler implements HttpHandler {
+          public void handle(HttpExchange httpExchange) throws IOException {
+              StringBuilder response = new StringBuilder();
+
+              JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+
+              int adId = (((Long) jsonObject.get("id")).intValue());
+
+              Ad ad = adController.getAdPublic(adId);
+
+              if (ad != null) {
+                  response.append(gson.toJson(ad));
+              } else {
+                  response.append("Failure: Can not find ad");
               }
 
               endpointController.writeResponse(httpExchange, response.toString());

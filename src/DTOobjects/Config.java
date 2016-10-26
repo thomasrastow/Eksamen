@@ -13,6 +13,7 @@ public class Config {
     private String srvPort;
     private String sslKey;
     private String sslPwd;
+    private String allowOrigin;
 
     public Config() {
 
@@ -88,6 +89,14 @@ public class Config {
 
     public void setSslPwd(String sslPwd) {
         this.sslPwd = sslPwd;
+    }
+
+    public String getAllowOrigin() {
+        return allowOrigin;
+    }
+
+    public void setAllowOrigin(String allowOrigin) {
+        this.allowOrigin = allowOrigin;
     }
 
 }

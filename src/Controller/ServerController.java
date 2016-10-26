@@ -73,20 +73,26 @@ public class ServerController {
         httpsServer.createContext("/createuser", new UserEndpoint.CreateUserHandler());
         httpsServer.createContext("/deleteuser", new UserEndpoint.DeleteUserHandler());
         httpsServer.createContext("/updateuser", new UserEndpoint.UpdateUserHandler());
+        httpsServer.createContext("/updateuseradmin", new UserEndpoint.UpdateUserAdminHandler());
 
-        httpsServer.createContext("/getads", new AdEndpoint.GetAdHandler());
+        httpsServer.createContext("/getads", new AdEndpoint.GetAdsHandler());
         httpsServer.createContext("/createad", new AdEndpoint.CreateAdHandler());
         httpsServer.createContext("/deletead", new AdEndpoint.DeleteAdHandler());
-        httpsServer.createContext("/myads", new AdEndpoint.GetMyAdsHandler());
+
+        httpsServer.createContext("/getmyads", new AdEndpoint.GetMyAdsHandler());
         httpsServer.createContext("/updatead", new AdEndpoint.UpdateAdHandler());
+        httpsServer.createContext("/lockad", new AdEndpoint.LockAdHandler());
+        httpsServer.createContext("/unlockad", new AdEndpoint.UnlockAdHandler());
+
         httpsServer.createContext("/getadsbook", new AdEndpoint.GetAdsBookHandler());
         httpsServer.createContext("/getadsall", new AdEndpoint.GetAdsAllHandler());
+        httpsServer.createContext("/getadsuser", new AdEndpoint.GetAdsUserHandler());
+        httpsServer.createContext("/getad", new AdEndpoint.GetAdHandler());
+        httpsServer.createContext("/getadpublic", new AdEndpoint.GetAdPublicHandler());
 
         httpsServer.createContext("/createbook", new BookEndpoint.CreateBookHandler());
         httpsServer.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
         httpsServer.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
-
-        httpsServer.createContext("/searchbooks", new BookEndpoint.SearchBooksHandler());
 
         httpsServer.setExecutor(null);
         httpsServer.start();

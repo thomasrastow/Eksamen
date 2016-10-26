@@ -46,6 +46,34 @@ public class AdController {
 
     }
 
+    public boolean lockAd(int id) {
+
+        boolean verifyRequest;
+
+        verifyRequest = serviceImpl.lockAd(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean unlockAd(int id) {
+
+        boolean verifyRequest;
+
+        verifyRequest = serviceImpl.unlockAd(id);
+
+        if (verifyRequest) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public ArrayList<Ad> getMyAds(int id) {
 
         ArrayList<Ad> myAds = serviceImpl.getMyAds(id);
@@ -74,9 +102,24 @@ public class AdController {
         return ad;
     }
 
+
+    public Ad getAdPublic(int id) {
+
+        Ad ad = serviceImpl.getAdPublic(id);
+
+        return ad;
+    }
+
     public ArrayList<Ad> getAdsAll() {
 
         ArrayList<Ad> ads = serviceImpl.getAdsAll();
+
+        return ads;
+    }
+
+    public ArrayList<Ad> getAdsUser(int userId) {
+
+        ArrayList<Ad> ads = serviceImpl.getAdsUser(userId);
 
         return ads;
     }
