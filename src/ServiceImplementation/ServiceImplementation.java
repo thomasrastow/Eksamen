@@ -38,7 +38,6 @@ public class ServiceImplementation {
 
     PreparedStatement getMyAdsSQL = null;
     PreparedStatement updateAdSQL = null;
-    PreparedStatement lockAdSQL = null;
     PreparedStatement unlockAdSQL = null;
 
     PreparedStatement createReservationSQL = null;
@@ -110,8 +109,6 @@ public class ServiceImplementation {
             getMyReservationsSQL = connection.prepareStatement("SELECT reservations.adid, reservations.timestamp, ads.isbn, users.username, users.phonenumber FROM reservations INNER JOIN ads ON reservations.adid = ads.adid INNER JOIN users ON ads.userid = users.userid WHERE reservations.userid = ? AND deleted = 0");
 
             getReservationSQL = connection.prepareStatement("SELECT * FROM reservations WHERE adid = ?");
-
-            lockAdSQL = connection.prepareStatement("UPDATE ads SET locked = 1 WHERE adid = ? AND deleted = 0");
 
             unlockAdSQL = connection.prepareStatement("UPDATE ads SET locked = 0 WHERE adid = ? AND deleted = 0");
 
@@ -711,23 +708,6 @@ public class ServiceImplementation {
             deleteAdSQL.setInt(1, id);
 
             int rowsAffected = deleteAdSQL.executeUpdate();
-
-            if (rowsAffected == 1) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public boolean lockAd(int id) {
-        try {
-            lockAdSQL.setInt(1, id);
-
-            int rowsAffected = lockAdSQL.executeUpdate();
 
             if (rowsAffected == 1) {
                 return true;

@@ -165,42 +165,7 @@ public class AdEndpoint {
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
-
-    public static class LockAdHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException {
-            StringBuilder response = new StringBuilder();
-
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
-
-            if (jsonObject.containsKey("id")) {
-
-                int adId = (((Long) jsonObject.get("id")).intValue());
-
-                Ad ad = adController.getAd(adId);
-
-                if (ad != null) {
-                    boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
-
-                    if (verifySession) {
-                        if (adController.lockAd(adId)) {
-                            response.append(gson.toJson("Success: Ad with ID: " + adId + " locked"));
-                        } else {
-                            response.append("Failure: Can not lock ad");
-                        }
-                    } else {
-                        response.append("Failure: Session not verified");
-                    }
-                } else {
-                    response.append("Failure: Can not lock ad");
-                }
-            } else {
-                response.append("Failure: Incorrect parameters");
-            }
-
-            endpointController.writeResponse(httpExchange, response.toString());
-        }
-    }
-
+    
     public static class UnlockAdHandler implements HttpHandler {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();

@@ -86,12 +86,11 @@ public class ServerController {
 
         httpsServer.createContext("/getmyads", new AdEndpoint.GetMyAdsHandler());
         httpsServer.createContext("/updatead", new AdEndpoint.UpdateAdHandler());
-        httpsServer.createContext("/lockad", new AdEndpoint.LockAdHandler());
-        httpsServer.createContext("/unlockad", new AdEndpoint.UnlockAdHandler());
 
         httpsServer.createContext("/reservead", new AdEndpoint.ReserveAdHandler());
         httpsServer.createContext("/deletereservation", new AdEndpoint.DeleteReservationHandler());
         httpsServer.createContext("/getmyreservations", new AdEndpoint.GetMyReservationsHandler());
+        httpsServer.createContext("/unlockad", new AdEndpoint.UnlockAdHandler());
 
         httpsServer.createContext("/getadsbook", new AdEndpoint.GetAdsBookHandler());
         httpsServer.createContext("/getadsall", new AdEndpoint.GetAdsAllHandler());
