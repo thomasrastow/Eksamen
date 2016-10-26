@@ -31,7 +31,8 @@ public class LoginEndpoint {
             StringBuilder response = new StringBuilder();
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            if (jsonObject.containsKey("username") & jsonObject.containsKey("username")) {
+            if (jsonObject.containsKey("username") & jsonObject.containsKey("username") &
+                    !jsonObject.containsValue("")) {
 
                 String username = (String) jsonObject.get("username");
                 String password = (String) jsonObject.get("password");

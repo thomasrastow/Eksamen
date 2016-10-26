@@ -4,6 +4,7 @@ package DTOobjects;
  * Created by krist on 19-10-2016.
  */
 public class Config {
+
     private String dbType;
     private String dbHost;
     private String dbPort;

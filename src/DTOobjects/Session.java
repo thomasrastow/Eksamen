@@ -9,6 +9,10 @@ public class Session {
     private int userId;
     private int userType;
 
+    public Session() {
+
+    }
+
     public String getSessionToken() {
         return sessionToken;
     }

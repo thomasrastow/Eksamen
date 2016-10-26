@@ -14,6 +14,10 @@ public class Reservation {
     private String userUsername;
     private int userPhonenumber;
 
+    public Reservation() {
+
+    }
+
     public int getAdId() {
         return adId;
     }
