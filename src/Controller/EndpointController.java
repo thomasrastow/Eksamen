@@ -110,16 +110,19 @@ public class EndpointController {
         JSONObject jsonObject = new JSONObject();
         JSONParser jsonParser = new JSONParser();
 
-        try {
-            InputStreamReader inputRequestBody = new InputStreamReader(httpExchange.getRequestBody(),"latin1");
+        if (httpExchange.getRequestMethod().equalsIgnoreCase("POST")) {
 
-            Object requestObject = jsonParser.parse(inputRequestBody);
+            try {
+                InputStreamReader inputRequestBody = new InputStreamReader(httpExchange.getRequestBody(), "latin1");
 
-            jsonObject = (JSONObject) requestObject;
+                Object requestObject = jsonParser.parse(inputRequestBody);
 
-            return jsonObject;
-        } catch (Exception e) {
-            e.printStackTrace();
+                jsonObject = (JSONObject) requestObject;
+
+                return jsonObject;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return jsonObject;

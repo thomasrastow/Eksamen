@@ -192,13 +192,6 @@ public class ServiceImplementation {
         ResultSet resultSet = null;
 
         try {
-         /*   updateUserSQL.setInt(1, user.getPhonenumber());
-            updateUserSQL.setString(2, user.getAddress());
-            updateUserSQL.setString(3, user.getEmail());
-            updateUserSQL.setInt(4, user.getMobilepay());
-            updateUserSQL.setInt(5, user.getCash());
-            updateUserSQL.setInt(6, user.getTransfer());
-            updateUserSQL.setInt(7, user.getId());*/
             updateUserSQL.setString(1, user.getUsername());
             updateUserSQL.setString(2, md5Hash(user.getPassword()));
             updateUserSQL.setInt(3, user.getPhonenumber());
@@ -822,6 +815,3 @@ public class ServiceImplementation {
     }
 
 }
-
-
-

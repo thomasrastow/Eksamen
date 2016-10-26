@@ -36,7 +36,6 @@ public class UserEndpoint {
 
             ArrayList<User> users = userController.getUsers();
 
-
             boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
             if(verifySession) {
@@ -60,22 +59,28 @@ public class UserEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            User user = new User();
-            user.setUsername((String) jsonObject.get("username"));
-            user.setPassword((String) jsonObject.get("password"));
-            user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
-            user.setAddress((String) jsonObject.get("address"));
-            user.setEmail((String) jsonObject.get("email"));
-            user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
-            user.setCash(((Long) jsonObject.get("cash")).intValue());
-            user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+            if (jsonObject.containsKey("username") & jsonObject.containsKey("password") &
+                    jsonObject.containsKey("phonenumber") & jsonObject.containsKey("address") &
+                    jsonObject.containsKey("email")) {
 
-            user.setType(0);
+                User user = new User();
+                user.setUsername((String) jsonObject.get("username"));
+                user.setPassword((String) jsonObject.get("password"));
+                user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
+                user.setAddress((String) jsonObject.get("address"));
+                user.setEmail((String) jsonObject.get("email"));
+                user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
+                user.setCash(((Long) jsonObject.get("cash")).intValue());
+                user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+                user.setType(0);
 
-            if (user != null & userController.createUser(user)) {
+                if (user != null & userController.createUser(user)) {
                     response.append(gson.toJson(user));
-            } else {
+                } else {
                     response.append("Failure: Can not create user");
+                }
+            } else {
+                response.append("Failure: Incorrect parameters");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -88,18 +93,23 @@ public class UserEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            int userId = (((Long) jsonObject.get("id")).intValue());
+            if (jsonObject.containsKey("id")) {
 
-            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+                boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-            if(verifySession) {
-                if (userController.deleteUser(userId)) {
-                    response.append(gson.toJson("Success: User with ID: " + userId + " deleted"));
+                if (verifySession) {
+                    int userId = (((Long) jsonObject.get("id")).intValue());
+
+                    if (userController.deleteUser(userId)) {
+                        response.append(gson.toJson("Success: User with ID: " + userId + " deleted"));
+                    } else {
+                        response.append("Failure: Can not delete user");
+                    }
                 } else {
-                    response.append("Failure: Can not delete user");
+                    response.append("Failure: Session not verified");
                 }
             } else {
-                response.append("Failure: Session not verified");
+                response.append("Failure: Incorrect parameters");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -112,53 +122,62 @@ public class UserEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+            if(jsonObject.containsKey("id") & jsonObject.containsKey("username") &
+                    jsonObject.containsKey("password") & jsonObject.containsKey("phonenumber") &
+                    jsonObject.containsKey("address") & jsonObject.containsKey("email") &
+                    jsonObject.containsKey("mobilepay") & jsonObject.containsKey("cash") &
+                    jsonObject.containsKey("transfer")) {
 
-            if (verifySession) {
+                boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-                int userId = (((Long) jsonObject.get("id")).intValue());
+                if (verifySession) {
 
-                User user = userController.getUser(userId);
+                    int userId = (((Long) jsonObject.get("id")).intValue());
 
-                if (user != null) {
-                    if (!jsonObject.get("username").equals("")) {
-                        user.setUsername((String) jsonObject.get("username"));
-                    }
+                    User user = userController.getUser(userId);
 
-                    user.setPassword((String) jsonObject.get("password"));
+                    if (user != null) {
+                        if (!jsonObject.get("username").equals("")) {
+                            user.setUsername((String) jsonObject.get("username"));
+                        }
 
-                    if (!jsonObject.get("phonenumber").equals("")) {
-                        user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
-                    }
+                        user.setPassword((String) jsonObject.get("password"));
 
-                    if (!jsonObject.get("address").equals("")) {
-                        user.setAddress((String) jsonObject.get("address"));
-                    }
+                        if (!jsonObject.get("phonenumber").equals("")) {
+                            user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
+                        }
 
-                    if (!jsonObject.get("email").equals("")) {
-                        user.setEmail((String) jsonObject.get("email"));
-                    }
+                        if (!jsonObject.get("address").equals("")) {
+                            user.setAddress((String) jsonObject.get("address"));
+                        }
 
-                    if (!jsonObject.get("mobilepay").equals("")) {
-                        user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
-                    }
+                        if (!jsonObject.get("email").equals("")) {
+                            user.setEmail((String) jsonObject.get("email"));
+                        }
 
-                    if (!jsonObject.get("cash").equals("")) {
-                        user.setCash(((Long) jsonObject.get("cash")).intValue());
-                    }
+                        if (!jsonObject.get("mobilepay").equals("")) {
+                            user.setMobilepay(((Long) jsonObject.get("mobilepay")).intValue());
+                        }
 
-                    if (!jsonObject.get("transfer").equals("")) {
-                        user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
-                    }
+                        if (!jsonObject.get("cash").equals("")) {
+                            user.setCash(((Long) jsonObject.get("cash")).intValue());
+                        }
 
-                    if (user != null & userController.updateUser(user)) {
-                        response.append(gson.toJson(user));
+                        if (!jsonObject.get("transfer").equals("")) {
+                            user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
+                        }
+
+                        if (user != null & userController.updateUser(user)) {
+                            response.append(gson.toJson(user));
+                        }
+                    } else {
+                        response.append("Failure: Can not update user");
                     }
                 } else {
-                    response.append("Failure: Can not update user");
+                    response.append("Failure: Session not verified");
                 }
             } else {
-                response.append("Failure: Session not verified");
+                response.append("Failure: Incorrect parameters");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -166,7 +185,7 @@ public class UserEndpoint {
     }
 
     public static class UpdateUserHandler implements HttpHandler {
-        public void handle(HttpExchange httpExchange) throws IOException{
+        public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
@@ -219,6 +238,7 @@ public class UserEndpoint {
             } else {
                 response.append("Failure: Session not verified");
             }
+
 
             endpointController.writeResponse(httpExchange, response.toString());
         }

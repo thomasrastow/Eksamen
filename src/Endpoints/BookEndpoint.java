@@ -25,20 +25,25 @@ public class BookEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            Long bookIsbn = ((Long) jsonObject.get("isbn"));
+            if (jsonObject.containsKey("isbn")) {
 
-            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+                boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-            if (verifySession) {
-                if (bookController.deleteBook(bookIsbn)) {
-                    response.append(gson.toJson("Success: Book with ISBN: " + bookIsbn + " deleted"));
+                if (verifySession) {
+
+                    Long bookIsbn = ((Long) jsonObject.get("isbn"));
+
+                    if (bookController.deleteBook(bookIsbn)) {
+                        response.append(gson.toJson("Success: Book with ISBN: " + bookIsbn + " deleted"));
+                    } else {
+                        response.append("Failure: Can not delete book");
+                    }
                 } else {
-                    response.append("Failure: Can not delete book");
+                    response.append("Failure: Session not verified");
                 }
             } else {
-                response.append("Failure: Session not verified");
+                response.append("Failure: Incorrect parameters");
             }
-
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
@@ -65,22 +70,29 @@ public class BookEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            Book book = new Book();
-            book.setISBN((Long) jsonObject.get("isbn"));
-            book.setTitle((String) jsonObject.get("title"));
-            book.setEdition((String) jsonObject.get("edition"));
-            book.setAuthor((String) jsonObject.get("author"));
+            if (jsonObject.containsKey("isbn") & jsonObject.containsKey("title") &
+                    jsonObject.containsKey("edition") & jsonObject.containsKey("author")) {
 
-            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+                boolean verifySession = endpointController.checkSession(httpExchange, 0);
 
-            if (verifySession) {
-                if (book != null & bookController.createBook(book)) {
-                    response.append(gson.toJson(book));
+                if (verifySession) {
+
+                    Book book = new Book();
+                    book.setISBN((Long) jsonObject.get("isbn"));
+                    book.setTitle((String) jsonObject.get("title"));
+                    book.setEdition((String) jsonObject.get("edition"));
+                    book.setAuthor((String) jsonObject.get("author"));
+
+                    if (book != null & bookController.createBook(book)) {
+                        response.append(gson.toJson(book));
+                    } else {
+                        response.append("Failure: Can not create book");
+                    }
                 } else {
-                    response.append("Failure: Can not create book");
+                    response.append("Failure: Session not verified");
                 }
             } else {
-                response.append("Failure: Session not verified");
+                response.append("Failure: Incorrect parameters");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
