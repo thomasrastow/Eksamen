@@ -517,7 +517,6 @@ public class ServiceImplementation {
     public ArrayList<Ad> getMyAds(int id) {
         ArrayList<Ad> listMyAds = new ArrayList<>();
         ResultSet resultSet = null;
-        Ad ad = null;
 
         try {
             getMyAdsSQL.setInt(1, id);
@@ -525,7 +524,7 @@ public class ServiceImplementation {
             resultSet = getMyAdsSQL.executeQuery();
 
             while (resultSet.next()) {
-                ad = new Ad();
+                Ad ad = new Ad();
 
                 ad.setId(resultSet.getInt("adid"));
                 ad.setPrice(resultSet.getInt("price"));
