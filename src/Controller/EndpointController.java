@@ -34,19 +34,23 @@ public class EndpointController {
     }
 
     public Session checkSession(HttpExchange httpExchange) throws IOException {
-        Gson gson = new Gson();
-        JSONObject jsonObject;
 
         SessionController sessionController = new SessionController();
 
-        List<HttpCookie> cookiesHeader = HttpCookie.parse(httpExchange.getRequestHeaders().getFirst("Cookie"));
-        String sessionId = cookiesHeader.get(0).getValue();
+        String cookieHeader = httpExchange.getRequestHeaders().getFirst("Cookie");
 
-        if(sessionId != null) {
-            Session session = sessionController.getSession(sessionId);
+        if (cookieHeader != null) {
+            List<HttpCookie> cookiesHeader = HttpCookie.parse(cookieHeader);
+            String sessionId = cookiesHeader.get(0).getValue();
 
-            if(session != null) {
-                return session;
+            if (sessionId != null && !sessionId.isEmpty()) {
+                Session session = sessionController.getSession(sessionId);
+
+                if (session != null) {
+                    return session;
+                } else {
+                    return null;
+                }
             } else {
                 return null;
             }

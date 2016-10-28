@@ -66,7 +66,7 @@ public class LoginEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 boolean verifyLogout = sessionController.clearSessions(session.getUserId());
 

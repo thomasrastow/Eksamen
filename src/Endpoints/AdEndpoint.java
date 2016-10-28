@@ -53,7 +53,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -91,7 +91,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -142,7 +142,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -181,7 +181,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -221,7 +221,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -266,7 +266,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 ArrayList<Reservation> reservations = adController.getMyReservations(session.getUserId());
 
@@ -289,7 +289,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -329,7 +329,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
                 ArrayList<Ad> myAds = adController.getMyAds(session.getUserId());
 
                 if (!myAds.isEmpty()) {
@@ -399,7 +399,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
                 ArrayList<Ad> ads = adController.getAdsAll();
 
                 if (!ads.isEmpty()) {
@@ -421,7 +421,7 @@ public class AdEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 

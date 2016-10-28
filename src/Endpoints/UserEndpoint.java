@@ -37,7 +37,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
                 ArrayList<User> users = userController.getUsers();
 
                 if (users.isEmpty()) {
@@ -95,7 +95,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 User user = userController.getUser(session.getUserId());
 
@@ -119,7 +119,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -177,7 +177,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 boolean verifyRequest = userController.deleteUser(session.getUserId());
 
@@ -200,7 +200,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -234,7 +234,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserId() != 0) {
+            if (session != null && session.getUserId() != 0) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -304,7 +304,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 

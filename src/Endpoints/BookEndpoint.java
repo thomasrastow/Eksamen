@@ -26,7 +26,7 @@ public class BookEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
@@ -72,7 +72,7 @@ public class BookEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session.getUserType() == 1) {
+            if (session != null && session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
