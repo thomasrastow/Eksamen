@@ -85,7 +85,7 @@ public class BookEndpoint {
                     book.setEdition((String) jsonObject.get("edition"));
                     book.setAuthor((String) jsonObject.get("author"));
 
-                    if (book != null & bookController.createBook(book)) {
+                    if (book != null && bookController.createBook(book)) {
                         response.append(gson.toJson(book));
                     } else {
                         response.append("Failure: Can not create book");

@@ -76,7 +76,7 @@ public class UserEndpoint {
                 user.setTransfer(((Long) jsonObject.get("transfer")).intValue());
                 user.setType(0);
 
-                if (user != null & userController.createUser(user)) {
+                if (user != null && userController.createUser(user)) {
                     response.append(gson.toJson(user));
                 } else {
                     response.append("Failure: Can not create user");

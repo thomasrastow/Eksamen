@@ -102,7 +102,7 @@ public class AdEndpoint {
 
                     Ad ad = adController.getAd(adId);
 
-                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+                    if (ad != null && session.getUserId() == ad.getUserId() | ad != null && session.getUserType() == 1) {
                         if (!jsonObject.get("comment").equals("")) {
                             ad.setComment((String) jsonObject.get("comment"));
                         }
@@ -152,7 +152,7 @@ public class AdEndpoint {
 
                     Ad ad = adController.getAd(adId);
 
-                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+                    if (ad != null && session.getUserId() == ad.getUserId() | ad != null && session.getUserType() == 1) {
 
                         boolean verifyRequest = adController.deleteAd(adId);
 
@@ -191,7 +191,7 @@ public class AdEndpoint {
 
                     Ad ad = adController.getAd(adId);
 
-                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+                    if (ad != null && session.getUserId() == ad.getUserId() | ad != null && session.getUserType() == 1) {
 
                         boolean verifyRequestDelete = adController.deleteReservation(adId);
                         boolean verifyRequestUnlock = adController.unlockAd(adId);
@@ -231,7 +231,7 @@ public class AdEndpoint {
 
                     Ad ad = adController.getAd(adId);
 
-                    if (ad != null & ad.getDeleted() != 1 & ad.getDeleted() != 1) {
+                    if (ad != null && ad.getDeleted() != 1 & ad.getDeleted() != 1) {
 
                         Reservation reservation = new Reservation();
                         reservation.setAdId(adId);
@@ -299,7 +299,7 @@ public class AdEndpoint {
 
                     Reservation reservation = adController.getReservation(adId);
 
-                    if (reservation != null & session.getUserId() == reservation.getUserId()) {
+                    if (reservation != null && session.getUserId() == reservation.getUserId()) {
 
                         boolean verifyRequestDelete = adController.deleteReservation(adId);
                         boolean verifyRequestUnlock = adController.unlockAd(adId);
@@ -431,7 +431,7 @@ public class AdEndpoint {
 
                     Ad ad = adController.getAd(adId);
 
-                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+                    if (ad != null && session.getUserId() == ad.getUserId() | ad != null && session.getUserType() == 1) {
                         response.append(gson.toJson(ad));
                     } else {
                         response.append("Failure: Can not find ad");
