@@ -15,9 +15,9 @@ public class SessionController {
 
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public boolean getSession (String sessionToken, int userId) {
+    public boolean getSession (String sessionId, int userId) {
 
-        Session session = serviceImpl.getSession(sessionToken);
+        Session session = serviceImpl.getSession(sessionId);
 
         if(session != null) {
             if (session.getUserType() == 1 | session.getUserId() == userId) {
@@ -30,9 +30,9 @@ public class SessionController {
         return false;
     }
 
-    public int getSessionUserId (String sessionToken) {
+    public int getSessionUserId (String sessionId) {
 
-        Session session = serviceImpl.getSession(sessionToken);
+        Session session = serviceImpl.getSession(sessionId);
 
         if(session != null) {
             return session.getUserId();
@@ -52,11 +52,22 @@ public class SessionController {
         }
     }
 
-    public String generateToken() {
+    public boolean clearSessions(int userId)  {
+
+        boolean verifySession = serviceImpl.clearSessions(userId);
+
+        if (verifySession) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String generateSessionId() {
         SecureRandom secureRandom = new SecureRandom();
 
-        String generatedToken = new BigInteger(130, secureRandom).toString(32);
+        String generatedSessionId = new BigInteger(130, secureRandom).toString(32);
 
-        return generatedToken;
+        return generatedSessionId;
     }
 }

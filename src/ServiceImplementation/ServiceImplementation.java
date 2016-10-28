@@ -120,9 +120,9 @@ public class ServiceImplementation {
             getAdPublicSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, ads.comment, users.username, users.address, users.mobilepay, users.cash, users.transfer, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE ads.adid = ? AND deleted = 0 AND locked = 0");
 
 //SESSIONS
-            createSessionSQL = connection.prepareStatement("INSERT INTO sessions (token, userid) VALUES (?, ?)");
+            createSessionSQL = connection.prepareStatement("INSERT INTO sessions (sessionid, userid) VALUES (?, ?)");
 
-            getSessionSQL = connection.prepareStatement("SELECT sessions.*, users.type FROM sessions INNER JOIN users ON sessions.userid=users.userid WHERE token = ?");
+            getSessionSQL = connection.prepareStatement("SELECT sessions.*, users.type FROM sessions INNER JOIN users ON sessions.userid=users.userid WHERE sessionid = ?");
 
             clearSessionsSQL = connection.prepareStatement("DELETE FROM sessions WHERE userid = ?");
 
@@ -852,7 +852,7 @@ public class ServiceImplementation {
     public boolean createSession (Session session) {
 
         try {
-            createSessionSQL.setString(1, md5Hash(session.getSessionToken()));
+            createSessionSQL.setString(1, md5Hash(session.getSessionId()));
             createSessionSQL.setInt(2, session.getUserId());
 
             int rowsAffected = createSessionSQL.executeUpdate();
@@ -868,19 +868,19 @@ public class ServiceImplementation {
         return false;
     }
 
-    public Session getSession (String sessionToken) {
+    public Session getSession (String sessionId) {
         ResultSet resultSet = null;
         Session session = null;
 
         try {
-            getSessionSQL.setString(1, md5Hash(sessionToken));
+            getSessionSQL.setString(1, md5Hash(sessionId));
 
             resultSet = getSessionSQL.executeQuery();
 
             while (resultSet.next()) {
                 session = new Session();
 
-                session.setSessionToken(resultSet.getString("token"));
+                session.setSessionId(resultSet.getString("sessionid"));
                 session.setUserId(resultSet.getInt("userid"));
                 session.setUserType(resultSet.getInt("type"));
             }

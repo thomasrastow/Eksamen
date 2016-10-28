@@ -66,7 +66,7 @@ public class LoginEndpoint {
             int verifySession = endpointController.getSessionUserId(httpExchange);
 
             if (verifySession != 0) {
-                boolean verifyLogout = loginController.logout(verifySession);
+                boolean verifyLogout = sessionController.clearSessions(verifySession);
 
                 if (verifyLogout) {
                     response.append(gson.toJson("Success: User with ID: " + verifySession + " has been logged out"));

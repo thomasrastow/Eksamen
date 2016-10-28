@@ -5,7 +5,7 @@ package DTOobjects;
  */
 public class Session {
 
-    private String sessionToken;
+    private String sessionId;
     private int userId;
     private int userType;
 
@@ -13,12 +13,12 @@ public class Session {
 
     }
 
-    public String getSessionToken() {
-        return sessionToken;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public int getUserId() {

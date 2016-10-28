@@ -17,14 +17,4 @@ public class LoginController {
         return user;
     }
 
-    public boolean logout(int userId)  {
-
-        boolean verifySession = serviceImpl.clearSessions(userId);
-
-        if (verifySession) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

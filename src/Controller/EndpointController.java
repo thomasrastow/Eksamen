@@ -39,13 +39,11 @@ public class EndpointController {
 
         SessionController sessionController = new SessionController();
 
-        String hasCookie = httpExchange.getRequestHeaders().getFirst(("Cookie"));
-        if(hasCookie != null ) {
-            jsonObject = gson.fromJson(hasCookie, JSONObject.class);
-            Session session = new Session();
-            session.setSessionToken((String) jsonObject.get("value"));
+        List<HttpCookie> cookiesHeader = HttpCookie.parse(httpExchange.getRequestHeaders().getFirst("Cookie"));
+        String sessionId = cookiesHeader.get(0).getValue();
 
-            boolean verifySession = sessionController.getSession(session.getSessionToken(), userId);
+        if(sessionId != null) {
+            boolean verifySession = sessionController.getSession(sessionId, userId);
 
             if(verifySession) {
                 return true;
@@ -63,14 +61,11 @@ public class EndpointController {
 
         SessionController sessionController = new SessionController();
 
-        String hasCookie = httpExchange.getRequestHeaders().getFirst(("Cookie"));
+        List<HttpCookie> cookiesHeader = HttpCookie.parse(httpExchange.getRequestHeaders().getFirst("Cookie"));
+        String sessionId = cookiesHeader.get(0).getValue();
 
-        if(hasCookie != null ) {
-            jsonObject = gson.fromJson(hasCookie, JSONObject.class);
-            Session session = new Session();
-            session.setSessionToken((String) jsonObject.get("value"));
-
-            int verifySession = sessionController.getSessionUserId(session.getSessionToken());
+        if(sessionId != null) {
+            int verifySession = sessionController.getSessionUserId(sessionId);
 
             if(verifySession != 0) {
                 return verifySession;
@@ -83,25 +78,16 @@ public class EndpointController {
     }
 
     public boolean createSession(HttpExchange httpExchange, User user) throws IOException {
-        Gson gson = new Gson();
 
-        JSONObject jsonObject;
         Session session = new Session();
-        session.setSessionToken(sessionController.generateToken());
+        session.setSessionId(sessionController.generateSessionId());
         session.setUserId(user.getId());
         session.setUserType(user.getType());
-
-        String hasCookie = httpExchange.getRequestHeaders().getFirst(("Cookie"));
-
-
-        HttpCookie httpCookie = new HttpCookie("sessionId", session.getSessionToken());
-        httpCookie.setSecure(true);
-        httpCookie.setHttpOnly(true);
 
         boolean verifySession = sessionController.createSession(session);
 
         if (verifySession) {
-            httpExchange.getResponseHeaders().set("Set-Cookie", gson.toJson(httpCookie));
+            httpExchange.getResponseHeaders().set("Set-Cookie", "sessionid=" + session.getSessionId() + "; Secure; HttpOnly");
 
             return true;
         } else {
