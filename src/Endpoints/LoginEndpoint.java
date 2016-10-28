@@ -1,6 +1,7 @@
 package Endpoints;
 
 import Controller.SessionController;
+import DTOobjects.Session;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -63,13 +64,14 @@ public class LoginEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            int verifySession = endpointController.getSessionUserId(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (verifySession != 0) {
-                boolean verifyLogout = sessionController.clearSessions(verifySession);
+            if (session.getUserId() != 0) {
+
+                boolean verifyLogout = sessionController.clearSessions(session.getUserId());
 
                 if (verifyLogout) {
-                    response.append(gson.toJson("Success: User with ID: " + verifySession + " has been logged out"));
+                    response.append(gson.toJson("Success: User with ID: " + session.getUserId() + " has been logged out"));
                 } else {
                     response.append("Failure: Can not log user out");
                 }
@@ -78,7 +80,6 @@ public class LoginEndpoint {
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
-
         }
     }
 }

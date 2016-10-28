@@ -1,15 +1,16 @@
 package Endpoints;
-        import Controller.BookController;
-        import Controller.EndpointController;
-        import DTOobjects.Book;
-        import com.google.gson.Gson;
-        import com.sun.net.httpserver.HttpExchange;
-        import com.sun.net.httpserver.HttpHandler;
-        import org.json.simple.JSONObject;
+import Controller.BookController;
+import Controller.EndpointController;
+import DTOobjects.Book;
+import DTOobjects.Session;
+import com.google.gson.Gson;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import org.json.simple.JSONObject;
 
-        import java.io.IOException;
-        import java.util.ArrayList;
-        import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 /**
  * Created by krist
  */
@@ -23,13 +24,13 @@ public class BookEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("isbn")) {
+            if (session.getUserType() == 1) {
 
-                boolean verifySession = endpointController.checkSession(httpExchange, 0);
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (verifySession) {
+                if (jsonObject.containsKey("isbn")) {
 
                     Long bookIsbn = ((Long) jsonObject.get("isbn"));
 
@@ -39,11 +40,12 @@ public class BookEndpoint {
                         response.append("Failure: Can not delete book");
                     }
                 } else {
-                    response.append("Failure: Session not verified");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
+
             endpointController.writeResponse(httpExchange, response.toString());
         }
     }
@@ -68,14 +70,14 @@ public class BookEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("isbn") & jsonObject.containsKey("title") &
-                    jsonObject.containsKey("edition") & jsonObject.containsKey("author")) {
+            if (session.getUserType() == 1) {
 
-                boolean verifySession = endpointController.checkSession(httpExchange, 0);
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (verifySession) {
+                if (jsonObject.containsKey("isbn") & jsonObject.containsKey("title") &
+                        jsonObject.containsKey("edition") & jsonObject.containsKey("author")) {
 
                     Book book = new Book();
                     book.setISBN((Long) jsonObject.get("isbn"));
@@ -89,10 +91,10 @@ public class BookEndpoint {
                         response.append("Failure: Can not create book");
                     }
                 } else {
-                    response.append("Failure: Session not verified");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());

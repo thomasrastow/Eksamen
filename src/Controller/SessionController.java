@@ -15,29 +15,14 @@ public class SessionController {
 
     ServiceImplementation serviceImpl = new ServiceImplementation();
 
-    public boolean getSession (String sessionId, int userId) {
+    public Session getSession (String sessionId) {
 
         Session session = serviceImpl.getSession(sessionId);
 
         if(session != null) {
-            if (session.getUserType() == 1 | session.getUserId() == userId) {
-                return true;
-            } else if (session.getUserId() == userId) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public int getSessionUserId (String sessionId) {
-
-        Session session = serviceImpl.getSession(sessionId);
-
-        if(session != null) {
-            return session.getUserId();
+            return session;
         } else {
-            return 0;
+            return null;
         }
     }
 

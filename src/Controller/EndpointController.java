@@ -33,7 +33,7 @@ public class EndpointController {
         os.close();
     }
 
-    public boolean checkSession(HttpExchange httpExchange, int userId) throws IOException {
+    public Session checkSession(HttpExchange httpExchange) throws IOException {
         Gson gson = new Gson();
         JSONObject jsonObject;
 
@@ -43,37 +43,15 @@ public class EndpointController {
         String sessionId = cookiesHeader.get(0).getValue();
 
         if(sessionId != null) {
-            boolean verifySession = sessionController.getSession(sessionId, userId);
+            Session session = sessionController.getSession(sessionId);
 
-            if(verifySession) {
-                return true;
+            if(session != null) {
+                return session;
             } else {
-                return false;
+                return null;
             }
         } else {
-            return false;
-        }
-    }
-
-    public int getSessionUserId(HttpExchange httpExchange) throws IOException {
-        Gson gson = new Gson();
-        JSONObject jsonObject;
-
-        SessionController sessionController = new SessionController();
-
-        List<HttpCookie> cookiesHeader = HttpCookie.parse(httpExchange.getRequestHeaders().getFirst("Cookie"));
-        String sessionId = cookiesHeader.get(0).getValue();
-
-        if(sessionId != null) {
-            int verifySession = sessionController.getSessionUserId(sessionId);
-
-            if(verifySession != 0) {
-                return verifySession;
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
+            return null;
         }
     }
 

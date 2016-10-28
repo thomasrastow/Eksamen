@@ -51,31 +51,34 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("isbn") & jsonObject.containsKey("rating") &
-                    jsonObject.containsKey("comment") & jsonObject.containsKey("price")) {
+            if (session.getUserId() != 0) {
 
-                int verifySession = endpointController.getSessionUserId(httpExchange);
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (verifySession != 0) {
+                if (jsonObject.containsKey("isbn") & jsonObject.containsKey("rating") &
+                        jsonObject.containsKey("comment") & jsonObject.containsKey("price")) {
+
                     Ad ad = new Ad();
-                    ad.setUserId(verifySession);
+                    ad.setUserId(session.getUserId());
                     ad.setIsbn((Long) jsonObject.get("isbn"));
                     ad.setRating(((Long) jsonObject.get("rating")).intValue());
                     ad.setComment((String) jsonObject.get("comment"));
                     ad.setPrice(((Long) jsonObject.get("price")).intValue());
 
-                    if (ad != null & adController.createAd(ad)) {
+                    boolean verifyRequest = adController.createAd(ad);
+
+                    if (verifyRequest) {
                         response.append(gson.toJson(ad));
                     } else {
                         response.append("Failure: Can not create ad");
                     }
                 } else {
-                    response.append("Failure: Session not verified");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -86,45 +89,47 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id") & jsonObject.containsKey("comment") &
-                    jsonObject.containsKey("price") & jsonObject.containsKey("rating")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Ad ad = adController.getAd(adId);
+                if (jsonObject.containsKey("id") & jsonObject.containsKey("comment") &
+                        jsonObject.containsKey("price") & jsonObject.containsKey("rating")) {
 
-                if (ad != null) {
-                    if (!jsonObject.get("comment").equals("")) {
-                        ad.setComment((String) jsonObject.get("comment"));
-                    }
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                    if (!jsonObject.get("price").equals("")) {
-                        ad.setPrice(((Long) jsonObject.get("price")).intValue());
-                    }
+                    Ad ad = adController.getAd(adId);
 
-                    if (!jsonObject.get("rating").equals("")) {
-                        ad.setRating(((Long) jsonObject.get("rating")).intValue());
-                    }
+                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+                        if (!jsonObject.get("comment").equals("")) {
+                            ad.setComment((String) jsonObject.get("comment"));
+                        }
 
-                    boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+                        if (!jsonObject.get("price").equals("")) {
+                            ad.setPrice(((Long) jsonObject.get("price")).intValue());
+                        }
 
-                    if (verifySession) {
-                        if (adController.updateAd(ad)) {
+                        if (!jsonObject.get("rating").equals("")) {
+                            ad.setRating(((Long) jsonObject.get("rating")).intValue());
+                        }
+
+                        boolean verifyRequest = adController.updateAd(ad);
+
+                        if (verifyRequest) {
                             response.append(gson.toJson(ad));
                         } else {
                             response.append("Failure: Can not update ad");
                         }
                     } else {
-                        response.append("Failure: Session not verified");
+                        response.append("Failure: Can not update ad");
                     }
-
                 } else {
-                    response.append("Failure: Can not update ad");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -135,31 +140,35 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Ad ad = adController.getAd(adId);
+                if (jsonObject.containsKey("id")) {
 
-                if (ad != null) {
-                    boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                    if (verifySession) {
-                        if (adController.deleteAd(adId)) {
+                    Ad ad = adController.getAd(adId);
+
+                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+
+                        boolean verifyRequest = adController.deleteAd(adId);
+
+                        if(verifyRequest) {
                             response.append(gson.toJson("Success: Ad with ID: " + adId + " deleted"));
                         } else {
                             response.append("Failure: Can not delete ad");
                         }
                     } else {
-                        response.append("Failure: Session not verified");
+                        response.append("Failure: Can not delete ad");
                     }
                 } else {
-                    response.append("Failure: Can not delete ad");
+                    response.append("Failure: Incorrect parameters");
                 }
-            } else {
-                response.append("Failure: Incorrect parameters");
+            }  else {
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -170,31 +179,36 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Ad ad = adController.getAd(adId);
+                if (jsonObject.containsKey("id")) {
 
-                if (ad != null) {
-                    boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                    if (verifySession) {
-                        if (adController.deleteReservation(adId) & adController.unlockAd(adId)) {
+                    Ad ad = adController.getAd(adId);
+
+                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
+
+                        boolean verifyRequestDelete = adController.deleteReservation(adId);
+                        boolean verifyRequestUnlock = adController.unlockAd(adId);
+
+                        if (verifyRequestDelete & verifyRequestUnlock) {
                             response.append(gson.toJson("Success: Ad with ID: " + adId + " unlocked"));
                         } else {
                             response.append("Failure: Can not unlock ad");
                         }
                     } else {
-                        response.append("Failure: Session not verified");
+                        response.append("Failure: Can not unlock ad");
                     }
                 } else {
-                    response.append("Failure: Can not unlock ad");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -205,35 +219,40 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Ad ad = adController.getAd(adId);
+                if (jsonObject.containsKey("id")) {
 
-                if (ad != null | ad.getDeleted() != 1 | ad.getDeleted() != 1) {
-                    int verifySession = endpointController.getSessionUserId(httpExchange);
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                    if (verifySession != 0) {
+                    Ad ad = adController.getAd(adId);
+
+                    if (ad != null & ad.getDeleted() != 1 & ad.getDeleted() != 1) {
+
                         Reservation reservation = new Reservation();
                         reservation.setAdId(adId);
-                        reservation.setUserId(verifySession);
+                        reservation.setUserId(session.getUserId());
 
-                        if (adController.reserveAd(reservation) & adController.lockAd(adId)) {
+                        boolean verifyRequestReserve = adController.reserveAd(reservation);
+                        boolean verifyRequestLock = adController.lockAd(adId);
+
+                        if (verifyRequestReserve & verifyRequestLock) {
                             response.append(gson.toJson("Success: Ad with ID: " + adId + " reserved"));
                         } else {
                             response.append("Failure: Can not reserve ad");
                         }
                     } else {
-                        response.append("Failure: Session not verified");
+                        response.append("Failure: Can not reserve ad");
                     }
                 } else {
-                    response.append("Failure: Can not reserve ad");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
 
@@ -245,10 +264,11 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            int verifySession = endpointController.getSessionUserId(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (verifySession != 0) {
-                ArrayList<Reservation> reservations = adController.getMyReservations(verifySession);
+            if (session.getUserId() != 0) {
+
+                ArrayList<Reservation> reservations = adController.getMyReservations(session.getUserId());
 
                 if (!reservations.isEmpty()) {
                     response.append(gson.toJson(reservations));
@@ -260,7 +280,6 @@ public class AdEndpoint {
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
-
         }
     }
 
@@ -268,32 +287,36 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Reservation reservation = adController.getReservation(adId);
+                if (jsonObject.containsKey("id")) {
 
-                if (reservation != null) {
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                    boolean verifySession = endpointController.checkSession(httpExchange, reservation.getUserId());
+                    Reservation reservation = adController.getReservation(adId);
 
-                    if (verifySession) {
-                        if (adController.deleteReservation(adId) & adController.unlockAd(adId)) {
+                    if (reservation != null & session.getUserId() == reservation.getUserId()) {
+
+                        boolean verifyRequestDelete = adController.deleteReservation(adId);
+                        boolean verifyRequestUnlock = adController.unlockAd(adId);
+
+                        if (verifyRequestDelete & verifyRequestUnlock) {
                             response.append(gson.toJson("Success: Reservation with Ad ID: " + adId + " deleted"));
                         } else {
                             response.append("Failure: Can not delete reservation");
                         }
                     } else {
-                        response.append("Failure: Session not verified");
+                        response.append("Failure: Can not delete reservation");
                     }
                 } else {
-                    response.append("Failure: Can not delete reservation");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
@@ -304,10 +327,10 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            int verifySession = endpointController.getSessionUserId(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (verifySession != 0) {
-                ArrayList<Ad> myAds = adController.getMyAds(verifySession);
+            if (session.getUserId() != 0) {
+                ArrayList<Ad> myAds = adController.getMyAds(session.getUserId());
 
                 if (!myAds.isEmpty()) {
                     response.append(gson.toJson(myAds));
@@ -374,9 +397,9 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            boolean verifySession = endpointController.checkSession(httpExchange, 0);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (verifySession) {
+            if (session.getUserType() == 1) {
                 ArrayList<Ad> ads = adController.getAdsAll();
 
                 if (!ads.isEmpty()) {
@@ -396,27 +419,28 @@ public class AdEndpoint {
         public void handle(HttpExchange httpExchange) throws IOException {
             StringBuilder response = new StringBuilder();
 
-            JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
+            Session session = endpointController.checkSession(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (session.getUserId() != 0) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                Ad ad = adController.getAd(adId);
+                if (jsonObject.containsKey("id")) {
 
-                boolean verifySession = endpointController.checkSession(httpExchange, ad.getUserId());
+                    int adId = (((Long) jsonObject.get("id")).intValue());
 
-                if (verifySession) {
-                    if (ad != null) {
+                    Ad ad = adController.getAd(adId);
+
+                    if (ad != null & session.getUserId() == ad.getUserId() | ad != null & session.getUserType() == 1) {
                         response.append(gson.toJson(ad));
                     } else {
                         response.append("Failure: Can not find ad");
                     }
                 } else {
-                    response.append("Failure: Session not verified");
+                    response.append("Failure: Incorrect parameters");
                 }
             } else {
-                response.append("Failure: Incorrect parameters");
+                response.append("Failure: Session not verified");
             }
 
             endpointController.writeResponse(httpExchange, response.toString());
