@@ -36,6 +36,6 @@ public class Session {
     public void setUserType(int userType) {
         this.userType = userType;
     }
-    
+
 }
 

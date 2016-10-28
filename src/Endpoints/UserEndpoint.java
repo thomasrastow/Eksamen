@@ -95,6 +95,30 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
+            if (session.getUserId() != 0) {
+
+                User user = userController.getUser(session.getUserId());
+
+                if (user != null) {
+                    response.append(gson.toJson(user));
+                } else {
+                    response.append("Failure: Can not find user");
+                }
+
+            } else {
+                response.append("Failure: Session not verified");
+            }
+
+            endpointController.writeResponse(httpExchange, response.toString());
+        }
+    }
+
+    public static class GetUserAdminHandler implements HttpHandler {
+        public void handle(HttpExchange httpExchange) throws IOException {
+            StringBuilder response = new StringBuilder();
+
+            Session session = endpointController.checkSession(httpExchange);
+
             if (session.getUserType() == 1) {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
