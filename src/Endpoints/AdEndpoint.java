@@ -118,7 +118,7 @@ public class AdEndpoint {
                         boolean verifyRequest = adController.updateAd(ad);
 
                         if (verifyRequest) {
-                            response.append(gson.toJson(ad));
+                            response.append(gson.toJson("Success: Ad has been updated"));
                         } else {
                             response.append("Failure: Can not update ad");
                         }
