@@ -75,7 +75,7 @@ public class ServiceImplementation {
 
             getUserSQL = connection.prepareStatement("SELECT * FROM users WHERE userid = ? AND type != 1");
 
-            getUserPublicSQL = connection.prepareStatement("SELECT username, address, mobilepay, cash, transfer FROM users WHERE userid = ? AND type != 1");
+            getUserPublicSQL = connection.prepareStatement("SELECT address, mobilepay, cash, transfer FROM users WHERE username = ? AND type != 1");
 
 //BOOKS
             createBookSQL = connection.prepareStatement(
@@ -95,7 +95,7 @@ public class ServiceImplementation {
 
             getMyAdsSQL = connection.prepareStatement("SELECT * FROM ads WHERE userid = ? AND deleted = 0");
 
-            getAdsUserSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE users.userid = ? AND deleted = 0 AND locked = 0");
+            getAdsUserSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE users.username = ? AND deleted = 0 AND locked = 0");
 
             getAdsBookSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE books.isbn = ? AND deleted = 0 AND locked = 0");
 
@@ -324,20 +324,19 @@ public class ServiceImplementation {
         return user;
     }
 
-    public User getUserPublic(int id) {
+    public User getUserPublic(String username) {
         ResultSet resultSet = null;
         User user = null;
 
         try{
 
-            getUserPublicSQL.setInt(1, id);
+            getUserPublicSQL.setString(1, username);
 
             resultSet = getUserPublicSQL.executeQuery();
 
             while (resultSet.next()){
                 user = new User();
 
-                user.setUsername(resultSet.getString("username"));
                 user.setAddress(resultSet.getString("address"));
                 user.setMobilepay(resultSet.getInt("mobilepay"));
                 user.setCash(resultSet.getInt("cash"));
@@ -569,13 +568,13 @@ public class ServiceImplementation {
         return false;
     }
 
-    public ArrayList<Ad> getAdsUser(int userId) {
+    public ArrayList<Ad> getAdsUser(String username) {
 
         ArrayList<Ad> listAds = new ArrayList<>();
         ResultSet resultSet = null;
 
         try {
-            getAdsUserSQL.setLong(1, userId);
+            getAdsUserSQL.setString(1, username);
 
             resultSet = getAdsUserSQL.executeQuery();
 
@@ -583,7 +582,6 @@ public class ServiceImplementation {
                 Ad ad = new Ad();
 
                 ad.setId(resultSet.getInt("adid"));
-                ad.setUserUsername(resultSet.getString("username"));
                 ad.setIsbn(resultSet.getLong("isbn"));
                 ad.setBookTitle(resultSet.getString("title"));
                 ad.setBookAuthor(resultSet.getString("author"));

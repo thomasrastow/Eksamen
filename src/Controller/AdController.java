@@ -147,9 +147,9 @@ public class AdController {
         return ads;
     }
 
-    public ArrayList<Ad> getAdsUser(int userId) {
+    public ArrayList<Ad> getAdsUser(String username) {
 
-        ArrayList<Ad> ads = serviceImpl.getAdsUser(userId);
+        ArrayList<Ad> ads = serviceImpl.getAdsUser(username);
 
         return ads;
     }

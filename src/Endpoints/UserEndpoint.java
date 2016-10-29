@@ -95,7 +95,7 @@ public class UserEndpoint {
 
             Session session = endpointController.checkSession(httpExchange);
 
-            if (session != null && session.getUserId() != 0) {
+            if (session != null) {
 
                 User user = userController.getUser(session.getUserId());
 
@@ -151,11 +151,11 @@ public class UserEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (jsonObject.containsKey("username")) {
 
-                int userId = (((Long) jsonObject.get("id")).intValue());
+                String username = ((String) jsonObject.get("username"));
 
-                User user = userController.getUserPublic(userId);
+                User user = userController.getUserPublic(username);
 
                 if (user != null) {
                     response.append(gson.toJson(user));
@@ -252,7 +252,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (!jsonObject.get("phonenumber").equals("")) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 
@@ -325,7 +325,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (!jsonObject.get("phonenumber").equals("")) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 

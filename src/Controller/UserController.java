@@ -64,9 +64,9 @@ public class UserController {
     }
 
 
-    public User getUserPublic(int id) {
+    public User getUserPublic(String username) {
 
-        User user = serviceImpl.getUserPublic(id);
+        User user = serviceImpl.getUserPublic(username);
 
         return user;
     }
