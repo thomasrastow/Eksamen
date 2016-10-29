@@ -182,7 +182,7 @@ public class UserEndpoint {
                 boolean verifyRequest = userController.deleteUser(session.getUserId());
 
                 if (verifyRequest) {
-                    response.append(gson.toJson("Success: User with ID: " + session.getUserId() + " deleted"));
+                    response.append(gson.toJson("Success: Account has been deleted"));
                 } else {
                     response.append("Failure: Can not delete user");
                 }
@@ -252,7 +252,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0 || !jsonObject.get("phonenumber").equals("")) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 
@@ -279,7 +279,7 @@ public class UserEndpoint {
                         boolean verifyRequest = userController.updateUser(user);
 
                         if (verifyRequest) {
-                            response.append(gson.toJson(user));
+                            response.append(gson.toJson("Success: Account has been updated"));
                         } else {
                             response.append("Failure: Can not update user");
                         }
@@ -325,7 +325,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0 || !jsonObject.get("phonenumber").equals("")) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 

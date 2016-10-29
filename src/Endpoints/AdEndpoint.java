@@ -107,11 +107,11 @@ public class AdEndpoint {
                             ad.setComment((String) jsonObject.get("comment"));
                         }
 
-                        if (!jsonObject.get("price").equals("")) {
+                        if (((Long) jsonObject.get("price")).intValue() != 0) {
                             ad.setPrice(((Long) jsonObject.get("price")).intValue());
                         }
 
-                        if (!jsonObject.get("rating").equals("")) {
+                        if (((Long) jsonObject.get("rating")).intValue() != 0) {
                             ad.setRating(((Long) jsonObject.get("rating")).intValue());
                         }
 
