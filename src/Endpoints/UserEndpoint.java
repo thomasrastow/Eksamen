@@ -252,7 +252,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0 || !jsonObject.get("phonenumber").equals("")) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 
@@ -325,7 +325,7 @@ public class UserEndpoint {
 
                         user.setPassword((String) jsonObject.get("password"));
 
-                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0) {
+                        if (((Long) jsonObject.get("phonenumber")).intValue() != 0 || !jsonObject.get("phonenumber").equals("")) {
                             user.setPhonenumber(((Long) jsonObject.get("phonenumber")).intValue());
                         }
 
