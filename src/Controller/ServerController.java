@@ -8,6 +8,7 @@ import Endpoints.BookEndpoint;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.*;
 import java.io.FileInputStream;
@@ -104,7 +105,7 @@ public class ServerController {
         httpsServer.createContext("/getbooks", new BookEndpoint.GetBooksHandler());
         httpsServer.createContext("/deletebook", new BookEndpoint.DeleteBookHandler());
 
-        httpsServer.setExecutor(null);
+        httpsServer.setExecutor(Executors.newCachedThreadPool());
         httpsServer.start();
 
         System.out.println("The server is running");

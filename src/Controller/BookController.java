@@ -3,9 +3,7 @@ package Controller;
         import DTOobjects.Book;
         import ServiceImplementation.ServiceImplementation;
         import java.util.ArrayList;
-/**
- * Created by krist on 17-10-2016.
- */
+
 public class BookController {
 
     ServiceImplementation serviceImpl = new ServiceImplementation();

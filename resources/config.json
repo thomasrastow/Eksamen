@@ -1,12 +1,12 @@
 {
   "DB_TYPE":"jdbc:mysql://",
-  "DB_HOST":"shop.c50bqctooery.us-east-1.rds.amazonaws.com",
+  "DB_HOST":"localhost",
   "DB_PORT":"3306",
-  "DB_NAME":"test",
-  "DB_USER":"brugtbog",
-  "DB_PASS":"brugtpass",
+  "DB_NAME":"brugtbog",
+  "DB_USER":"root",
+  "DB_PASS":"kongen",
   "SERVER_PORT":"8000",
   "SSL_KEY":"resources/keystore.jks",
   "SSL_PWD":"brugtbog",
-  "ALLOW_ORIGIN": "https://localhost:63343"
+  "ALLOW_ORIGIN": "https://localhost:63342"
 }
