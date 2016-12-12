@@ -123,9 +123,9 @@ public class UserEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("userId")) {
 
-                    int userId = (((Long) jsonObject.get("id")).intValue());
+                    int userId = (((Long) jsonObject.get("userId")).intValue());
 
                     User user = userController.getUser(userId);
 
@@ -204,9 +204,9 @@ public class UserEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("userId")) {
 
-                    int userId = (((Long) jsonObject.get("id")).intValue());
+                    int userId = (((Long) jsonObject.get("userId")).intValue());
 
                     boolean verifyRequest = userController.deleteUser(userId);
 
@@ -308,13 +308,13 @@ public class UserEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id") & jsonObject.containsKey("username") &
+                if (jsonObject.containsKey("userId") & jsonObject.containsKey("username") &
                         jsonObject.containsKey("password") & jsonObject.containsKey("phonenumber") &
                         jsonObject.containsKey("address") & jsonObject.containsKey("email") &
                         jsonObject.containsKey("mobilepay") & jsonObject.containsKey("cash") &
                         jsonObject.containsKey("transfer")) {
 
-                    int userId = (((Long) jsonObject.get("id")).intValue());
+                    int userId = (((Long) jsonObject.get("userId")).intValue());
 
                     User user = userController.getUser(userId);
 

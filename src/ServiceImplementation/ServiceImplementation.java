@@ -68,7 +68,6 @@ public class ServiceImplementation {
 
             getUsersSQL = connection.prepareStatement("SELECT * FROM users WHERE type != 1");
 
-            // updateUserSQL = connection.prepareStatement("UPDATE user SET phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE id = ?");
             updateUserSQL = connection.prepareStatement("UPDATE users SET username = ?, password = COALESCE(?,password), phonenumber = ?, address = ?, email = ?, mobilepay = ?, cash = ?, transfer = ? WHERE userid = ? AND type != 1");
 
             deleteUserSQL = connection.prepareStatement("DELETE FROM users WHERE userid = ? AND type != 1");
@@ -91,7 +90,7 @@ public class ServiceImplementation {
 
             getAdsAllSQL = connection.prepareStatement("SELECT * FROM ads");
 
-            getAdsSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, users.username, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE deleted = 0 AND locked = 0");
+            getAdsSQL = connection.prepareStatement("SELECT ads.adid, ads.isbn, ads.price, ads.rating, ads.comment, users.username, users.address, users.mobilepay, users.cash, users.transfer, books.title, books.edition, books.author FROM ads INNER JOIN users ON ads.userid = users.userid INNER JOIN books ON ads.isbn = books.isbn WHERE deleted = 0 AND locked = 0");
 
             getMyAdsSQL = connection.prepareStatement("SELECT * FROM ads WHERE userid = ? AND deleted = 0");
 
@@ -398,7 +397,7 @@ public class ServiceImplementation {
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();
                 close();
-            }
+            };
         }
         return listBooks;
     }
@@ -462,6 +461,11 @@ public class ServiceImplementation {
                 ad.setBookEdition(resultSet.getString("edition"));
                 ad.setRating(resultSet.getInt("rating"));
                 ad.setPrice(resultSet.getInt("price"));
+                ad.setUserAddress(resultSet.getString("address"));
+                ad.setComment(resultSet.getString("comment"));
+                ad.setUserMobilepay(resultSet.getInt("mobilepay"));
+                ad.setUserCash(resultSet.getInt("cash"));
+                ad.setUserTransfer(resultSet.getInt("transfer"));
 
                 listAds.add(ad);
             }

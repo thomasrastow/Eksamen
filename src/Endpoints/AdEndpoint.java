@@ -95,10 +95,10 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id") & jsonObject.containsKey("comment") &
+                if (jsonObject.containsKey("adId") & jsonObject.containsKey("comment") &
                         jsonObject.containsKey("price") & jsonObject.containsKey("rating")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Ad ad = adController.getAd(adId);
 
@@ -146,9 +146,9 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("adId")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Ad ad = adController.getAd(adId);
 
@@ -185,9 +185,9 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("adId")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Ad ad = adController.getAd(adId);
 
@@ -225,9 +225,9 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("adId")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Ad ad = adController.getAd(adId);
 
@@ -293,9 +293,9 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("adId")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Reservation reservation = adController.getReservation(adId);
 
@@ -425,9 +425,9 @@ public class AdEndpoint {
 
                 JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-                if (jsonObject.containsKey("id")) {
+                if (jsonObject.containsKey("adId")) {
 
-                    int adId = (((Long) jsonObject.get("id")).intValue());
+                    int adId = (((Long) jsonObject.get("adId")).intValue());
 
                     Ad ad = adController.getAd(adId);
 
@@ -453,9 +453,9 @@ public class AdEndpoint {
 
             JSONObject jsonObject = endpointController.parsePostRequest(httpExchange);
 
-            if (jsonObject.containsKey("id")) {
+            if (jsonObject.containsKey("adId")) {
 
-                int adId = (((Long) jsonObject.get("id")).intValue());
+                int adId = (((Long) jsonObject.get("adId")).intValue());
 
                 Ad ad = adController.getAdPublic(adId);
 
