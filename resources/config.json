@@ -4,7 +4,7 @@
   "DB_PORT":"3306",
   "DB_NAME":"brugtbog",
   "DB_USER":"root",
-  "DB_PASS":"kongen",
+  "DB_PASS":"",
   "SERVER_PORT":"8000",
   "SSL_KEY":"resources/keystore.jks",
   "SSL_PWD":"brugtbog",
